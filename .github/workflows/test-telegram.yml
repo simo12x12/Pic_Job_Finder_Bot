@@ -1,0 +1,21 @@
+
+name: Test Telegram
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Send Telegram test message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: "2020881944"
+        run: |
+          curl --fail --silent --show-error \
+          --request POST \
+          "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+          --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+          --data-urlencode "text=✅ Pic_Job_Finder_Bot è online! Test GitHub Actions completato."
