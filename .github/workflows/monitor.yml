@@ -3,46 +3,49 @@ name: Pic Job Finder
 on:
   schedule:
     - cron: '*/10 * * * *'
+  workflow_dispatch:
 
-  workflow_dispatch:*
 permissions:
   contents: write
 
-c*ncurrency:
-  group: pic-job-finder*  cancel-in-progress: false
+concurrency:
+  group: pic-job-finder
+  cancel-in-progress: false
 
-jobs:*  monitor:
-    runs-on: ubuntu-24.*4
+jobs:
+  monitor:
+    runs-on: ubuntu-24.04
 
     steps:
-      - name: Checko*t repository
-        uses: actions*checkout@v7
+      - name: Checkout repository
+        uses: actions/checkout@v7
 
-      - name: Setup P*thon
-        uses: actions/setup-p*thon@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
         with:
-          py*hon-version: '3.12'
+          python-version: '3.12'
 
-      - name:*Show files
+      - name: Show files
         run: |
-        * pwd
+          pwd
           ls -la
 
-      - nam*: Monitor job offers
+      - name: Monitor job offers
         env:
-*         TELEGRAM_BOT_TOKEN: ${{ s*crets.TELEGRAM_BOT_TOKEN }}
-      * run: python monitor.py
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python monitor.py
 
-      - n*me: Save job history
-        run: *
-          if git diff --quiet -- *een_jobs.json; then
-            ec*o "Nessuna modifica da salvare."
- *          exit 0
+      - name: Save job history
+        run: |
+          if git diff --quiet -- seen_jobs.json; then
+            echo "Nessuna modifica da salvare."
+            exit 0
           fi
 
-   *      git config user.name "Pic Jo* Finder Bot"
-          git config *ser.email "github-actions[bot]@use*s.noreply.github.com"
+          git config user.name "Pic Job Finder Bot"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          g*t add seen_jobs.json
-          git*commit -m "Update seen Leonardo jo*s"
+          git add seen_jobs.json
+          git commit -m "Update seen Leonardo jobs"
           git push
+`
