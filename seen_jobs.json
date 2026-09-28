@@ -80,8 +80,22 @@
     "agid": {
       "initialized": true,
       "seen": []
+    },
+    "invitalia_jobs": {
+      "initialized": true,
+      "seen": []
+    },
+    "invitalia_consulting": {
+      "initialized": true,
+      "seen": [
+        "invitalia-consulting:17813  "
+      ]
+    },
+    "cdp": {
+      "initialized": true,
+      "seen": []
     }
   },
-  "last_update": "2026-09-28T14:43:35.953048+00:00",
-  "schema_version": 4
+  "last_update": "2026-09-28T14:47:40.870189+00:00",
+  "schema_version": 5
 }
