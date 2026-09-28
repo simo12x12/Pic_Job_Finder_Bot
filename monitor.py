@@ -7,1191 +7,441 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
-
-
-# =========================================================
-# CONFIGURAZIONE GENERALE
-# =========================================================
+from zoneinfo import ZoneInfo
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
-
-AUTHORIZED_CHAT_IDS = [
-    "2020881944",
-    # Seconda persona: aggiungeremo qui il suo Chat ID.
-]
-
+AUTHORIZED_CHAT_IDS = ["2020881944"]
 SEEN_FILE = Path("seen_jobs.json")
+ROME = ZoneInfo("Europe/Rome")
 
-
-# =========================================================
-# LEONARDO
-# Italia + Communications + Sales & Marketing
-# =========================================================
-
-LEONARDO_ENDPOINT = (
-    "https://leonardocompany.wd3.myworkdayjobs.com/"
-    "wday/cxs/leonardocompany/LeonardoCareerSite/jobs"
-)
+# ---------- URLs ----------
+LEONARDO_ENDPOINT = "https://leonardocompany.wd3.myworkdayjobs.com/wday/cxs/leonardocompany/LeonardoCareerSite/jobs"
+INPA_ENDPOINT = "https://portale.inpa.gov.it/concorsi-smart/api/concorso-public-area/search-better"
+EUTALIA_URL = "https://www.eutalia.eu/selezione-personale-ed-esperti/"
+CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page=0"
+SOGEI_URL = "https://www.sogei.it/it/sogei-homepage/lavora-con-noi/avvisi-di-selezione-e-invio-candidature.html"
+PRESIDENZA_URL = "https://presidenza.governo.it/AmministrazioneTrasparente/BandiConcorso/index.html"
 
 LEONARDO_FACETS = {
-    "locationCountry": [
-        "8cd04a563fd94da7b06857a79faaf815"
-    ],
+    "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
     "jobFamilyGroup": [
         "8f7876e90e9c0101f751f430c4290000",
         "8f7876e90e9c0101f751e65634a60000",
     ],
 }
 
-
-# =========================================================
-# INPA
-#
-# Ricerca 1:
-# OPEN + settore Comunicazione e informazione
-#
-# Ricerche aggiuntive OPEN:
-# - marketing
-# - comunicazione istituzionale
-# - relazioni istituzionali
-# - public affairs
-# =========================================================
-
-INPA_ENDPOINT = (
-    "https://portale.inpa.gov.it/"
-    "concorsi-smart/api/concorso-public-area/search-better"
-)
-
 INPA_BASE_PAYLOAD = {
-    "text": "",
-    "categoriaId": None,
-    "regioneId": None,
-    "status": ["OPEN"],
-    "settoreId": None,
-    "dateFrom": None,
-    "dateTo": None,
-    "enteRiferimentoName": "",
-    "livelliAnzianitaIds": None,
-    "provinciaCodice": None,
-    "salaryMax": None,
-    "salaryMin": None,
-    "tipoImpiegoId": None,
+    "text": "", "categoriaId": None, "regioneId": None,
+    "status": ["OPEN"], "settoreId": None,
+    "dateFrom": None, "dateTo": None, "enteRiferimentoName": "",
+    "livelliAnzianitaIds": None, "provinciaCodice": None,
+    "salaryMax": None, "salaryMin": None, "tipoImpiegoId": None,
 }
+INPA_COMMUNICATION_SECTOR = "b078865c126040558601"
+INPA_SEARCH_TERMS = ["marketing", "comunicazione istituzionale"]
+PRESIDENZA_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social"]
 
-INPA_COMMUNICATION_SECTOR = (
-    "b078865c126040558601"
-)
+# ---------- Utilities ----------
+def now_rome():
+    return datetime.now(ROME).strftime("%d/%m/%Y %H:%M")
 
-INPA_SEARCH_TERMS = [
-    "marketing",
-    "comunicazione istituzionale",
-]
+def normalize_space(text):
+    return re.sub(r"\s+", " ", html.unescape(text or "")).strip()
 
+def strip_tags(text):
+    return normalize_space(re.sub(r"<[^>]+>", " ", text or ""))
 
-# =========================================================
-# EUTALIA
-# Tutti gli Avvisi Aperti
-# =========================================================
+def fetch_html(url):
+    request = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0 (compatible; PicJobFinder/1.0)",
+        "Accept": "text/html,application/xhtml+xml",
+    })
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return response.read().decode("utf-8", errors="replace")
 
-EUTALIA_URL = (
-    "https://www.eutalia.eu/"
-    "selezione-personale-ed-esperti/"
-)
-
-
-# =========================================================
-# TELEGRAM
-# =========================================================
+def absolute_url(base, href):
+    return urllib.parse.urljoin(base, html.unescape(href)).split("#", 1)[0]
 
 def send_telegram(chat_id, text):
-    url = (
-        f"https://api.telegram.org/"
-        f"bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    )
-
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     data = urllib.parse.urlencode({
         "chat_id": chat_id,
         "text": text,
         "disable_web_page_preview": "false",
     }).encode("utf-8")
-
-    request = urllib.request.Request(
-        url,
-        data=data,
-        method="POST",
-    )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=30,
-    ) as response:
+    request = urllib.request.Request(url, data=data, method="POST")
+    with urllib.request.urlopen(request, timeout=30) as response:
         response.read()
 
-
 def notify_all(text):
+    errors = []
     for chat_id in AUTHORIZED_CHAT_IDS:
         try:
-            send_telegram(
-                chat_id,
-                text,
-            )
-
-            print(
-                f"Notifica inviata a {chat_id}"
-            )
-
+            send_telegram(chat_id, text)
+            print(f"Notifica inviata a {chat_id}")
         except Exception as exc:
-            print(
-                f"Errore Telegram per "
-                f"{chat_id}: {exc}"
-            )
+            errors.append(f"{chat_id}: {exc}")
+    if errors:
+        raise RuntimeError("; ".join(errors))
 
+# ---------- Memory ----------
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "presidenza"]
 
-# =========================================================
-# MEMORIA
-# =========================================================
+def empty_source():
+    return {"initialized": False, "seen": []}
 
 def empty_memory():
-    return {
-        "sources": {
-            "leonardo": {
-                "seen": []
-            },
-            "inpa": {
-                "seen": []
-            },
-            "eutalia": {
-                "seen": []
-            },
-        }
-    }
-
+    return {"sources": {name: empty_source() for name in SOURCE_NAMES}}
 
 def load_memory():
     if not SEEN_FILE.exists():
         return empty_memory()
-
     try:
-        data = json.loads(
-            SEEN_FILE.read_text(
-                encoding="utf-8"
-            )
-        )
-
+        data = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
     except Exception as exc:
-        print(
-            f"Errore lettura memoria: {exc}"
-        )
+        raise RuntimeError(f"Memoria non leggibile: {exc}")
 
-        return empty_memory()
-
-    # -----------------------------------------------------
-    # Migrazione dal vecchio formato.
-    # Gli eventuali vecchi ID appartengono a Leonardo.
-    # -----------------------------------------------------
-
+    # Very old layout: {"seen": [...]} => Leonardo
     if "sources" not in data:
-        old_seen = data.get(
-            "seen",
-            [],
-        )
+        old_seen = data.get("seen", [])
+        data = empty_memory()
+        data["sources"]["leonardo"] = {"initialized": True, "seen": old_seen}
 
-        print(
-            f"Migrazione memoria Leonardo: "
-            f"{len(old_seen)} ID esistenti."
-        )
-
-        data = {
-            "sources": {
-                "leonardo": {
-                    "seen": old_seen
-                },
-                "inpa": {
-                    "seen": []
-                },
-                "eutalia": {
-                    "seen": []
-                },
-            }
-        }
-
-    data.setdefault(
-        "sources",
-        {},
-    )
-
-    data["sources"].setdefault(
-        "leonardo",
-        {"seen": []},
-    )
-
-    data["sources"].setdefault(
-        "inpa",
-        {"seen": []},
-    )
-
-    data["sources"].setdefault(
-        "eutalia",
-        {"seen": []},
-    )
-
+    data.setdefault("sources", {})
+    for name in SOURCE_NAMES:
+        if name not in data["sources"]:
+            data["sources"][name] = empty_source()
+        else:
+            src = data["sources"][name]
+            src.setdefault("seen", [])
+            # Existing sources from the previous bot are already initialized,
+            # even if their seen list is empty.
+            if "initialized" not in src:
+                src["initialized"] = name in {"leonardo", "inpa", "eutalia"}
     return data
 
-
 def save_memory(memory):
-    memory["last_update"] = (
-        datetime.now(
-            timezone.utc
-        ).isoformat()
-    )
+    memory["last_update"] = datetime.now(timezone.utc).isoformat()
+    SEEN_FILE.write_text(json.dumps(memory, indent=2, ensure_ascii=False), encoding="utf-8")
 
-    SEEN_FILE.write_text(
-        json.dumps(
-            memory,
-            indent=2,
-            ensure_ascii=False,
-        ),
-        encoding="utf-8",
-    )
+def process_items(memory, source, items, formatter):
+    src = memory["sources"][source]
+    current_ids = {item["id"] for item in items if item.get("id")}
+    seen_ids = set(src.get("seen", []))
 
+    if not src.get("initialized", False):
+        print(f"Prima inizializzazione {source}: registro {len(current_ids)} elementi senza notificare.")
+        src["initialized"] = True
+        src["seen"] = sorted(current_ids)
+        return 0
 
-# =========================================================
-# LEONARDO
-# =========================================================
+    new_items = [x for x in items if x.get("id") and x["id"] not in seen_ids]
+    print(f"Nuovi elementi {source}: {len(new_items)}")
+    for item in new_items:
+        notify_all(formatter(item))
 
+    # Keep historical IDs, so a removed/reappearing item is not re-notified.
+    src["seen"] = sorted(seen_ids | current_ids)
+    return len(new_items)
+
+# ---------- Leonardo ----------
 def leonardo_request(offset=0):
-    payload = {
-        "appliedFacets": LEONARDO_FACETS,
-        "limit": 20,
-        "offset": offset,
-        "searchText": "",
-    }
-
+    payload = {"appliedFacets": LEONARDO_FACETS, "limit": 20, "offset": offset, "searchText": ""}
     request = urllib.request.Request(
         LEONARDO_ENDPOINT,
-        data=json.dumps(
-            payload
-        ).encode("utf-8"),
-        method="POST",
-        headers={
-            "Content-Type":
-                "application/json",
-            "Accept":
-                "application/json",
-            "User-Agent":
-                "Mozilla/5.0",
-        },
+        data=json.dumps(payload).encode("utf-8"), method="POST",
+        headers={"Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0"},
     )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=30,
-    ) as response:
-        return json.loads(
-            response.read().decode(
-                "utf-8"
-            )
-        )
-
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return json.loads(response.read().decode("utf-8"))
 
 def get_leonardo_jobs():
-    jobs = []
-    offset = 0
-
+    jobs, offset = [], 0
     while True:
-        response = leonardo_request(
-            offset
-        )
-
-        batch = response.get(
-            "jobPostings",
-            [],
-        )
-
+        response = leonardo_request(offset)
+        batch = response.get("jobPostings", [])
         if not batch:
             break
-
         jobs.extend(batch)
-
-        total = response.get(
-            "total",
-            len(jobs),
-        )
-
         offset += len(batch)
-
-        if offset >= total:
+        if offset >= response.get("total", len(jobs)):
             break
-
-    return jobs
-
-
-def leonardo_job_id(job):
-    external_path = job.get(
-        "externalPath"
-    )
-
-    if external_path:
-        return external_path
-
-    return (
-        f"{job.get('title', '')}|"
-        f"{job.get('locationsText', '')}"
-    )
-
-
-def leonardo_job_url(job):
-    external_path = job.get(
-        "externalPath",
-        "",
-    )
-
-    return (
-        "https://leonardocompany."
-        "wd3.myworkdayjobs.com/"
-        "it-IT/LeonardoCareerSite"
-        f"{external_path}"
-    )
-
+    return [{
+        "id": job.get("externalPath") or f"{job.get('title','')}|{job.get('locationsText','')}",
+        "title": job.get("title", "Titolo non disponibile"),
+        "location": job.get("locationsText", "Località non disponibile"),
+        "posted": job.get("postedOn", ""),
+        "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite" + job.get("externalPath", ""),
+    } for job in jobs]
 
 def process_leonardo(memory):
-    print("")
-    print("=== LEONARDO ===")
+    print("\n=== LEONARDO ===")
+    items = get_leonardo_jobs()
+    print(f"Offerte Leonardo trovate: {len(items)}")
+    return process_items(memory, "leonardo", items, lambda x:
+        "🚨 NUOVA OFFERTA LEONARDO\n\n"
+        f"💼 {x['title']}\n📍 {x['location']}\n📅 Pubblicazione: {x['posted']}\n"
+        f"🔔 Rilevata: {now_rome()}\n\n🏷 Communications / Sales & Marketing\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
-    jobs = get_leonardo_jobs()
-
-    print(
-        f"Offerte Leonardo trovate: "
-        f"{len(jobs)}"
-    )
-
-    current_ids = {
-        leonardo_job_id(job)
-        for job in jobs
-    }
-
-    seen_ids = set(
-        memory["sources"]
-        ["leonardo"]
-        .get("seen", [])
-    )
-
-    if not seen_ids:
-        print(
-            "Prima inizializzazione Leonardo."
-        )
-
-        print(
-            f"Registro {len(current_ids)} "
-            "offerte senza notificare."
-        )
-
-        memory["sources"][
-            "leonardo"
-        ]["seen"] = sorted(
-            current_ids
-        )
-
-        return
-
-    new_jobs = [
-        job
-        for job in jobs
-        if (
-            leonardo_job_id(job)
-            not in seen_ids
-        )
-    ]
-
-    print(
-        f"Nuove offerte Leonardo: "
-        f"{len(new_jobs)}"
-    )
-
-    for job in new_jobs:
-        title = job.get(
-            "title",
-            "Titolo non disponibile",
-        )
-
-        location = job.get(
-            "locationsText",
-            "Località non disponibile",
-        )
-
-        posted = job.get(
-            "postedOn",
-            "",
-        )
-
-        url = leonardo_job_url(job)
-
-        detected = datetime.now().strftime(
-            "%d/%m/%Y %H:%M"
-        )
-
-        message = (
-            "🚨 NUOVA OFFERTA LEONARDO\n\n"
-            f"💼 {title}\n"
-            f"📍 {location}\n"
-            f"📅 Pubblicazione: {posted}\n"
-            f"🔔 Rilevata: {detected}\n\n"
-            "🏷 Communications / "
-            "Sales & Marketing\n\n"
-            f"🔗 {url}\n\n"
-            "🤖 Pic_Job_Finder_Bot"
-        )
-
-        notify_all(message)
-
-    updated_seen = (
-        seen_ids | current_ids
-    )
-
-    memory["sources"][
-        "leonardo"
-    ]["seen"] = sorted(
-        updated_seen
-    )
-
-
-# =========================================================
-# INPA
-# =========================================================
-
-def inpa_request(
-    payload,
-    page=0,
-    size=50,
-):
-    url = (
-        f"{INPA_ENDPOINT}"
-        f"?page={page}&size={size}"
-    )
-
+# ---------- inPA ----------
+def inpa_request(payload, page=0, size=50):
+    url = f"{INPA_ENDPOINT}?page={page}&size={size}"
     request = urllib.request.Request(
-        url,
-        data=json.dumps(
-            payload
-        ).encode("utf-8"),
-        method="POST",
-        headers={
-            "Content-Type":
-                "application/json",
-            "Accept":
-                "application/json",
-            "User-Agent":
-                "Mozilla/5.0",
-            "Origin":
-                "https://www.inpa.gov.it",
-            "Referer":
-                "https://www.inpa.gov.it/",
-        },
+        url, data=json.dumps(payload).encode("utf-8"), method="POST",
+        headers={"Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0", "Origin": "https://www.inpa.gov.it", "Referer": "https://www.inpa.gov.it/"},
     )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=30,
-    ) as response:
-        return json.loads(
-            response.read().decode(
-                "utf-8"
-            )
-        )
-
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return json.loads(response.read().decode("utf-8"))
 
 def get_inpa_results(payload):
-    jobs = []
-    page = 0
-
+    jobs, page = [], 0
     while True:
-        response = inpa_request(
-            payload=payload,
-            page=page,
-            size=50,
-        )
-
-        batch = response.get(
-            "content",
-            [],
-        )
-
-        jobs.extend(batch)
-
-        total_pages = response.get(
-            "totalPages",
-            1,
-        )
-
+        response = inpa_request(payload, page, 50)
+        jobs.extend(response.get("content", []))
         page += 1
-
-        if page >= total_pages:
+        if page >= response.get("totalPages", 1):
             break
-
     return jobs
-
 
 def get_inpa_jobs():
-    jobs_by_id = {}
-
-    # -----------------------------------------------------
-    # 1. Settore Comunicazione e informazione
-    # -----------------------------------------------------
-
-    sector_payload = dict(
-        INPA_BASE_PAYLOAD
-    )
-
-    sector_payload["settoreId"] = (
-        INPA_COMMUNICATION_SECTOR
-    )
-
-    sector_jobs = get_inpa_results(
-        sector_payload
-    )
-
-    print(
-        "inPA - Comunicazione e informazione: "
-        f"{len(sector_jobs)}"
-    )
-
-    for job in sector_jobs:
-        job_id = str(
-            job.get(
-                "id",
-                "",
-            )
-        )
-
-        if job_id:
-            jobs_by_id[job_id] = job
-
-    # -----------------------------------------------------
-    # 2. Ricerche testuali aggiuntive
-    #    in qualsiasi settore
-    # -----------------------------------------------------
-
-    for search_term in INPA_SEARCH_TERMS:
-        search_payload = dict(
-            INPA_BASE_PAYLOAD
-        )
-
-        search_payload["text"] = (
-            search_term
-        )
-
-        results = get_inpa_results(
-            search_payload
-        )
-
-        print(
-            f"inPA - ricerca "
-            f"'{search_term}': "
-            f"{len(results)}"
-        )
-
+    by_id = {}
+    p = dict(INPA_BASE_PAYLOAD)
+    p["settoreId"] = INPA_COMMUNICATION_SECTOR
+    results = get_inpa_results(p)
+    print(f"inPA - Comunicazione e informazione: {len(results)}")
+    for job in results:
+        if job.get("id"):
+            by_id[str(job["id"])] = job
+    for term in INPA_SEARCH_TERMS:
+        p = dict(INPA_BASE_PAYLOAD)
+        p["text"] = term
+        results = get_inpa_results(p)
+        print(f"inPA - ricerca '{term}': {len(results)}")
         for job in results:
-            job_id = str(
-                job.get(
-                    "id",
-                    "",
-                )
-            )
-
-            if job_id:
-                jobs_by_id[
-                    job_id
-                ] = job
-
-    jobs = list(
-        jobs_by_id.values()
-    )
-
-    print(
-        "inPA - risultati unici "
-        "complessivi: "
-        f"{len(jobs)}"
-    )
-
-    return jobs
-
-
-def inpa_job_id(job):
-    return str(
-        job.get(
-            "id",
-            "",
-        )
-    )
-
-
-def inpa_job_url(job):
-    job_id = inpa_job_id(
-        job
-    )
-
-    return (
-        "https://www.inpa.gov.it/"
-        "bandi-e-avvisi/"
-        "dettaglio-bando-avviso/"
-        f"?concorso_id={job_id}"
-    )
-
+            if job.get("id"):
+                by_id[str(job["id"])] = job
+    print(f"inPA - risultati unici complessivi: {len(by_id)}")
+    return list(by_id.values())
 
 def format_inpa_date(value):
     if not value:
         return "Non disponibile"
-
     try:
-        dt = datetime.fromisoformat(
-            value.replace(
-                "Z",
-                "+00:00",
-            )
-        )
-
-        local_dt = dt.astimezone()
-
-        return local_dt.strftime(
-            "%d/%m/%Y %H:%M"
-        )
-
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(ROME).strftime("%d/%m/%Y %H:%M")
     except Exception:
         return value
 
-
 def process_inpa(memory):
-    print("")
-    print("=== INPA ===")
-
+    print("\n=== INPA ===")
     jobs = get_inpa_jobs()
-
-    print(
-        f"Bandi inPA OPEN trovati: "
-        f"{len(jobs)}"
-    )
-
-    current_ids = {
-        inpa_job_id(job)
-        for job in jobs
-        if inpa_job_id(job)
-    }
-
-    seen_ids = set(
-        memory["sources"]
-        ["inpa"]
-        .get("seen", [])
-    )
-
-    if not seen_ids:
-        print(
-            "Prima inizializzazione inPA."
-        )
-
-        print(
-            f"Registro {len(current_ids)} "
-            "bandi esistenti "
-            "senza notificare."
-        )
-
-        memory["sources"][
-            "inpa"
-        ]["seen"] = sorted(
-            current_ids
-        )
-
-        return
-
-    new_jobs = [
-        job
-        for job in jobs
-        if (
-            inpa_job_id(job)
-            and
-            inpa_job_id(job)
-            not in seen_ids
-        )
-    ]
-
-    print(
-        f"Nuovi bandi inPA: "
-        f"{len(new_jobs)}"
-    )
-
-    for job in new_jobs:
-        title = (
-            job.get(
-                "figuraRicercata"
-            )
-            or
-            job.get(
-                "titolo"
-            )
-            or
-            "Titolo non disponibile"
-        )
-
-        enti = (
-            job.get(
-                "entiRiferimento"
-            )
-            or []
-        )
-
-        ente = (
-            ", ".join(enti)
-            if enti
-            else
-            "Ente non disponibile"
-        )
-
-        sedi = (
-            job.get(
-                "sedi"
-            )
-            or []
-        )
-
-        location = (
-            ", ".join(sedi)
-            if sedi
-            else
-            "Sede non disponibile"
-        )
-
-        num_posti = job.get(
-            "numPosti",
-            "Non disponibile",
-        )
-
-        published = format_inpa_date(
-            job.get(
-                "dataPubblicazione"
-            )
-        )
-
-        deadline = format_inpa_date(
-            job.get(
-                "dataScadenza"
-            )
-        )
-
-        sectors = (
-            job.get(
-                "settori"
-            )
-            or []
-        )
-
-        sector_text = (
-            ", ".join(sectors)
-            if sectors
-            else
-            "Marketing / Comunicazione"
-        )
-
-        url = inpa_job_url(
-            job
-        )
-
-        detected = datetime.now().strftime(
-            "%d/%m/%Y %H:%M"
-        )
-
-        message = (
-            "🚨 NUOVO BANDO inPA\n\n"
-            f"💼 {title}\n"
-            f"🏛 {ente}\n"
-            f"📍 {location}\n"
-            f"👥 Posti: {num_posti}\n\n"
-            f"📅 Pubblicato: {published}\n"
-            f"⏳ Scadenza: {deadline}\n"
-            f"🔔 Rilevato: {detected}\n\n"
-            f"🏷 {sector_text}\n\n"
-            f"🔗 {url}\n\n"
-            "🤖 Pic_Job_Finder_Bot"
-        )
-
-        notify_all(
-            message
-        )
-
-    updated_seen = (
-        seen_ids | current_ids
-    )
-
-    memory["sources"][
-        "inpa"
-    ]["seen"] = sorted(
-        updated_seen
-    )
-
-
-# =========================================================
-# EUTALIA
-# Tutti gli Avvisi Aperti
-# =========================================================
-
-def get_eutalia_open_notices():
-    request = urllib.request.Request(
-        EUTALIA_URL,
-        headers={
-            "User-Agent":
-                "Mozilla/5.0",
-            "Accept":
-                "text/html,"
-                "application/xhtml+xml",
-        },
-    )
-
-    with urllib.request.urlopen(
-        request,
-        timeout=30,
-    ) as response:
-        page = response.read().decode(
-            "utf-8",
-            errors="replace",
-        )
-
-    notices = []
-
-    link_pattern = re.compile(
-        r'<a[^>]+href=["\']'
-        r'(https?://www\.eutalia\.eu/'
-        r'avvisi/[^"\']+)'
-        r'["\'][^>]*>(.*?)</a>',
-        re.IGNORECASE |
-        re.DOTALL,
-    )
-
-    matches = list(
-        link_pattern.finditer(
-            page
-        )
-    )
-
-    seen_urls = set()
-
-    for match in matches:
-        url = html.unescape(
-            match.group(1)
-        ).rstrip("/")
-
-        if url in seen_urls:
-            continue
-
-        seen_urls.add(
-            url
-        )
-
-        start = max(
-            0,
-            match.start() - 2500,
-        )
-
-        end = min(
-            len(page),
-            match.end() + 500,
-        )
-
-        context = page[
-            start:end
-        ]
-
-        context_text = re.sub(
-            r"<[^>]+>",
-            " ",
-            context,
-        )
-
-        context_text = html.unescape(
-            context_text
-        )
-
-        context_text = re.sub(
-            r"\s+",
-            " ",
-            context_text,
-        ).strip()
-
-        if (
-            "Avviso Aperto"
-            not in context_text
-        ):
-            continue
-
-        title_html = (
-            match.group(2)
-        )
-
-        title = re.sub(
-            r"<[^>]+>",
-            "",
-            title_html,
-        )
-
-        title = html.unescape(
-            title
-        )
-
-        title = re.sub(
-            r"\s+",
-            " ",
-            title,
-        ).strip()
-
-        if (
-            not title
-            or
-            "leggi di" in title.lower()
-        ):
-            headings = re.findall(
-                r"<h[1-6][^>]*>"
-                r"(.*?)"
-                r"</h[1-6]>",
-                context,
-                re.IGNORECASE |
-                re.DOTALL,
-            )
-
-            if headings:
-                title = re.sub(
-                    r"<[^>]+>",
-                    "",
-                    headings[-1],
-                )
-
-                title = html.unescape(
-                    title
-                )
-
-                title = re.sub(
-                    r"\s+",
-                    " ",
-                    title,
-                ).strip()
-
-        if not title:
-            title = (
-                "Nuovo avviso Eutalia"
-            )
-
-        notices.append({
-            "id": url,
-            "title": title,
-            "url": url + "/",
+    items = []
+    for job in jobs:
+        jid = str(job.get("id", ""))
+        items.append({
+            "id": jid,
+            "title": job.get("figuraRicercata") or job.get("titolo") or "Titolo non disponibile",
+            "ente": ", ".join(job.get("entiRiferimento") or []) or "Ente non disponibile",
+            "location": ", ".join(job.get("sedi") or []) or "Sede non disponibile",
+            "posts": job.get("numPosti", "Non disponibile"),
+            "published": format_inpa_date(job.get("dataPubblicazione")),
+            "deadline": format_inpa_date(job.get("dataScadenza")),
+            "sectors": ", ".join(job.get("settori") or []) or "Marketing / Comunicazione",
+            "url": f"https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id={jid}",
         })
+    print(f"Bandi inPA OPEN trovati: {len(items)}")
+    return process_items(memory, "inpa", items, lambda x:
+        "🚨 NUOVO BANDO inPA\n\n"
+        f"💼 {x['title']}\n🏛 {x['ente']}\n📍 {x['location']}\n👥 Posti: {x['posts']}\n\n"
+        f"📅 Pubblicato: {x['published']}\n⏳ Scadenza: {x['deadline']}\n🔔 Rilevato: {now_rome()}\n\n"
+        f"🏷 {x['sectors']}\n\n🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
+# ---------- Eutalia ----------
+def get_eutalia_open_notices():
+    page = fetch_html(EUTALIA_URL)
+    # Cards are bounded imperfectly in WordPress HTML. Candidate URLs are checked
+    # against nearby text and then deduplicated.
+    pattern = re.compile(r'<a[^>]+href=["\'](https?://www\.eutalia\.eu/avvisi/[^"\']+)["\'][^>]*>(.*?)</a>', re.I | re.S)
+    notices, used = [], set()
+    for m in pattern.finditer(page):
+        url = html.unescape(m.group(1)).rstrip("/")
+        if url in used:
+            continue
+        context = page[max(0, m.start()-2200):min(len(page), m.end()+500)]
+        if "avviso aperto" not in strip_tags(context).lower():
+            continue
+        used.add(url)
+        title = strip_tags(m.group(2))
+        if not title or "leggi di" in title.lower():
+            heads = re.findall(r"<h[1-6][^>]*>(.*?)</h[1-6]>", context, re.I | re.S)
+            title = strip_tags(heads[-1]) if heads else "Nuovo avviso Eutalia"
+        notices.append({"id": url, "title": title, "url": url + "/"})
     return notices
 
-
 def process_eutalia(memory):
-    print("")
-    print("=== EUTALIA ===")
+    print("\n=== EUTALIA ===")
+    items = get_eutalia_open_notices()
+    print(f"Avvisi Eutalia aperti trovati: {len(items)}")
+    return process_items(memory, "eutalia", items, lambda x:
+        "🚨 NUOVO AVVISO EUTALIA\n\n"
+        f"📋 {x['title']}\n\n🏢 Eutalia\n🟢 Avviso Aperto\n🔔 Rilevato: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
-    notices = (
-        get_eutalia_open_notices()
-    )
+# ---------- Consip: all listed job positions ----------
+def get_consip_positions():
+    # Read several result pages because the site paginates positions.
+    items_by_url = {}
+    for page_num in range(0, 10):
+        url = f"https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page={page_num}"
+        page = fetch_html(url)
+        matches = re.findall(r'<a[^>]+href=["\']([^"\']*/posizioni/[^"\'?]+)["\'][^>]*>(.*?)</a>', page, re.I | re.S)
+        before = len(items_by_url)
+        for href, label in matches:
+            full = absolute_url("https://www.consip.it", href).rstrip("/")
+            if "/lavora-con-noi/posizioni" in full:
+                continue
+            title = strip_tags(label)
+            # Many links say "Leggi di più"; derive slug only as fallback.
+            if not title or "leggi di" in title.lower():
+                slug = full.rsplit("/", 1)[-1]
+                title = slug.replace("-", " ").title()
+            items_by_url[full] = {"id": full, "title": title, "url": full}
+        # Stop after an empty/newless page, but only after page 0.
+        if page_num > 0 and len(items_by_url) == before:
+            break
+    return list(items_by_url.values())
 
-    print(
-        "Avvisi Eutalia aperti trovati: "
-        f"{len(notices)}"
-    )
+def process_consip(memory):
+    print("\n=== CONSIP ===")
+    items = get_consip_positions()
+    print(f"Posizioni Consip trovate: {len(items)}")
+    return process_items(memory, "consip", items, lambda x:
+        "🚨 NUOVA POSIZIONE CONSIP\n\n"
+        f"💼 {x['title']}\n🏢 Consip\n🔔 Rilevata: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
-    current_ids = {
-        notice["id"]
-        for notice in notices
-    }
+# ---------- Sogei: all positions ----------
+def get_sogei_positions():
+    page = fetch_html(SOGEI_URL)
+    text = strip_tags(page).lower()
+    if "al momento non esistono posizioni disponibili" in text:
+        return []
 
-    seen_ids = set(
-        memory["sources"]
-        ["eutalia"]
-        .get(
-            "seen",
-            [],
-        )
-    )
+    # Capture links inside the current positions page, while excluding navigation/history.
+    links = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S)
+    items = {}
+    for href, label in links:
+        title = strip_tags(label)
+        full = absolute_url(SOGEI_URL, href).rstrip("/")
+        low = (title + " " + full).lower()
+        if not title or len(title) < 4:
+            continue
+        if "avvisi-di-selezione0" in low or "criteri" in low or "lavorare-da-noi" in low:
+            continue
+        # Job links, when present, are expected inside the Lavora con Noi area.
+        if "/lavora-con-noi/" not in full:
+            continue
+        if full.rstrip("/") == SOGEI_URL.rstrip("/"):
+            continue
+        items[full] = {"id": full, "title": title, "url": full}
+    return list(items.values())
 
-    if not seen_ids:
-        print(
-            "Prima inizializzazione Eutalia."
-        )
+def process_sogei(memory):
+    print("\n=== SOGEI ===")
+    items = get_sogei_positions()
+    print(f"Posizioni Sogei trovate: {len(items)}")
+    return process_items(memory, "sogei", items, lambda x:
+        "🚨 NUOVA POSIZIONE SOGEI\n\n"
+        f"💼 {x['title']}\n🏢 Sogei\n🔔 Rilevata: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
-        print(
-            f"Registro {len(current_ids)} "
-            "avvisi aperti "
-            "senza notificare."
-        )
+# ---------- Presidenza: communication/marketing only ----------
+def get_presidenza_relevant_items():
+    page = fetch_html(PRESIDENZA_URL)
+    # Split around heading/paragraph-like blocks. We only accept contexts containing
+    # one of the user-selected keywords and at least one recruitment/candidacy signal.
+    candidates = []
+    anchors = list(re.finditer(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S))
+    recruitment_signals = ["bando", "concorso", "avviso pubblico", "selezione", "reclutamento", "assunzione", "incarico"]
+    exclude_signals = ["graduatoria", "commissione", "diario d'esame", "esito", "scorrimento", "nomina"]
 
-        memory["sources"][
-            "eutalia"
-        ]["seen"] = sorted(
-            current_ids
-        )
+    for m in anchors:
+        href, label_html = m.group(1), m.group(2)
+        full = absolute_url(PRESIDENZA_URL, href)
+        # Analyze a local block before the anchor; this usually contains the procedure title.
+        context_html = page[max(0, m.start()-1800):min(len(page), m.end()+300)]
+        context = strip_tags(context_html)
+        low = context.lower()
+        if not any(k in low for k in PRESIDENZA_KEYWORDS):
+            continue
+        if not any(s in low for s in recruitment_signals):
+            continue
+        # Avoid links that are clearly downstream updates rather than the vacancy/bando itself.
+        label = strip_tags(label_html)
+        if any(s in label.lower() for s in exclude_signals):
+            continue
+        # Prefer the nearby sentence/paragraph containing our keyword as title.
+        title = label
+        chunks = [normalize_space(x) for x in re.split(r"[\r\n]+|(?<=[.!?])\s+", context) if normalize_space(x)]
+        keyword_chunks = [c for c in chunks if any(k in c.lower() for k in PRESIDENZA_KEYWORDS)]
+        if keyword_chunks:
+            title = max(keyword_chunks, key=len)[:700]
+        if not title:
+            continue
+        # Stable key is the destination URL; inPA-linked PCM vacancies are okay because
+        # separate source memories keep source-level traceability.
+        candidates.append({"id": full, "title": title, "url": full})
 
-        return
+    # Deduplicate by URL.
+    return list({x["id"]: x for x in candidates}.values())
 
-    new_notices = [
-        notice
-        for notice in notices
-        if (
-            notice["id"]
-            not in seen_ids
-        )
-    ]
+def process_presidenza(memory):
+    print("\n=== PRESIDENZA DEL CONSIGLIO ===")
+    items = get_presidenza_relevant_items()
+    print(f"Procedure Presidenza pertinenti trovate: {len(items)}")
+    return process_items(memory, "presidenza", items, lambda x:
+        "🚨 NUOVA OPPORTUNITÀ PRESIDENZA DEL CONSIGLIO\n\n"
+        f"💼 {x['title']}\n🏛 Presidenza del Consiglio dei ministri\n"
+        f"🔔 Rilevata: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
-    print(
-        f"Nuovi avvisi Eutalia: "
-        f"{len(new_notices)}"
-    )
-
-    for notice in new_notices:
-        detected = datetime.now().strftime(
-            "%d/%m/%Y %H:%M"
-        )
-
-        message = (
-            "🚨 NUOVO AVVISO EUTALIA\n\n"
-            f"📋 {notice['title']}\n\n"
-            "🏢 Eutalia\n"
-            "🟢 Avviso Aperto\n"
-            f"🔔 Rilevato: {detected}\n\n"
-            f"🔗 {notice['url']}\n\n"
-            "🤖 Pic_Job_Finder_Bot"
-        )
-
-        notify_all(
-            message
-        )
-
-    updated_seen = (
-        seen_ids | current_ids
-    )
-
-    memory["sources"][
-        "eutalia"
-    ]["seen"] = sorted(
-        updated_seen
-    )
-
-
-# =========================================================
-# MAIN
-# =========================================================
-
+# ---------- Main ----------
 def main():
     if not TELEGRAM_BOT_TOKEN:
-        print(
-            "ERRORE: TELEGRAM_BOT_TOKEN "
-            "non configurato."
-        )
-
+        print("ERRORE: TELEGRAM_BOT_TOKEN non configurato.")
         sys.exit(1)
 
-    print(
-        "Pic_Job_Finder_Bot"
-    )
-
-    print(
-        "Avvio controllo sorgenti..."
-    )
-
+    print("Pic_Job_Finder_Bot")
+    print("Avvio controllo sorgenti...")
     memory = load_memory()
-
     errors = []
 
-    # -----------------------------------------------------
-    # Leonardo
-    # -----------------------------------------------------
+    processors = [
+        ("Leonardo", process_leonardo),
+        ("inPA", process_inpa),
+        ("Eutalia", process_eutalia),
+        ("Consip", process_consip),
+        ("Sogei", process_sogei),
+        ("Presidenza", process_presidenza),
+    ]
 
-    try:
-        process_leonardo(
-            memory
-        )
+    for name, processor in processors:
+        try:
+            processor(memory)
+        except Exception as exc:
+            print(f"ERRORE monitor {name}: {exc}")
+            errors.append(f"{name}: {exc}")
 
-    except Exception as exc:
-        print(
-            f"ERRORE monitor Leonardo: "
-            f"{exc}"
-        )
-
-        errors.append(
-            f"Leonardo: {exc}"
-        )
-
-    # -----------------------------------------------------
-    # inPA
-    # -----------------------------------------------------
-
-    try:
-        process_inpa(
-            memory
-        )
-
-    except Exception as exc:
-        print(
-            f"ERRORE monitor inPA: "
-            f"{exc}"
-        )
-
-        errors.append(
-            f"inPA: {exc}"
-        )
-
-    # -----------------------------------------------------
-    # Eutalia
-    # -----------------------------------------------------
-
-    try:
-        process_eutalia(
-            memory
-        )
-
-    except Exception as exc:
-        print(
-            f"ERRORE monitor Eutalia: "
-            f"{exc}"
-        )
-
-        errors.append(
-            f"Eutalia: {exc}"
-        )
-
-    # -----------------------------------------------------
-    # Salvataggio
-    # -----------------------------------------------------
-
-    save_memory(
-        memory
-    )
-
-    print("")
-    print(
-        "=== RIEPILOGO ==="
-    )
-
+    save_memory(memory)
+    print("\n=== RIEPILOGO ===")
     if errors:
-        print(
-            "Controllo completato "
-            "con errori:"
-        )
-
+        print("Controllo completato con errori:")
         for error in errors:
-            print(
-                f"- {error}"
-            )
-
+            print(f"- {error}")
         sys.exit(1)
 
-    print(
-        "Leonardo + inPA + Eutalia "
-        "controllati correttamente."
-    )
-
-    print(
-        "Controllo completato."
-    )
-
+    print("Leonardo + inPA + Eutalia + Consip + Sogei + Presidenza controllati correttamente.")
+    print("Controllo completato.")
 
 if __name__ == "__main__":
     main()
