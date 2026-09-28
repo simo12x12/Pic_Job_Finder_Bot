@@ -15,7 +15,8 @@
         "/job/IT---Varese---Cascina-Costa/ELI---Sales-Engineer-Specialist_R0030623-1",
         "/job/IT---Varese---Cascina-Costa/ELI-Stage-Product-Visual-identity_R0032686",
         "/job/IT---Vergiate/ELI---Product-and-services-marketing-IC_R0030685"
-      ]
+      ],
+      "initialized": true
     },
     "inpa": {
       "seen": [
@@ -41,14 +42,42 @@
         "ea46e0eaf0b446508d0b60b6ca3d6a15",
         "f3b7b8f2d35d40a289d67a5db83f97d1",
         "f9c101cbc8e34e739fc9677413caf6d4"
-      ]
+      ],
+      "initialized": true
     },
     "eutalia": {
       "seen": [
         "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-di-professionisti-in-progettazione-europea-fondi-diretti-cdc70-05-06-2026",
         "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-esperti-dpce07_27-05-2025"
+      ],
+      "initialized": true
+    },
+    "consip": {
+      "initialized": true,
+      "seen": [
+        "https://www.consip.it/posizioni/administrative-specialist",
+        "https://www.consip.it/posizioni/ai-consultant",
+        "https://www.consip.it/posizioni/ai-data-engineer",
+        "https://www.consip.it/posizioni/ai-data-scientist",
+        "https://www.consip.it/posizioni/ai-engineer",
+        "https://www.consip.it/posizioni/ai-nlp-engineer",
+        "https://www.consip.it/posizioni/ai-product-manager",
+        "https://www.consip.it/posizioni/ai-prompt-engineer",
+        "https://www.consip.it/posizioni/ai-security-specialist",
+        "https://www.consip.it/posizioni/category",
+        "https://www.consip.it/posizioni/giuslavorista",
+        "https://www.consip.it/posizioni/supply-legal-0"
       ]
+    },
+    "presidenza": {
+      "initialized": false,
+      "seen": []
+    },
+    "sogei": {
+      "initialized": false,
+      "seen": []
     }
   },
-  "last_update": "2026-09-28T13:56:25.504105+00:00"
+  "last_update": "2026-09-28T14:22:22.152421+00:00",
+  "schema_version": 2
 }
