@@ -170,6 +170,29 @@ def process_items(memory, source, items, formatter):
     src["seen"] = sorted(seen_ids | current_ids)
     return len(new_items)
 
+
+def standard_job_message(source, title, url, published=None, deadline=None, extra=None):
+    lines = [
+        f"🚨 NUOVA OPPORTUNITÀ - {source.upper()}",
+        "",
+        f"💼 {title}",
+        f"🏢 Fonte: {source}",
+    ]
+    if published:
+        lines.append(f"📅 Pubblicata: {published}")
+    if deadline:
+        lines.append(f"⏳ Scadenza: {deadline}")
+    if extra:
+        lines.append(f"🏷 {extra}")
+    lines.extend([
+        f"🔔 Rilevata: {now_rome()}",
+        "",
+        f"🔗 {url}",
+        "",
+        "🤖 Pic_Job_Finder_Bot",
+    ])
+    return "\n".join(lines)
+
 # ---------- Leonardo ----------
 def leonardo_request(offset=0):
     payload = {"appliedFacets": LEONARDO_FACETS, "limit": 20, "offset": offset, "searchText": ""}
@@ -205,10 +228,7 @@ def process_leonardo(memory):
     items = get_leonardo_jobs()
     print(f"Offerte Leonardo trovate: {len(items)}")
     return process_items(memory, "leonardo", items, lambda x:
-        "🚨 NUOVA OFFERTA LEONARDO\n\n"
-        f"💼 {x['title']}\n📍 {x['location']}\n📅 Pubblicazione: {x['posted']}\n"
-        f"🔔 Rilevata: {now_rome()}\n\n🏷 Communications / Sales & Marketing\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("Leonardo", x["title"], x["url"], published=x.get("posted"), extra=f"{x.get('location', '')} | Communications / Sales & Marketing"))
 
 # ---------- inPA ----------
 def inpa_request(payload, page=0, size=50):
@@ -264,23 +284,10 @@ def process_inpa(memory):
     items = []
     for job in jobs:
         jid = str(job.get("id", ""))
-        items.append({
-            "id": jid,
-            "title": job.get("figuraRicercata") or job.get("titolo") or "Titolo non disponibile",
-            "ente": ", ".join(job.get("entiRiferimento") or []) or "Ente non disponibile",
-            "location": ", ".join(job.get("sedi") or []) or "Sede non disponibile",
-            "posts": job.get("numPosti", "Non disponibile"),
-            "published": format_inpa_date(job.get("dataPubblicazione")),
-            "deadline": format_inpa_date(job.get("dataScadenza")),
-            "sectors": ", ".join(job.get("settori") or []) or "Marketing / Comunicazione",
-            "url": f"https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id={jid}",
-        })
+        items.append({"id": jid, "title": job.get("figuraRicercata") or job.get("titolo") or "Titolo non disponibile", "ente": ", ".join(job.get("entiRiferimento") or []) or "Ente non disponibile", "location": ", ".join(job.get("sedi") or []) or "Sede non disponibile", "posts": job.get("numPosti", "Non disponibile"), "published": format_inpa_date(job.get("dataPubblicazione")), "deadline": format_inpa_date(job.get("dataScadenza")), "sectors": ", ".join(job.get("settori") or []) or "Marketing / Comunicazione", "url": f"https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id={jid}"})
     print(f"Bandi inPA OPEN trovati: {len(items)}")
     return process_items(memory, "inpa", items, lambda x:
-        "🚨 NUOVO BANDO inPA\n\n"
-        f"💼 {x['title']}\n🏛 {x['ente']}\n📍 {x['location']}\n👥 Posti: {x['posts']}\n\n"
-        f"📅 Pubblicato: {x['published']}\n⏳ Scadenza: {x['deadline']}\n🔔 Rilevato: {now_rome()}\n\n"
-        f"🏷 {x['sectors']}\n\n🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("inPA", x["title"], x["url"], published=x["published"], deadline=x["deadline"], extra=f"{x['ente']} | {x['location']} | Posti: {x['posts']} | {x['sectors']}"))
 
 # ---------- Eutalia ----------
 def get_eutalia_open_notices():
@@ -328,9 +335,7 @@ def process_eutalia(memory):
     items = get_eutalia_open_notices()
     print(f"Avvisi Eutalia aperti trovati: {len(items)}")
     return process_items(memory, "eutalia", items, lambda x:
-        "🚨 NUOVO AVVISO EUTALIA\n\n"
-        f"📋 {x['title']}\n\n🏢 Eutalia\n🟢 Avviso Aperto\n🔔 Rilevato: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("Eutalia", x["title"], x["url"], extra="Avviso Aperto"))
 
 # ---------- Consip: all listed job positions ----------
 def get_consip_positions():
@@ -365,9 +370,7 @@ def process_consip(memory):
     items = get_consip_positions()
     print(f"Posizioni Consip trovate: {len(items)}")
     return process_items(memory, "consip", items, lambda x:
-        "🚨 NUOVA POSIZIONE CONSIP\n\n"
-        f"💼 {x['title']}\n🏢 Consip\n🔔 Rilevata: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("Consip", x["title"], x["url"]))
 
 # ---------- Sogei: all positions ----------
 def get_sogei_positions():
@@ -446,14 +449,12 @@ def process_sogei(memory):
         items = get_sogei_positions()
     except urllib.error.HTTPError as exc:
         if exc.code == 403:
-            print("Sogei ha risposto HTTP 403 anche su Societa Trasparente: controllo saltato senza bloccare il workflow.")
+            print("Sogei: il sito blocca GitHub Actions (HTTP 403). Fonte ufficiale configurata ma controllo HTML non disponibile in questo run.")
             return 0
         raise
-    print(f"Posizioni Sogei trovate: {len(items)}")
+    print(f"Posizioni Sogei aperte trovate: {len(items)}")
     return process_items(memory, "sogei", items, lambda x:
-        "🚨 NUOVA POSIZIONE SOGEI\n\n"
-        f"💼 {x['title']}\n🏢 Sogei\n🔔 Rilevata: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("Sogei", x["title"], x["url"]))
 
 
 # ---------- AgID: active competitions + non-expired notices ----------
@@ -539,11 +540,7 @@ def process_agid(memory):
     items = get_agid_positions()
     print(f"Opportunita AgID candidabili trovate: {len(items)}")
     return process_items(memory, "agid", items, lambda x:
-        "🚨 NUOVA OPPORTUNITÀ AGID\n\n"
-        f"💼 {x['title']}\n🏛 Agenzia per l'Italia Digitale\n"
-        f"📅 Pubblicato: {x['published']}\n⏳ Scadenza: {x['deadline']}\n"
-        f"🔔 Rilevata: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("AgID", x["title"], x["url"], published=x["published"], deadline=x["deadline"]))
 
 
 # ---------- Invitalia: all current jobs + individual consulting notices ----------
@@ -605,9 +602,7 @@ def process_invitalia_jobs(memory):
     items = get_invitalia_jobs()
     print(f"Posizioni Invitalia trovate: {len(items)}")
     return process_items(memory, "invitalia_jobs", items, lambda x:
-        "🚨 NUOVA POSIZIONE INVITALIA\n\n"
-        f"💼 {x['title']}\n🏢 Invitalia\n🔔 Rilevata: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("Invitalia", x["title"], x["url"]))
 
 
 def process_invitalia_consulting(memory):
@@ -615,9 +610,7 @@ def process_invitalia_consulting(memory):
     items = get_invitalia_consulting()
     print(f"Avvisi Invitalia consulenza/esperti trovati: {len(items)}")
     return process_items(memory, "invitalia_consulting", items, lambda x:
-        "🚨 NUOVO AVVISO INVITALIA ESPERTI\n\n"
-        f"📋 {x['title']}\n🏢 Invitalia / InGaTe\n🔔 Rilevato: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("Invitalia / InGaTe", x["title"], x["url"], extra="Consulenza / Esperti / Specialisti"))
 
 
 # ---------- CDP: communication / marketing only ----------
@@ -669,10 +662,7 @@ def process_cdp(memory):
     items = get_cdp_positions()
     print(f"Posizioni CDP comunicazione/marketing trovate: {len(items)}")
     return process_items(memory, "cdp", items, lambda x:
-        "🚨 NUOVA POSIZIONE CDP\n\n"
-        f"💼 {x['title']}\n🏢 Cassa Depositi e Prestiti\n"
-        f"🏷 Comunicazione / Marketing\n🔔 Rilevata: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+        standard_job_message("CDP - Cassa Depositi e Prestiti", x["title"], x["url"], extra="Comunicazione / Marketing"))
 
 
 # ---------- Main ----------
