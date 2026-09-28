@@ -365,35 +365,72 @@ def process_consip(memory):
 
 # ---------- Sogei: all positions ----------
 def get_sogei_positions():
-    # Primary source: Sogei Societa Trasparente. This page exposes the selection
-    # records even when the public Lavora con Noi page blocks GitHub runners.
+    # Sogei Societa Trasparente contains two distinct areas:
+    # 1) Avvisi di selezione in corso
+    # 2) Avvisi di selezione conclusi
+    # We monitor ONLY the first area.
     page = fetch_html(SOGEI_TRANSPARENCY_URL, timeout=45, retries=2)
-    text = strip_tags(page)
 
-    # Sogei explicitly publishes this sentence when there are no current openings.
-    if "al momento non esistono posizioni disponibili" in text.lower():
+    start_match = re.search(
+        r'Avvisi\s+di\s+selezione\s+in\s+corso',
+        page,
+        re.I,
+    )
+    end_match = re.search(
+        r'Avvisi\s+di\s+selezione\s+conclusi',
+        page,
+        re.I,
+    )
+
+    if not start_match:
+        raise RuntimeError("Sezione 'Avvisi di selezione in corso' Sogei non trovata")
+
+    start_pos = start_match.end()
+    end_pos = end_match.start() if end_match and end_match.start() > start_pos else len(page)
+    current_section = page[start_pos:end_pos]
+    current_text = strip_tags(current_section).lower()
+
+    if "al momento non esistono posizioni disponibili" in current_text:
         return []
 
     items = {}
-    # Current selection notices use a code like (2026/31). Capture the title and
-    # the first PDF/detail link nearby. We exclude rows whose deadline is already
-    # in the past when a dd/mm/yyyy date is available in the local text.
-    row_pattern = re.compile(
-        r'(?P<title>[^<>]{8,240}\(20\d{2}/\d+[A-Z]?\))(?P<body>.{0,1800}?)(?=<tr|<h[1-6]|$)',
+
+    # Extract only selection notices contained in the current-openings section.
+    links = re.findall(
+        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        current_section,
         re.I | re.S,
     )
-    for m in row_pattern.finditer(page):
-        title = strip_tags(m.group("title"))
-        body = m.group("body")
-        if not title:
+
+    for href, label_html in links:
+        label = strip_tags(label_html)
+        low = label.lower()
+
+        if not label:
             continue
-        hrefs = re.findall(r'href=["\']([^"\']+)["\']', body, re.I)
-        if not hrefs:
+
+        # Only actual personnel selection notices.
+        if "avviso di selezione" not in low and "assunzione" not in low:
             continue
-        full = absolute_url(SOGEI_TRANSPARENCY_URL, hrefs[0])
-        code_match = re.search(r'\((20\d{2}/\d+[A-Z]?)\)', title)
-        sid = "sogei:" + (code_match.group(1) if code_match else full)
-        items[sid] = {"id": sid, "title": title, "url": full}
+
+        full = absolute_url(SOGEI_TRANSPARENCY_URL, href)
+
+        code_match = re.search(
+            r'\((20\d{2}/\d+[A-Z]?)\)',
+            label,
+            re.I,
+        )
+
+        if code_match:
+            item_id = "sogei:" + code_match.group(1).upper()
+        else:
+            item_id = "sogei:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
+
+        items[item_id] = {
+            "id": item_id,
+            "title": label,
+            "url": full,
+        }
 
     return list(items.values())
 
