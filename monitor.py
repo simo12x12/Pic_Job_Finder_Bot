@@ -23,6 +23,8 @@ EUTALIA_URL = "https://www.eutalia.eu/selezione-personale-ed-esperti/"
 CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page=0"
 SOGEI_URL = "https://www.sogei.it/it/sogei-homepage/lavora-con-noi/avvisi-di-selezione-e-invio-candidature.html"
 SOGEI_TRANSPARENCY_URL = "https://www.sogei.it/it/sogei-homepage/societa-trasparente/selezione-del-personale/reclutamento-del-personale/avvisi-di-selezione0.html"
+AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
+AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -96,8 +98,8 @@ def notify_all(text):
         raise RuntimeError("; ".join(errors))
 
 # ---------- Memory ----------
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei"]
-MEMORY_SCHEMA_VERSION = 3
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid"]
+MEMORY_SCHEMA_VERSION = 4
 
 def empty_source():
     return {"initialized": False, "seen": []}
@@ -124,7 +126,7 @@ def load_memory():
     # Schema v2: reset only the diagnostic baselines created by the earlier
     # Consip/Presidenza parser. Leonardo, inPA and Eutalia are preserved.
     if data.get("schema_version", 1) < MEMORY_SCHEMA_VERSION:
-        for name in ("consip",):
+        for name in ():
             data["sources"][name] = empty_source()
         data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -450,6 +452,96 @@ def process_sogei(memory):
         f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
 
+# ---------- AgID: active competitions + non-expired notices ----------
+def parse_it_date(value):
+    if not value:
+        return None
+    try:
+        return datetime.strptime(value.strip(), "%d/%m/%Y").date()
+    except Exception:
+        return None
+
+
+def get_agid_table_items(url, require_not_expired=False):
+    page = fetch_html(url, timeout=45, retries=2)
+    today = datetime.now(ROME).date()
+    items = {}
+
+    # AgID transparency pages render recruitment records as table rows.
+    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", page, re.I | re.S)
+    for row in rows:
+        link = re.search(
+            r'<a[^>]+href=["\'](?P<href>[^"\']+/details/[^"\']+)["\'][^>]*>(?P<title>.*?)</a>',
+            row,
+            re.I | re.S,
+        )
+        if not link:
+            continue
+
+        title = strip_tags(link.group("title"))
+        full = absolute_url(url, link.group("href"))
+        if not title:
+            continue
+
+        cells = [strip_tags(x) for x in re.findall(r"<td[^>]*>(.*?)</td>", row, re.I | re.S)]
+        dates = []
+        for cell in cells:
+            m = re.search(r"\b(\d{2}/\d{2}/\d{4})\b", cell)
+            if m:
+                dates.append(m.group(1))
+
+        published = dates[0] if dates else "Non disponibile"
+        deadline = dates[1] if len(dates) > 1 else ""
+        deadline_date = parse_it_date(deadline)
+
+        if require_not_expired and deadline_date and deadline_date < today:
+            continue
+
+        # In the Avvisi archive, records without a deadline can be historical.
+        # We keep deadline-less records only when this is the dedicated active page.
+        if require_not_expired and not deadline_date:
+            continue
+
+        item_id = "agid:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
+        items[item_id] = {
+            "id": item_id,
+            "title": title,
+            "url": full,
+            "published": published,
+            "deadline": deadline or "Non disponibile",
+        }
+
+    return list(items.values())
+
+
+def get_agid_positions():
+    by_id = {}
+
+    active = get_agid_table_items(AGID_ACTIVE_URL, require_not_expired=False)
+    print(f"AgID - Concorsi attivi: {len(active)}")
+    for item in active:
+        by_id[item["id"]] = item
+
+    notices = get_agid_table_items(AGID_NOTICES_URL, require_not_expired=True)
+    print(f"AgID - Avvisi non scaduti: {len(notices)}")
+    for item in notices:
+        by_id[item["id"]] = item
+
+    return list(by_id.values())
+
+
+def process_agid(memory):
+    print("\n=== AGID ===")
+    items = get_agid_positions()
+    print(f"Opportunita AgID candidabili trovate: {len(items)}")
+    return process_items(memory, "agid", items, lambda x:
+        "🚨 NUOVA OPPORTUNITÀ AGID\n\n"
+        f"💼 {x['title']}\n🏛 Agenzia per l'Italia Digitale\n"
+        f"📅 Pubblicato: {x['published']}\n⏳ Scadenza: {x['deadline']}\n"
+        f"🔔 Rilevata: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+
+
 # ---------- Main ----------
 def main():
     if not TELEGRAM_BOT_TOKEN:
@@ -467,6 +559,7 @@ def main():
         ("Eutalia", process_eutalia),
         ("Consip", process_consip),
         ("Sogei", process_sogei),
+        ("AgID", process_agid),
     ]
 
     for name, processor in processors:
@@ -484,7 +577,7 @@ def main():
             print(f"- {error}")
         sys.exit(1)
 
-    print("Leonardo + inPA + Eutalia + Consip + Sogei controllati correttamente.")
+    print("Leonardo + inPA + Eutalia + Consip + Sogei + AgID controllati correttamente.")
     print("Controllo completato.")
 
 if __name__ == "__main__":
