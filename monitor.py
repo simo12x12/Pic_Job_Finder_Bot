@@ -25,6 +25,10 @@ SOGEI_URL = "https://www.sogei.it/it/sogei-homepage/lavora-con-noi/avvisi-di-sel
 SOGEI_TRANSPARENCY_URL = "https://www.sogei.it/it/sogei-homepage/societa-trasparente/selezione-del-personale/reclutamento-del-personale/avvisi-di-selezione0.html"
 AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
 AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
+INVITALIA_JOBS_URL = "https://www.invitalia.it/lavora-con-noi/le-posizioni-aperte"
+INVITALIA_INGATE_HOST = "https://ingate.invitalia.it"
+CDP_JOBS_URL = "https://www.opportunitadilavoro.cdp.it/"
+CDP_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social"]
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -98,8 +102,8 @@ def notify_all(text):
         raise RuntimeError("; ".join(errors))
 
 # ---------- Memory ----------
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid"]
-MEMORY_SCHEMA_VERSION = 4
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia_jobs", "invitalia_consulting", "cdp"]
+MEMORY_SCHEMA_VERSION = 5
 
 def empty_source():
     return {"initialized": False, "seen": []}
@@ -542,6 +546,117 @@ def process_agid(memory):
         f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
 
+# ---------- Invitalia: all current jobs + individual consulting notices ----------
+def get_invitalia_jobs():
+    page = fetch_html(INVITALIA_JOBS_URL, timeout=45, retries=2)
+    items = {}
+
+    # The current-search area ends before the closed-selections link.
+    start = page.lower().find("le ricerche in corso")
+    end = page.lower().find("vedi le selezioni chiuse")
+    section = page[start:end if end > start else len(page)] if start >= 0 else page
+
+    links = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', section, re.I | re.S)
+    for href, label_html in links:
+        label = strip_tags(label_html)
+        full = absolute_url(INVITALIA_JOBS_URL, href)
+        low = (label + " " + full).lower()
+        if not label:
+            continue
+        if "ingate.invitalia.it" in full.lower():
+            continue
+        if "selezioni-chiuse" in low or "candidatura-spontanea" in low:
+            continue
+        # Keep only links that look like vacancy/detail pages in Lavora con noi.
+        if "/lavora-con-noi/" not in full.lower():
+            continue
+        if full.rstrip("/") == INVITALIA_JOBS_URL.rstrip("/"):
+            continue
+        item_id = "invitalia-job:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
+        items[item_id] = {"id": item_id, "title": label, "url": full}
+    return list(items.values())
+
+
+def get_invitalia_consulting():
+    # Invitalia's official page currently exposes a direct InGaTe opportunity link
+    # for expert/specialist consulting. We track those links but reject procurement
+    # wording so ordinary tenders are not treated as personal opportunities.
+    page = fetch_html(INVITALIA_JOBS_URL, timeout=45, retries=2)
+    items = {}
+    for href, label_html in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S):
+        full = absolute_url(INVITALIA_JOBS_URL, href)
+        label = strip_tags(label_html)
+        if "ingate.invitalia.it" not in full.lower():
+            continue
+        low = label.lower()
+        if not any(x in low for x in ("consulenza", "esperti", "specialisti", "profession")):
+            continue
+        if any(x in low for x in ("gara", "fornitura", "lavori", "appalto")):
+            continue
+        q = urllib.parse.parse_qs(urllib.parse.urlparse(full).query)
+        oid = (q.get("opportunityId") or [full])[0]
+        item_id = "invitalia-consulting:" + str(oid)
+        items[item_id] = {"id": item_id, "title": label, "url": full}
+    return list(items.values())
+
+
+def process_invitalia_jobs(memory):
+    print("\n=== INVITALIA - POSIZIONI ===")
+    items = get_invitalia_jobs()
+    print(f"Posizioni Invitalia trovate: {len(items)}")
+    return process_items(memory, "invitalia_jobs", items, lambda x:
+        "🚨 NUOVA POSIZIONE INVITALIA\n\n"
+        f"💼 {x['title']}\n🏢 Invitalia\n🔔 Rilevata: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+
+
+def process_invitalia_consulting(memory):
+    print("\n=== INVITALIA - CONSULENZE ===")
+    items = get_invitalia_consulting()
+    print(f"Avvisi Invitalia consulenza/esperti trovati: {len(items)}")
+    return process_items(memory, "invitalia_consulting", items, lambda x:
+        "🚨 NUOVO AVVISO INVITALIA ESPERTI\n\n"
+        f"📋 {x['title']}\n🏢 Invitalia / InGaTe\n🔔 Rilevato: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+
+
+# ---------- CDP: communication / marketing only ----------
+def get_cdp_positions():
+    page = fetch_html(CDP_JOBS_URL, timeout=45, retries=2)
+    items = {}
+
+    # SuccessFactors job links normally expose a job title in the anchor and a
+    # job/detail destination. We filter title plus a compact surrounding context.
+    for m in re.finditer(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S):
+        href, label_html = m.group(1), m.group(2)
+        label = strip_tags(label_html)
+        full = absolute_url(CDP_JOBS_URL, href)
+        low_url = full.lower()
+        if not label:
+            continue
+        if not any(token in low_url for token in ("/job/", "jobsearch", "job=")):
+            continue
+        context = strip_tags(page[max(0, m.start()-1200):min(len(page), m.end()+1200)]).lower()
+        haystack = (label + " " + context).lower()
+        if not any(k in haystack for k in CDP_KEYWORDS):
+            continue
+        item_id = "cdp:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
+        items[item_id] = {"id": item_id, "title": label, "url": full}
+
+    return list(items.values())
+
+
+def process_cdp(memory):
+    print("\n=== CDP ===")
+    items = get_cdp_positions()
+    print(f"Posizioni CDP comunicazione/marketing trovate: {len(items)}")
+    return process_items(memory, "cdp", items, lambda x:
+        "🚨 NUOVA POSIZIONE CDP\n\n"
+        f"💼 {x['title']}\n🏢 Cassa Depositi e Prestiti\n"
+        f"🏷 Comunicazione / Marketing\n🔔 Rilevata: {now_rome()}\n\n"
+        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
+
+
 # ---------- Main ----------
 def main():
     if not TELEGRAM_BOT_TOKEN:
@@ -560,6 +675,9 @@ def main():
         ("Consip", process_consip),
         ("Sogei", process_sogei),
         ("AgID", process_agid),
+        ("Invitalia posizioni", process_invitalia_jobs),
+        ("Invitalia consulenze", process_invitalia_consulting),
+        ("CDP", process_cdp),
     ]
 
     for name, processor in processors:
@@ -577,7 +695,7 @@ def main():
             print(f"- {error}")
         sys.exit(1)
 
-    print("Leonardo + inPA + Eutalia + Consip + Sogei + AgID controllati correttamente.")
+    print("Leonardo + inPA + Eutalia + Consip + Sogei + AgID + Invitalia + CDP controllati correttamente.")
     print("Controllo completato.")
 
 if __name__ == "__main__":
