@@ -76,8 +76,12 @@
     "sogei": {
       "initialized": false,
       "seen": []
+    },
+    "agid": {
+      "initialized": true,
+      "seen": []
     }
   },
-  "last_update": "2026-09-28T14:34:48.815136+00:00",
-  "schema_version": 3
+  "last_update": "2026-09-28T14:43:35.953048+00:00",
+  "schema_version": 4
 }
