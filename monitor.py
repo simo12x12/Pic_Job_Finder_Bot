@@ -622,29 +622,47 @@ def process_invitalia_consulting(memory):
 
 # ---------- CDP: communication / marketing only ----------
 def get_cdp_positions():
-    page = fetch_html(CDP_JOBS_URL, timeout=45, retries=2)
     items = {}
 
-    # SuccessFactors job links normally expose a job title in the anchor and a
-    # job/detail destination. We filter title plus a compact surrounding context.
-    for m in re.finditer(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S):
-        href, label_html = m.group(1), m.group(2)
-        label = strip_tags(label_html)
-        full = absolute_url(CDP_JOBS_URL, href)
-        low_url = full.lower()
-        if not label:
-            continue
-        if not any(token in low_url for token in ("/job/", "jobsearch", "job=")):
-            continue
-        context = strip_tags(page[max(0, m.start()-1200):min(len(page), m.end()+1200)]).lower()
-        haystack = (label + " " + context).lower()
-        if not any(k in haystack for k in CDP_KEYWORDS):
-            continue
-        item_id = "cdp:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-        items[item_id] = {"id": item_id, "title": label, "url": full}
+    for term in CDP_KEYWORDS:
+        query = urllib.parse.urlencode({
+            "createNewAlert": "false",
+            "q": term,
+            "locationsearch": "",
+        })
+        url = f"{CDP_JOBS_URL.rstrip('/')}/search/?{query}"
+        page = fetch_html(url, timeout=45, retries=2)
+        term_items = {}
 
+        # SuccessFactors public search results expose vacancy detail links as /job/...
+        # (or absolute links containing /job/). Deduplicate by the canonical URL.
+        for m in re.finditer(
+            r'<a[^>]+href=["\'](?P<href>[^"\']*/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',
+            page,
+            re.I | re.S,
+        ):
+            full = absolute_url(url, m.group("href")).rstrip("/")
+            label = strip_tags(m.group("label"))
+            if not label:
+                continue
+            low = label.lower()
+            if low in {"visualizza posizione", "view job", "apply now", "candidati"}:
+                context = page[max(0, m.start() - 1600):m.start()]
+                headings = re.findall(r'<h[1-4][^>]*>(.*?)</h[1-4]>', context, re.I | re.S)
+                label = strip_tags(headings[-1]) if headings else label
+
+            item_id = "cdp:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
+            term_items[item_id] = {
+                "id": item_id,
+                "title": label,
+                "url": full,
+            }
+
+        print(f"CDP - ricerca '{term}': {len(term_items)}")
+        items.update(term_items)
+
+    print(f"CDP - posizioni uniche complessive: {len(items)}")
     return list(items.values())
-
 
 def process_cdp(memory):
     print("\n=== CDP ===")
