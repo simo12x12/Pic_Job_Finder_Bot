@@ -102,8 +102,8 @@ def notify_all(text):
         raise RuntimeError("; ".join(errors))
 
 # ---------- Memory ----------
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia_jobs", "invitalia_consulting", "cdp"]
-MEMORY_SCHEMA_VERSION = 5
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp"]
+MEMORY_SCHEMA_VERSION = 6
 
 def empty_source():
     return {"initialized": False, "seen": []}
@@ -126,6 +126,14 @@ def load_memory():
         data["sources"]["leonardo"] = {"initialized": True, "seen": old_seen}
 
     data.setdefault("sources", {})
+
+    # Merge the two historical Invitalia memories into one source.
+    if data.get("schema_version", 1) < 6:
+        old_jobs = data["sources"].pop("invitalia_jobs", {"seen": []})
+        old_consulting = data["sources"].pop("invitalia_consulting", {"seen": []})
+        merged_seen = sorted(set(old_jobs.get("seen", [])) | set(old_consulting.get("seen", [])))
+        was_initialized = old_jobs.get("initialized", False) or old_consulting.get("initialized", False)
+        data["sources"]["invitalia"] = {"initialized": was_initialized, "seen": merged_seen}
 
     # Schema v2: reset only the diagnostic baselines created by the earlier
     # Consip/Presidenza parser. Leonardo, inPA and Eutalia are preserved.
@@ -597,20 +605,28 @@ def get_invitalia_consulting():
     return list(items.values())
 
 
-def process_invitalia_jobs(memory):
-    print("\n=== INVITALIA - POSIZIONI ===")
-    items = get_invitalia_jobs()
-    print(f"Posizioni Invitalia trovate: {len(items)}")
-    return process_items(memory, "invitalia_jobs", items, lambda x:
-        standard_job_message("Invitalia", x["title"], x["url"]))
+def process_invitalia(memory):
+    print("\n=== INVITALIA ===")
+    jobs = get_invitalia_jobs()
+    consulting = get_invitalia_consulting()
 
+    print(f"Invitalia - posizioni: {len(jobs)}")
+    print(f"Invitalia - consulenze/esperti: {len(consulting)}")
 
-def process_invitalia_consulting(memory):
-    print("\n=== INVITALIA - CONSULENZE ===")
-    items = get_invitalia_consulting()
-    print(f"Avvisi Invitalia consulenza/esperti trovati: {len(items)}")
-    return process_items(memory, "invitalia_consulting", items, lambda x:
-        standard_job_message("Invitalia / InGaTe", x["title"], x["url"], extra="Consulenza / Esperti / Specialisti"))
+    items_by_id = {}
+    for item in jobs:
+        enriched = dict(item)
+        enriched["kind"] = "Posizione"
+        items_by_id[enriched["id"]] = enriched
+    for item in consulting:
+        enriched = dict(item)
+        enriched["kind"] = "Consulenza / Esperti / Specialisti"
+        items_by_id[enriched["id"]] = enriched
+
+    items = list(items_by_id.values())
+    print(f"Invitalia - opportunita uniche complessive: {len(items)}")
+    return process_items(memory, "invitalia", items, lambda x:
+        standard_job_message("Invitalia", x["title"], x["url"], extra=x.get("kind")))
 
 
 # ---------- CDP: communication / marketing only ----------
@@ -683,8 +699,7 @@ def main():
         ("Consip", process_consip),
         ("Sogei", process_sogei),
         ("AgID", process_agid),
-        ("Invitalia posizioni", process_invitalia_jobs),
-        ("Invitalia consulenze", process_invitalia_consulting),
+        ("Invitalia", process_invitalia),
         ("CDP", process_cdp),
     ]
 
