@@ -85,8 +85,6 @@ INPA_COMMUNICATION_SECTOR = (
 INPA_SEARCH_TERMS = [
     "marketing",
     "comunicazione istituzionale",
-    "relazioni istituzionali",
-    "public affairs",
 ]
 
 
