@@ -1,4 +1,5 @@
 import html
+import hashlib
 import json
 import os
 import re
@@ -97,12 +98,13 @@ def notify_all(text):
 
 # ---------- Memory ----------
 SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "presidenza"]
+MEMORY_SCHEMA_VERSION = 2
 
 def empty_source():
     return {"initialized": False, "seen": []}
 
 def empty_memory():
-    return {"sources": {name: empty_source() for name in SOURCE_NAMES}}
+    return {"schema_version": MEMORY_SCHEMA_VERSION, "sources": {name: empty_source() for name in SOURCE_NAMES}}
 
 def load_memory():
     if not SEEN_FILE.exists():
@@ -119,6 +121,14 @@ def load_memory():
         data["sources"]["leonardo"] = {"initialized": True, "seen": old_seen}
 
     data.setdefault("sources", {})
+
+    # Schema v2: reset only the diagnostic baselines created by the earlier
+    # Consip/Presidenza parser. Leonardo, inPA and Eutalia are preserved.
+    if data.get("schema_version", 1) < MEMORY_SCHEMA_VERSION:
+        for name in ("consip", "presidenza"):
+            data["sources"][name] = empty_source()
+        data["schema_version"] = MEMORY_SCHEMA_VERSION
+
     for name in SOURCE_NAMES:
         if name not in data["sources"]:
             data["sources"][name] = empty_source()
@@ -317,34 +327,29 @@ def process_eutalia(memory):
 
 # ---------- Consip: all listed job positions ----------
 def get_consip_positions():
+    # We deliberately monitor only the first page of the current listing.
+    # Following pagination was pulling older/archive-like records into memory.
+    page = fetch_html(CONSIP_URL, timeout=45, retries=2)
     items = {}
-    # Consip's page=0 is the current-jobs listing. We read pagination pages but
-    # accept only explicit detail links /posizioni/<slug>.
-    for page_num in range(0, 10):
-        url = f"https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page={page_num}"
-        page = fetch_html(url, timeout=45, retries=2)
 
-        cards = re.findall(
-            r'<h3[^>]*>(?P<title>.*?)</h3>.*?<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>.*?</a>',
-            page,
-            re.I | re.S,
-        )
-        before = len(items)
-        for title_html, href in cards:
+    # Pair each explicit position heading with its detail link.
+    cards = re.findall(
+        r'<h3[^>]*>(?P<title>.*?)</h3>.*?<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>.*?</a>',
+        page,
+        re.I | re.S,
+    )
+    for title_html, href in cards:
+        full = absolute_url("https://www.consip.it", href).rstrip("/")
+        title = strip_tags(title_html)
+        if title:
+            items[full] = {"id": full, "title": title, "url": full}
+
+    # Markup fallback, still restricted to detail pages and page 0 only.
+    if not items:
+        for href in re.findall(r'href=["\'](/posizioni/[^"\'?/#]+)["\']', page, re.I):
             full = absolute_url("https://www.consip.it", href).rstrip("/")
-            title = strip_tags(title_html)
-            if title:
-                items[full] = {"id": full, "title": title, "url": full}
-
-        # Fallback for markup variants, still restricted to detail URLs.
-        if not cards:
-            for href in re.findall(r'href=["\'](/posizioni/[^"\'?/#]+)["\']', page, re.I):
-                full = absolute_url("https://www.consip.it", href).rstrip("/")
-                slug = full.rsplit("/", 1)[-1]
-                items[full] = {"id": full, "title": slug.replace("-", " ").title(), "url": full}
-
-        if page_num > 0 and len(items) == before:
-            break
+            slug = full.rsplit("/", 1)[-1]
+            items[full] = {"id": full, "title": slug.replace("-", " ").title(), "url": full}
 
     return list(items.values())
 
@@ -385,7 +390,13 @@ def get_sogei_positions():
 
 def process_sogei(memory):
     print("\n=== SOGEI ===")
-    items = get_sogei_positions()
+    try:
+        items = get_sogei_positions()
+    except urllib.error.HTTPError as exc:
+        if exc.code == 403:
+            print("Sogei ha risposto HTTP 403: controllo saltato senza bloccare il workflow.")
+            return 0
+        raise
     print(f"Posizioni Sogei trovate: {len(items)}")
     return process_items(memory, "sogei", items, lambda x:
         "🚨 NUOVA POSIZIONE SOGEI\n\n"
@@ -395,42 +406,52 @@ def process_sogei(memory):
 # ---------- Presidenza: communication/marketing only ----------
 def get_presidenza_relevant_items():
     page = fetch_html(PRESIDENZA_URL, timeout=60, retries=2)
-    # Split around heading/paragraph-like blocks. We only accept contexts containing
-    # one of the user-selected keywords and at least one recruitment/candidacy signal.
+    text = strip_tags(page)
+
+    # Split the page into procedure-sized textual blocks. This avoids treating
+    # every PDF, commission notice or exam update as a separate vacancy.
+    starts = re.compile(
+        r'(?=(?:Avviso pubblico|Concorso pubblico|Procedura selettiva|Avviso di mobilità|Procedura di mobilità))',
+        re.I,
+    )
+    parts = starts.split(text)
     candidates = []
-    anchors = list(re.finditer(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S))
-    recruitment_signals = ["bando", "concorso", "avviso pubblico", "selezione", "reclutamento", "assunzione", "incarico"]
-    exclude_signals = ["graduatoria", "commissione", "diario d'esame", "esito", "scorrimento", "nomina"]
 
-    for m in anchors:
-        href, label_html = m.group(1), m.group(2)
-        full = absolute_url(PRESIDENZA_URL, href)
-        # Analyze a local block before the anchor; this usually contains the procedure title.
-        context_html = page[max(0, m.start()-1800):min(len(page), m.end()+300)]
-        context = strip_tags(context_html)
-        low = context.lower()
-        if not any(k in low for k in PRESIDENZA_KEYWORDS):
-            continue
-        if not any(s in low for s in recruitment_signals):
-            continue
-        # Avoid links that are clearly downstream updates rather than the vacancy/bando itself.
-        label = strip_tags(label_html)
-        if any(s in label.lower() for s in exclude_signals):
-            continue
-        # Prefer the nearby sentence/paragraph containing our keyword as title.
-        title = label
-        chunks = [normalize_space(x) for x in re.split(r"[\r\n]+|(?<=[.!?])\s+", context) if normalize_space(x)]
-        keyword_chunks = [c for c in chunks if any(k in c.lower() for k in PRESIDENZA_KEYWORDS)]
-        if keyword_chunks:
-            title = max(keyword_chunks, key=len)[:700]
-        if not title:
-            continue
-        # Stable key is the destination URL; inPA-linked PCM vacancies are okay because
-        # separate source memories keep source-level traceability.
-        candidates.append({"id": full, "title": title, "url": full})
+    # Build an index of useful destination links from the original HTML.
+    links = []
+    for m in re.finditer(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S):
+        label = strip_tags(m.group(2))
+        full = absolute_url(PRESIDENZA_URL, m.group(1))
+        links.append((label, full))
 
-    # Deduplicate by URL.
-    return list({x["id"]: x for x in candidates}.values())
+    for block in parts:
+        block = normalize_space(block)
+        low = block.lower()
+        if not block or not any(k in low for k in PRESIDENZA_KEYWORDS):
+            continue
+        if low.startswith(("graduatoria", "scorrimento", "nomina", "aggiornamento")):
+            continue
+
+        title = block[:900]
+        # Prefer an inPA link when the relevant procedure has one; otherwise use
+        # the Presidency listing itself. Matching is conservative on distinctive words.
+        words = [w for w in re.findall(r'[a-zà-ù0-9]+', low) if len(w) >= 7][:8]
+        url = PRESIDENZA_URL
+        for label, full in links:
+            hay = (label + " " + full).lower()
+            if "inpa" in hay and any(w in hay for w in words):
+                url = full
+                break
+
+        stable = "presidenza:" + hashlib.sha256(title.lower().encode("utf-8")).hexdigest()[:24]
+        candidates.append({"id": stable, "title": title, "url": url})
+
+    # Deduplicate identical titles.
+    unique = {}
+    for item in candidates:
+        key = normalize_space(item["title"]).lower()
+        unique[key] = item
+    return list(unique.values())
 
 def process_presidenza(memory):
     print("\n=== PRESIDENZA DEL CONSIGLIO ===")
