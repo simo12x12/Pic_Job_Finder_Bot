@@ -81,21 +81,17 @@
       "initialized": true,
       "seen": []
     },
-    "invitalia_jobs": {
+    "cdp": {
       "initialized": true,
       "seen": []
     },
-    "invitalia_consulting": {
+    "invitalia": {
       "initialized": true,
       "seen": [
         "invitalia-consulting:17813  "
       ]
-    },
-    "cdp": {
-      "initialized": true,
-      "seen": []
     }
   },
-  "last_update": "2026-09-28T15:03:45.918383+00:00",
-  "schema_version": 5
+  "last_update": "2026-09-28T15:06:06.128245+00:00",
+  "schema_version": 6
 }
