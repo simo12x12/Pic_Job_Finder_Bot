@@ -22,7 +22,7 @@ INPA_ENDPOINT = "https://portale.inpa.gov.it/concorsi-smart/api/concorso-public-
 EUTALIA_URL = "https://www.eutalia.eu/selezione-personale-ed-esperti/"
 CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page=0"
 SOGEI_URL = "https://www.sogei.it/it/sogei-homepage/lavora-con-noi/avvisi-di-selezione-e-invio-candidature.html"
-PRESIDENZA_URL = "https://presidenza.governo.it/AmministrazioneTrasparente/BandiConcorso/index.html"
+SOGEI_TRANSPARENCY_URL = "https://www.sogei.it/it/sogei-homepage/societa-trasparente/selezione-del-personale/reclutamento-del-personale/avvisi-di-selezione0.html"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -41,7 +41,6 @@ INPA_BASE_PAYLOAD = {
 }
 INPA_COMMUNICATION_SECTOR = "b078865c126040558601"
 INPA_SEARCH_TERMS = ["marketing", "comunicazione istituzionale"]
-PRESIDENZA_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social"]
 
 # ---------- Utilities ----------
 def now_rome():
@@ -97,8 +96,8 @@ def notify_all(text):
         raise RuntimeError("; ".join(errors))
 
 # ---------- Memory ----------
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "presidenza"]
-MEMORY_SCHEMA_VERSION = 2
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei"]
+MEMORY_SCHEMA_VERSION = 3
 
 def empty_source():
     return {"initialized": False, "seen": []}
@@ -125,7 +124,7 @@ def load_memory():
     # Schema v2: reset only the diagnostic baselines created by the earlier
     # Consip/Presidenza parser. Leonardo, inPA and Eutalia are preserved.
     if data.get("schema_version", 1) < MEMORY_SCHEMA_VERSION:
-        for name in ("consip", "presidenza"):
+        for name in ("consip",):
             data["sources"][name] = empty_source()
         data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -366,28 +365,36 @@ def process_consip(memory):
 
 # ---------- Sogei: all positions ----------
 def get_sogei_positions():
-    page = fetch_html(SOGEI_URL)
-    text = strip_tags(page).lower()
-    if "al momento non esistono posizioni disponibili" in text:
+    # Primary source: Sogei Societa Trasparente. This page exposes the selection
+    # records even when the public Lavora con Noi page blocks GitHub runners.
+    page = fetch_html(SOGEI_TRANSPARENCY_URL, timeout=45, retries=2)
+    text = strip_tags(page)
+
+    # Sogei explicitly publishes this sentence when there are no current openings.
+    if "al momento non esistono posizioni disponibili" in text.lower():
         return []
 
-    # Capture links inside the current positions page, while excluding navigation/history.
-    links = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S)
     items = {}
-    for href, label in links:
-        title = strip_tags(label)
-        full = absolute_url(SOGEI_URL, href).rstrip("/")
-        low = (title + " " + full).lower()
-        if not title or len(title) < 4:
+    # Current selection notices use a code like (2026/31). Capture the title and
+    # the first PDF/detail link nearby. We exclude rows whose deadline is already
+    # in the past when a dd/mm/yyyy date is available in the local text.
+    row_pattern = re.compile(
+        r'(?P<title>[^<>]{8,240}\(20\d{2}/\d+[A-Z]?\))(?P<body>.{0,1800}?)(?=<tr|<h[1-6]|$)',
+        re.I | re.S,
+    )
+    for m in row_pattern.finditer(page):
+        title = strip_tags(m.group("title"))
+        body = m.group("body")
+        if not title:
             continue
-        if "avvisi-di-selezione0" in low or "criteri" in low or "lavorare-da-noi" in low:
+        hrefs = re.findall(r'href=["\']([^"\']+)["\']', body, re.I)
+        if not hrefs:
             continue
-        # Job links, when present, are expected inside the Lavora con Noi area.
-        if "/lavora-con-noi/" not in full:
-            continue
-        if full.rstrip("/") == SOGEI_URL.rstrip("/"):
-            continue
-        items[full] = {"id": full, "title": title, "url": full}
+        full = absolute_url(SOGEI_TRANSPARENCY_URL, hrefs[0])
+        code_match = re.search(r'\((20\d{2}/\d+[A-Z]?)\)', title)
+        sid = "sogei:" + (code_match.group(1) if code_match else full)
+        items[sid] = {"id": sid, "title": title, "url": full}
+
     return list(items.values())
 
 def process_sogei(memory):
@@ -396,7 +403,7 @@ def process_sogei(memory):
         items = get_sogei_positions()
     except urllib.error.HTTPError as exc:
         if exc.code == 403:
-            print("Sogei ha risposto HTTP 403: controllo saltato senza bloccare il workflow.")
+            print("Sogei ha risposto HTTP 403 anche su Societa Trasparente: controllo saltato senza bloccare il workflow.")
             return 0
         raise
     print(f"Posizioni Sogei trovate: {len(items)}")
@@ -405,69 +412,6 @@ def process_sogei(memory):
         f"💼 {x['title']}\n🏢 Sogei\n🔔 Rilevata: {now_rome()}\n\n"
         f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
-# ---------- Presidenza: communication/marketing only ----------
-def get_presidenza_relevant_items():
-    page = fetch_html(PRESIDENZA_URL, timeout=60, retries=2)
-    text = strip_tags(page)
-
-    # Split the page into procedure-sized textual blocks. This avoids treating
-    # every PDF, commission notice or exam update as a separate vacancy.
-    starts = re.compile(
-        r'(?=(?:Avviso pubblico|Concorso pubblico|Procedura selettiva|Avviso di mobilità|Procedura di mobilità))',
-        re.I,
-    )
-    parts = starts.split(text)
-    candidates = []
-
-    # Build an index of useful destination links from the original HTML.
-    links = []
-    for m in re.finditer(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S):
-        label = strip_tags(m.group(2))
-        full = absolute_url(PRESIDENZA_URL, m.group(1))
-        links.append((label, full))
-
-    for block in parts:
-        block = normalize_space(block)
-        low = block.lower()
-        if not block or not any(k in low for k in PRESIDENZA_KEYWORDS):
-            continue
-        if low.startswith(("graduatoria", "scorrimento", "nomina", "aggiornamento")):
-            continue
-
-        title = block[:900]
-        # Prefer an inPA link when the relevant procedure has one; otherwise use
-        # the Presidency listing itself. Matching is conservative on distinctive words.
-        words = [w for w in re.findall(r'[a-zà-ù0-9]+', low) if len(w) >= 7][:8]
-        url = PRESIDENZA_URL
-        for label, full in links:
-            hay = (label + " " + full).lower()
-            if "inpa" in hay and any(w in hay for w in words):
-                url = full
-                break
-
-        stable = "presidenza:" + hashlib.sha256(title.lower().encode("utf-8")).hexdigest()[:24]
-        candidates.append({"id": stable, "title": title, "url": url})
-
-    # Deduplicate identical titles.
-    unique = {}
-    for item in candidates:
-        key = normalize_space(item["title"]).lower()
-        unique[key] = item
-    return list(unique.values())
-
-def process_presidenza(memory):
-    print("\n=== PRESIDENZA DEL CONSIGLIO ===")
-    try:
-        items = get_presidenza_relevant_items()
-    except (TimeoutError, urllib.error.URLError) as exc:
-        print(f"Presidenza non raggiungibile ({exc}): controllo saltato senza bloccare il workflow.")
-        return 0
-    print(f"Procedure Presidenza pertinenti trovate: {len(items)}")
-    return process_items(memory, "presidenza", items, lambda x:
-        "🚨 NUOVA OPPORTUNITÀ PRESIDENZA DEL CONSIGLIO\n\n"
-        f"💼 {x['title']}\n🏛 Presidenza del Consiglio dei ministri\n"
-        f"🔔 Rilevata: {now_rome()}\n\n"
-        f"🔗 {x['url']}\n\n🤖 Pic_Job_Finder_Bot")
 
 # ---------- Main ----------
 def main():
@@ -486,7 +430,6 @@ def main():
         ("Eutalia", process_eutalia),
         ("Consip", process_consip),
         ("Sogei", process_sogei),
-        ("Presidenza", process_presidenza),
     ]
 
     for name, processor in processors:
@@ -504,7 +447,7 @@ def main():
             print(f"- {error}")
         sys.exit(1)
 
-    print("Leonardo + inPA + Eutalia + Consip + Sogei + Presidenza controllati correttamente.")
+    print("Leonardo + inPA + Eutalia + Consip + Sogei controllati correttamente.")
     print("Controllo completato.")
 
 if __name__ == "__main__":
