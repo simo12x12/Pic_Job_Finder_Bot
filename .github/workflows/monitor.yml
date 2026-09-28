@@ -43,3 +43,27 @@ jobs:
           git add seen_jobs.json
           git commit -m "Update seen Leonardo jobs"
           git push
+
+      - name: Notify Telegram on failure
+        if: ${{ failure() }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          curl --fail --silent --show-error \
+            --request POST \
+            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=2020881944" \
+            --data-urlencode "text=⚠️ PIC JOB FINDER - ERRORE
+
+          Una sorgente del monitor non ha funzionato correttamente.
+
+          Possibili cause:
+          • Leonardo non raggiungibile
+          • inPA non raggiungibile
+          • struttura del sito modificata
+          • errore GitHub Actions
+
+          🔧 Controlla:
+          https://github.com/${{ github.repository }}/actions
+
+          🤖 Pic_Job_Finder_Bot"
