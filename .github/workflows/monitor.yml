@@ -3,7 +3,6 @@ name: Pic Job Finder
 on:
   schedule:
     - cron: '*/10 * * * *'
-
   workflow_dispatch:
 
 permissions:
@@ -15,14 +14,14 @@ concurrency:
 
 jobs:
   monitor:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -44,3 +43,4 @@ jobs:
           git add seen_jobs.json
           git commit -m "Update seen Leonardo jobs"
           git push
+`
