@@ -5,6 +5,7 @@ import re
 import sys
 import urllib.parse
 import urllib.request
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -51,13 +52,23 @@ def normalize_space(text):
 def strip_tags(text):
     return normalize_space(re.sub(r"<[^>]+>", " ", text or ""))
 
-def fetch_html(url):
-    request = urllib.request.Request(url, headers={
-        "User-Agent": "Mozilla/5.0 (compatible; PicJobFinder/1.0)",
-        "Accept": "text/html,application/xhtml+xml",
-    })
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return response.read().decode("utf-8", errors="replace")
+def fetch_html(url, timeout=30, retries=1):
+    last_error = None
+    for attempt in range(retries):
+        try:
+            request = urllib.request.Request(url, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml",
+                "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+            })
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return response.read().decode("utf-8", errors="replace")
+        except Exception as exc:
+            last_error = exc
+            if attempt + 1 < retries:
+                print(f"Tentativo {attempt + 1}/{retries} fallito per {url}: {exc}. Riprovo...")
+                time.sleep(3)
+    raise last_error
 
 def absolute_url(base, href):
     return urllib.parse.urljoin(base, html.unescape(href)).split("#", 1)[0]
@@ -258,25 +269,42 @@ def process_inpa(memory):
 
 # ---------- Eutalia ----------
 def get_eutalia_open_notices():
-    page = fetch_html(EUTALIA_URL)
-    # Cards are bounded imperfectly in WordPress HTML. Candidate URLs are checked
-    # against nearby text and then deduplicated.
-    pattern = re.compile(r'<a[^>]+href=["\'](https?://www\.eutalia\.eu/avvisi/[^"\']+)["\'][^>]*>(.*?)</a>', re.I | re.S)
-    notices, used = [], set()
-    for m in pattern.finditer(page):
-        url = html.unescape(m.group(1)).rstrip("/")
-        if url in used:
+    page = fetch_html(EUTALIA_URL, timeout=45, retries=2)
+    notices = {}
+
+    # Eutalia renders cards server-side. Detect each avviso URL, then inspect the
+    # local card/block preceding the URL for the explicit status "Avviso Aperto".
+    pattern = re.compile(
+        r'<a[^>]+href=["\'](?P<url>(?:https?://www\.eutalia\.eu)?/avvisi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',
+        re.I | re.S,
+    )
+    matches = list(pattern.finditer(page))
+    for i, m in enumerate(matches):
+        raw_url = m.group("url")
+        full = absolute_url(EUTALIA_URL, raw_url).rstrip("/")
+        if full in notices:
             continue
-        context = page[max(0, m.start()-2200):min(len(page), m.end()+500)]
-        if "avviso aperto" not in strip_tags(context).lower():
+
+        # The card begins after the previous avviso-link/card area. Limiting the
+        # context this way avoids inheriting "Avviso Aperto" from an earlier card.
+        prev_end = matches[i - 1].end() if i > 0 else max(0, m.start() - 1800)
+        context_html = page[prev_end:m.end() + 600]
+        context_text = strip_tags(context_html).lower()
+        if "avviso aperto" not in context_text:
             continue
-        used.add(url)
-        title = strip_tags(m.group(2))
+        if "avviso chiuso" in context_text and context_text.rfind("avviso chiuso") > context_text.rfind("avviso aperto"):
+            continue
+
+        # Prefer an h2/h3 title in the local card; link labels are often "Leggi di più".
+        headings = re.findall(r'<h[2-4][^>]*>(.*?)</h[2-4]>', context_html, re.I | re.S)
+        title = strip_tags(headings[-1]) if headings else strip_tags(m.group("label"))
         if not title or "leggi di" in title.lower():
-            heads = re.findall(r"<h[1-6][^>]*>(.*?)</h[1-6]>", context, re.I | re.S)
-            title = strip_tags(heads[-1]) if heads else "Nuovo avviso Eutalia"
-        notices.append({"id": url, "title": title, "url": url + "/"})
-    return notices
+            slug = urllib.parse.urlparse(full).path.rstrip("/").rsplit("/", 1)[-1]
+            title = slug.replace("-", " ").replace("_", " ").strip().title()
+
+        notices[full] = {"id": full, "title": title, "url": full + "/"}
+
+    return list(notices.values())
 
 def process_eutalia(memory):
     print("\n=== EUTALIA ===")
@@ -289,27 +317,36 @@ def process_eutalia(memory):
 
 # ---------- Consip: all listed job positions ----------
 def get_consip_positions():
-    # Read several result pages because the site paginates positions.
-    items_by_url = {}
+    items = {}
+    # Consip's page=0 is the current-jobs listing. We read pagination pages but
+    # accept only explicit detail links /posizioni/<slug>.
     for page_num in range(0, 10):
         url = f"https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page={page_num}"
-        page = fetch_html(url)
-        matches = re.findall(r'<a[^>]+href=["\']([^"\']*/posizioni/[^"\'?]+)["\'][^>]*>(.*?)</a>', page, re.I | re.S)
-        before = len(items_by_url)
-        for href, label in matches:
+        page = fetch_html(url, timeout=45, retries=2)
+
+        cards = re.findall(
+            r'<h3[^>]*>(?P<title>.*?)</h3>.*?<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>.*?</a>',
+            page,
+            re.I | re.S,
+        )
+        before = len(items)
+        for title_html, href in cards:
             full = absolute_url("https://www.consip.it", href).rstrip("/")
-            if "/lavora-con-noi/posizioni" in full:
-                continue
-            title = strip_tags(label)
-            # Many links say "Leggi di più"; derive slug only as fallback.
-            if not title or "leggi di" in title.lower():
+            title = strip_tags(title_html)
+            if title:
+                items[full] = {"id": full, "title": title, "url": full}
+
+        # Fallback for markup variants, still restricted to detail URLs.
+        if not cards:
+            for href in re.findall(r'href=["\'](/posizioni/[^"\'?/#]+)["\']', page, re.I):
+                full = absolute_url("https://www.consip.it", href).rstrip("/")
                 slug = full.rsplit("/", 1)[-1]
-                title = slug.replace("-", " ").title()
-            items_by_url[full] = {"id": full, "title": title, "url": full}
-        # Stop after an empty/newless page, but only after page 0.
-        if page_num > 0 and len(items_by_url) == before:
+                items[full] = {"id": full, "title": slug.replace("-", " ").title(), "url": full}
+
+        if page_num > 0 and len(items) == before:
             break
-    return list(items_by_url.values())
+
+    return list(items.values())
 
 def process_consip(memory):
     print("\n=== CONSIP ===")
@@ -357,7 +394,7 @@ def process_sogei(memory):
 
 # ---------- Presidenza: communication/marketing only ----------
 def get_presidenza_relevant_items():
-    page = fetch_html(PRESIDENZA_URL)
+    page = fetch_html(PRESIDENZA_URL, timeout=60, retries=2)
     # Split around heading/paragraph-like blocks. We only accept contexts containing
     # one of the user-selected keywords and at least one recruitment/candidacy signal.
     candidates = []
