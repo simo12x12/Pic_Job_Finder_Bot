@@ -282,33 +282,35 @@ def get_eutalia_open_notices():
     page = fetch_html(EUTALIA_URL, timeout=45, retries=2)
     notices = {}
 
-    # Eutalia renders cards server-side. Detect each avviso URL, then inspect the
-    # local card/block preceding the URL for the explicit status "Avviso Aperto".
-    pattern = re.compile(
-        r'<a[^>]+href=["\'](?P<url>(?:https?://www\.eutalia\.eu)?/avvisi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',
-        re.I | re.S,
-    )
-    matches = list(pattern.finditer(page))
-    for i, m in enumerate(matches):
-        raw_url = m.group("url")
-        full = absolute_url(EUTALIA_URL, raw_url).rstrip("/")
-        if full in notices:
+    # Split around explicit status labels. Each status segment represents the
+    # following Eutalia card much more reliably than inspecting a fixed window.
+    status_pattern = re.compile(r'Avviso\s+(Aperto|Chiuso)', re.I)
+    marks = list(status_pattern.finditer(page))
+
+    for i, mark in enumerate(marks):
+        if mark.group(1).lower() != "aperto":
             continue
 
-        # The card begins after the previous avviso-link/card area. Limiting the
-        # context this way avoids inheriting "Avviso Aperto" from an earlier card.
-        prev_end = matches[i - 1].end() if i > 0 else max(0, m.start() - 1800)
-        context_html = page[prev_end:m.end() + 600]
-        context_text = strip_tags(context_html).lower()
-        if "avviso aperto" not in context_text:
-            continue
-        if "avviso chiuso" in context_text and context_text.rfind("avviso chiuso") > context_text.rfind("avviso aperto"):
+        end = marks[i + 1].start() if i + 1 < len(marks) else min(len(page), mark.end() + 5000)
+        segment = page[mark.start():end]
+
+        link_match = re.search(
+            r'href=["\'](?P<url>(?:https?://www\.eutalia\.eu)?/avvisi/[^"\']+)["\']',
+            segment,
+            re.I,
+        )
+        if not link_match:
             continue
 
-        # Prefer an h2/h3 title in the local card; link labels are often "Leggi di più".
-        headings = re.findall(r'<h[2-4][^>]*>(.*?)</h[2-4]>', context_html, re.I | re.S)
-        title = strip_tags(headings[-1]) if headings else strip_tags(m.group("label"))
-        if not title or "leggi di" in title.lower():
+        full = absolute_url(EUTALIA_URL, link_match.group("url")).rstrip("/")
+        headings = re.findall(r'<h[2-4][^>]*>(.*?)</h[2-4]>', segment, re.I | re.S)
+        title = ""
+        for heading in headings:
+            candidate = strip_tags(heading)
+            if candidate and "selezione del personale" not in candidate.lower():
+                title = candidate
+                break
+        if not title:
             slug = urllib.parse.urlparse(full).path.rstrip("/").rsplit("/", 1)[-1]
             title = slug.replace("-", " ").replace("_", " ").strip().title()
 
@@ -455,7 +457,11 @@ def get_presidenza_relevant_items():
 
 def process_presidenza(memory):
     print("\n=== PRESIDENZA DEL CONSIGLIO ===")
-    items = get_presidenza_relevant_items()
+    try:
+        items = get_presidenza_relevant_items()
+    except (TimeoutError, urllib.error.URLError) as exc:
+        print(f"Presidenza non raggiungibile ({exc}): controllo saltato senza bloccare il workflow.")
+        return 0
     print(f"Procedure Presidenza pertinenti trovate: {len(items)}")
     return process_items(memory, "presidenza", items, lambda x:
         "🚨 NUOVA OPPORTUNITÀ PRESIDENZA DEL CONSIGLIO\n\n"
