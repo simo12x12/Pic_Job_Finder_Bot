@@ -17,7 +17,7 @@ TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
 AUTHORIZED_CHAT_IDS = [
     "2020881944",
-    # In futuro aggiungeremo qui la seconda persona.
+    # Seconda persona: aggiungeremo qui il suo Chat ID.
 ]
 
 SEEN_FILE = Path("seen_jobs.json")
@@ -46,7 +46,15 @@ LEONARDO_FACETS = {
 
 # =========================================================
 # INPA
-# OPEN + Comunicazione e informazione
+#
+# Ricerca 1:
+# OPEN + settore Comunicazione e informazione
+#
+# Ricerche aggiuntive OPEN:
+# - marketing
+# - comunicazione istituzionale
+# - relazioni istituzionali
+# - public affairs
 # =========================================================
 
 INPA_ENDPOINT = (
@@ -54,22 +62,32 @@ INPA_ENDPOINT = (
     "concorsi-smart/api/concorso-public-area/search-better"
 )
 
-INPA_PAYLOAD = {
+INPA_BASE_PAYLOAD = {
     "text": "",
     "categoriaId": None,
     "regioneId": None,
     "status": ["OPEN"],
-    "settoreId": "b078865c126040558601",
+    "settoreId": None,
     "dateFrom": None,
     "dateTo": None,
     "enteRiferimentoName": "",
     "livelliAnzianitaIds": None,
     "provinciaCodice": None,
-    "regioneId": None,
     "salaryMax": None,
     "salaryMin": None,
     "tipoImpiegoId": None,
 }
+
+INPA_COMMUNICATION_SECTOR = (
+    "b078865c126040558601"
+)
+
+INPA_SEARCH_TERMS = [
+    "marketing",
+    "comunicazione istituzionale",
+    "relazioni istituzionali",
+    "public affairs",
+]
 
 
 # =========================================================
@@ -115,7 +133,11 @@ def send_telegram(chat_id, text):
 def notify_all(text):
     for chat_id in AUTHORIZED_CHAT_IDS:
         try:
-            send_telegram(chat_id, text)
+            send_telegram(
+                chat_id,
+                text,
+            )
+
             print(
                 f"Notifica inviata a {chat_id}"
             )
@@ -148,27 +170,6 @@ def empty_memory():
 
 
 def load_memory():
-    """
-    Supporta automaticamente sia il vecchio formato:
-
-    {
-        "seen": [...]
-    }
-
-    sia il nuovo formato:
-
-    {
-        "sources": {
-            "leonardo": {"seen": [...]},
-            "inpa": {"seen": [...]},
-            "eutalia": {"seen": [...]}
-        }
-    }
-
-    Gli ID del vecchio formato vengono attribuiti
-    automaticamente a Leonardo.
-    """
-
     if not SEEN_FILE.exists():
         return empty_memory()
 
@@ -186,9 +187,10 @@ def load_memory():
 
         return empty_memory()
 
-    # =====================================================
-    # MIGRAZIONE DEL VECCHIO FORMATO
-    # =====================================================
+    # -----------------------------------------------------
+    # Migrazione dal vecchio formato.
+    # Gli eventuali vecchi ID appartengono a Leonardo.
+    # -----------------------------------------------------
 
     if "sources" not in data:
         old_seen = data.get(
@@ -214,10 +216,6 @@ def load_memory():
                 },
             }
         }
-
-    # =====================================================
-    # GARANTIAMO CHE ESISTANO TUTTE LE SORGENTI
-    # =====================================================
 
     data.setdefault(
         "sources",
@@ -280,10 +278,8 @@ def leonardo_request(offset=0):
         headers={
             "Content-Type":
                 "application/json",
-
             "Accept":
                 "application/json",
-
             "User-Agent":
                 "Mozilla/5.0",
         },
@@ -382,10 +378,9 @@ def process_leonardo(memory):
         .get("seen", [])
     )
 
-    # Prima inizializzazione
     if not seen_ids:
         print(
-            "Leonardo non inizializzato."
+            "Prima inizializzazione Leonardo."
         )
 
         print(
@@ -466,7 +461,11 @@ def process_leonardo(memory):
 # INPA
 # =========================================================
 
-def inpa_request(page=0, size=50):
+def inpa_request(
+    payload,
+    page=0,
+    size=50,
+):
     url = (
         f"{INPA_ENDPOINT}"
         f"?page={page}&size={size}"
@@ -475,22 +474,18 @@ def inpa_request(page=0, size=50):
     request = urllib.request.Request(
         url,
         data=json.dumps(
-            INPA_PAYLOAD
+            payload
         ).encode("utf-8"),
         method="POST",
         headers={
             "Content-Type":
                 "application/json",
-
             "Accept":
                 "application/json",
-
             "User-Agent":
                 "Mozilla/5.0",
-
             "Origin":
                 "https://www.inpa.gov.it",
-
             "Referer":
                 "https://www.inpa.gov.it/",
         },
@@ -500,7 +495,6 @@ def inpa_request(page=0, size=50):
         request,
         timeout=30,
     ) as response:
-
         return json.loads(
             response.read().decode(
                 "utf-8"
@@ -508,12 +502,13 @@ def inpa_request(page=0, size=50):
         )
 
 
-def get_inpa_jobs():
+def get_inpa_results(payload):
     jobs = []
     page = 0
 
     while True:
         response = inpa_request(
+            payload=payload,
             page=page,
             size=50,
         )
@@ -538,6 +533,91 @@ def get_inpa_jobs():
     return jobs
 
 
+def get_inpa_jobs():
+    jobs_by_id = {}
+
+    # -----------------------------------------------------
+    # 1. Settore Comunicazione e informazione
+    # -----------------------------------------------------
+
+    sector_payload = dict(
+        INPA_BASE_PAYLOAD
+    )
+
+    sector_payload["settoreId"] = (
+        INPA_COMMUNICATION_SECTOR
+    )
+
+    sector_jobs = get_inpa_results(
+        sector_payload
+    )
+
+    print(
+        "inPA - Comunicazione e informazione: "
+        f"{len(sector_jobs)}"
+    )
+
+    for job in sector_jobs:
+        job_id = str(
+            job.get(
+                "id",
+                "",
+            )
+        )
+
+        if job_id:
+            jobs_by_id[job_id] = job
+
+    # -----------------------------------------------------
+    # 2. Ricerche testuali aggiuntive
+    #    in qualsiasi settore
+    # -----------------------------------------------------
+
+    for search_term in INPA_SEARCH_TERMS:
+        search_payload = dict(
+            INPA_BASE_PAYLOAD
+        )
+
+        search_payload["text"] = (
+            search_term
+        )
+
+        results = get_inpa_results(
+            search_payload
+        )
+
+        print(
+            f"inPA - ricerca "
+            f"'{search_term}': "
+            f"{len(results)}"
+        )
+
+        for job in results:
+            job_id = str(
+                job.get(
+                    "id",
+                    "",
+                )
+            )
+
+            if job_id:
+                jobs_by_id[
+                    job_id
+                ] = job
+
+    jobs = list(
+        jobs_by_id.values()
+    )
+
+    print(
+        "inPA - risultati unici "
+        "complessivi: "
+        f"{len(jobs)}"
+    )
+
+    return jobs
+
+
 def inpa_job_id(job):
     return str(
         job.get(
@@ -548,7 +628,9 @@ def inpa_job_id(job):
 
 
 def inpa_job_url(job):
-    job_id = inpa_job_id(job)
+    job_id = inpa_job_id(
+        job
+    )
 
     return (
         "https://www.inpa.gov.it/"
@@ -570,7 +652,6 @@ def format_inpa_date(value):
             )
         )
 
-        # Ora italiana.
         local_dt = dt.astimezone()
 
         return local_dt.strftime(
@@ -604,7 +685,6 @@ def process_inpa(memory):
         .get("seen", [])
     )
 
-    # Prima inizializzazione inPA
     if not seen_ids:
         print(
             "Prima inizializzazione inPA."
@@ -698,7 +778,23 @@ def process_inpa(memory):
             )
         )
 
-        url = inpa_job_url(job)
+        sectors = (
+            job.get(
+                "settori"
+            )
+            or []
+        )
+
+        sector_text = (
+            ", ".join(sectors)
+            if sectors
+            else
+            "Marketing / Comunicazione"
+        )
+
+        url = inpa_job_url(
+            job
+        )
 
         detected = datetime.now().strftime(
             "%d/%m/%Y %H:%M"
@@ -713,13 +809,14 @@ def process_inpa(memory):
             f"📅 Pubblicato: {published}\n"
             f"⏳ Scadenza: {deadline}\n"
             f"🔔 Rilevato: {detected}\n\n"
-            "🏷 Comunicazione e "
-            "informazione\n\n"
+            f"🏷 {sector_text}\n\n"
             f"🔗 {url}\n\n"
             "🤖 Pic_Job_Finder_Bot"
         )
 
-        notify_all(message)
+        notify_all(
+            message
+        )
 
     updated_seen = (
         seen_ids | current_ids
@@ -734,6 +831,7 @@ def process_inpa(memory):
 
 # =========================================================
 # EUTALIA
+# Tutti gli Avvisi Aperti
 # =========================================================
 
 def get_eutalia_open_notices():
@@ -742,7 +840,6 @@ def get_eutalia_open_notices():
         headers={
             "User-Agent":
                 "Mozilla/5.0",
-
             "Accept":
                 "text/html,"
                 "application/xhtml+xml",
@@ -753,7 +850,6 @@ def get_eutalia_open_notices():
         request,
         timeout=30,
     ) as response:
-
         page = response.read().decode(
             "utf-8",
             errors="replace",
@@ -761,18 +857,19 @@ def get_eutalia_open_notices():
 
     notices = []
 
-    # Cerchiamo tutti i link che puntano
-    # alle pagine degli avvisi Eutalia.
     link_pattern = re.compile(
         r'<a[^>]+href=["\']'
         r'(https?://www\.eutalia\.eu/'
         r'avvisi/[^"\']+)'
         r'["\'][^>]*>(.*?)</a>',
-        re.IGNORECASE | re.DOTALL,
+        re.IGNORECASE |
+        re.DOTALL,
     )
 
     matches = list(
-        link_pattern.finditer(page)
+        link_pattern.finditer(
+            page
+        )
     )
 
     seen_urls = set()
@@ -785,11 +882,10 @@ def get_eutalia_open_notices():
         if url in seen_urls:
             continue
 
-        seen_urls.add(url)
+        seen_urls.add(
+            url
+        )
 
-        # Esaminiamo la zona immediatamente
-        # precedente al link. In ogni card Eutalia
-        # appare lo stato dell'avviso.
         start = max(
             0,
             match.start() - 2500,
@@ -820,15 +916,15 @@ def get_eutalia_open_notices():
             context_text,
         ).strip()
 
-        # Ci interessano esclusivamente
-        # gli Avvisi Aperti.
         if (
             "Avviso Aperto"
             not in context_text
         ):
             continue
 
-        title_html = match.group(2)
+        title_html = (
+            match.group(2)
+        )
 
         title = re.sub(
             r"<[^>]+>",
@@ -846,10 +942,6 @@ def get_eutalia_open_notices():
             title,
         ).strip()
 
-        # A volte il link contiene solamente
-        # "Leggi di più".
-        # In quel caso recuperiamo il titolo
-        # dall'heading della card.
         if (
             not title
             or
@@ -904,7 +996,7 @@ def process_eutalia(memory):
     )
 
     print(
-        f"Avvisi Eutalia aperti trovati: "
+        "Avvisi Eutalia aperti trovati: "
         f"{len(notices)}"
     )
 
@@ -916,12 +1008,12 @@ def process_eutalia(memory):
     seen_ids = set(
         memory["sources"]
         ["eutalia"]
-        .get("seen", [])
+        .get(
+            "seen",
+            [],
+        )
     )
 
-    # Prima inizializzazione Eutalia.
-    # Memorizziamo quelli già presenti
-    # senza inviare notifiche.
     if not seen_ids:
         print(
             "Prima inizializzazione Eutalia."
@@ -929,7 +1021,8 @@ def process_eutalia(memory):
 
         print(
             f"Registro {len(current_ids)} "
-            "avvisi aperti senza notificare."
+            "avvisi aperti "
+            "senza notificare."
         )
 
         memory["sources"][
@@ -969,7 +1062,9 @@ def process_eutalia(memory):
             "🤖 Pic_Job_Finder_Bot"
         )
 
-        notify_all(message)
+        notify_all(
+            message
+        )
 
     updated_seen = (
         seen_ids | current_ids
@@ -995,7 +1090,9 @@ def main():
 
         sys.exit(1)
 
-    print("Pic_Job_Finder_Bot")
+    print(
+        "Pic_Job_Finder_Bot"
+    )
 
     print(
         "Avvio controllo sorgenti..."
@@ -1005,9 +1102,9 @@ def main():
 
     errors = []
 
-    # =====================================================
-    # LEONARDO
-    # =====================================================
+    # -----------------------------------------------------
+    # Leonardo
+    # -----------------------------------------------------
 
     try:
         process_leonardo(
@@ -1024,9 +1121,9 @@ def main():
             f"Leonardo: {exc}"
         )
 
-    # =====================================================
-    # INPA
-    # =====================================================
+    # -----------------------------------------------------
+    # inPA
+    # -----------------------------------------------------
 
     try:
         process_inpa(
@@ -1043,9 +1140,9 @@ def main():
             f"inPA: {exc}"
         )
 
-    # =====================================================
-    # EUTALIA
-    # =====================================================
+    # -----------------------------------------------------
+    # Eutalia
+    # -----------------------------------------------------
 
     try:
         process_eutalia(
@@ -1062,16 +1159,18 @@ def main():
             f"Eutalia: {exc}"
         )
 
-    # =====================================================
-    # SALVATAGGIO MEMORIA
-    # =====================================================
+    # -----------------------------------------------------
+    # Salvataggio
+    # -----------------------------------------------------
 
     save_memory(
         memory
     )
 
     print("")
-    print("=== RIEPILOGO ===")
+    print(
+        "=== RIEPILOGO ==="
+    )
 
     if errors:
         print(
@@ -1084,9 +1183,6 @@ def main():
                 f"- {error}"
             )
 
-        # Facciamo fallire GitHub Actions.
-        # Lo step di alert che abbiamo aggiunto
-        # a monitor.yml ci notificherà su Telegram.
         sys.exit(1)
 
     print(
