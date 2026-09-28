@@ -1,31 +1,37 @@
 import json
 import os
 import sys
+import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
 
-# ---------------------------------------------------------
-# CONFIGURAZIONE
-# ---------------------------------------------------------
+# =========================================================
+# CONFIGURAZIONE GENERALE
+# =========================================================
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
 AUTHORIZED_CHAT_IDS = [
     "2020881944",
-    # In futuro aggiungeremo qui la seconda persona
+    # In futuro aggiungeremo qui la seconda persona.
 ]
 
 SEEN_FILE = Path("seen_jobs.json")
 
-WORKDAY_ENDPOINT = (
+
+# =========================================================
+# LEONARDO
+# Italia + Communications + Sales & Marketing
+# =========================================================
+
+LEONARDO_ENDPOINT = (
     "https://leonardocompany.wd3.myworkdayjobs.com/"
     "wday/cxs/leonardocompany/LeonardoCareerSite/jobs"
 )
 
-# Filtri ricavati dall'URL Leonardo che ci hai fornito
-APPLIED_FACETS = {
+LEONARDO_FACETS = {
     "locationCountry": [
         "8cd04a563fd94da7b06857a79faaf815"
     ],
@@ -36,9 +42,36 @@ APPLIED_FACETS = {
 }
 
 
-# ---------------------------------------------------------
+# =========================================================
+# INPA
+# OPEN + Comunicazione e informazione
+# =========================================================
+
+INPA_ENDPOINT = (
+    "https://portale.inpa.gov.it/"
+    "concorsi-smart/api/concorso-public-area/search-better"
+)
+
+INPA_PAYLOAD = {
+    "text": "",
+    "categoriaId": None,
+    "regioneId": None,
+    "status": ["OPEN"],
+    "settoreId": "b078865c126040558601",
+    "dateFrom": None,
+    "dateTo": None,
+    "enteRiferimentoName": "",
+    "livelliAnzianitaIds": None,
+    "provinciaCodice": None,
+    "salaryMax": None,
+    "salaryMin": None,
+    "tipoImpiegoId": None,
+}
+
+
+# =========================================================
 # TELEGRAM
-# ---------------------------------------------------------
+# =========================================================
 
 def send_telegram(chat_id, text):
     url = (
@@ -71,50 +104,108 @@ def notify_all(text):
             print(f"Errore Telegram per {chat_id}: {exc}")
 
 
-# ---------------------------------------------------------
-# MEMORIA OFFERTE
-# ---------------------------------------------------------
+# =========================================================
+# MEMORIA
+# =========================================================
 
-def load_seen_jobs():
-    if not SEEN_FILE.exists():
-        return set()
+def load_memory():
+    """
+    Supporta sia il vecchio formato:
 
-    try:
-        data = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
-        return set(data.get("seen", []))
-    except Exception:
-        return set()
-
-
-def save_seen_jobs(job_ids):
-    data = {
-        "last_update": datetime.now(timezone.utc).isoformat(),
-        "seen": sorted(job_ids),
+    {
+        "seen": [...]
     }
 
+    sia il nuovo formato:
+
+    {
+        "sources": {
+            "leonardo": {"seen": [...]},
+            "inpa": {"seen": []}
+        }
+    }
+
+    Gli ID presenti nel vecchio formato vengono attribuiti
+    automaticamente a Leonardo.
+    """
+
+    if not SEEN_FILE.exists():
+        return {
+            "sources": {
+                "leonardo": {"seen": []},
+                "inpa": {"seen": []},
+            }
+        }
+
+    try:
+        data = json.loads(
+            SEEN_FILE.read_text(encoding="utf-8")
+        )
+    except Exception:
+        return {
+            "sources": {
+                "leonardo": {"seen": []},
+                "inpa": {"seen": []},
+            }
+        }
+
+    # Migrazione automatica del vecchio formato Leonardo.
+    if "sources" not in data:
+        old_seen = data.get("seen", [])
+
+        print(
+            f"Migrazione memoria Leonardo: "
+            f"{len(old_seen)} ID esistenti."
+        )
+
+        data = {
+            "sources": {
+                "leonardo": {
+                    "seen": old_seen
+                },
+                "inpa": {
+                    "seen": []
+                },
+            }
+        }
+
+    data.setdefault("sources", {})
+    data["sources"].setdefault("leonardo", {"seen": []})
+    data["sources"].setdefault("inpa", {"seen": []})
+
+    return data
+
+
+def save_memory(memory):
+    memory["last_update"] = (
+        datetime.now(timezone.utc).isoformat()
+    )
+
     SEEN_FILE.write_text(
-        json.dumps(data, indent=2, ensure_ascii=False),
+        json.dumps(
+            memory,
+            indent=2,
+            ensure_ascii=False,
+        ),
         encoding="utf-8",
     )
 
 
-# ---------------------------------------------------------
-# LEONARDO / WORKDAY
-# ---------------------------------------------------------
+# =========================================================
+# LEONARDO
+# =========================================================
 
-def workday_request(offset=0):
+def leonardo_request(offset=0):
     payload = {
-        "appliedFacets": APPLIED_FACETS,
+        "appliedFacets": LEONARDO_FACETS,
         "limit": 20,
         "offset": offset,
         "searchText": "",
     }
 
-    data = json.dumps(payload).encode("utf-8")
-
     request = urllib.request.Request(
-        WORKDAY_ENDPOINT,
-        data=data,
+        LEONARDO_ENDPOINT,
+        data=json.dumps(payload).encode("utf-8"),
         method="POST",
         headers={
             "Content-Type": "application/json",
@@ -123,8 +214,13 @@ def workday_request(offset=0):
         },
     )
 
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
+    with urllib.request.urlopen(
+        request,
+        timeout=30,
+    ) as response:
+        return json.loads(
+            response.read().decode("utf-8")
+        )
 
 
 def get_leonardo_jobs():
@@ -132,8 +228,7 @@ def get_leonardo_jobs():
     offset = 0
 
     while True:
-        response = workday_request(offset)
-
+        response = leonardo_request(offset)
         batch = response.get("jobPostings", [])
 
         if not batch:
@@ -142,7 +237,6 @@ def get_leonardo_jobs():
         jobs.extend(batch)
 
         total = response.get("total", len(jobs))
-
         offset += len(batch)
 
         if offset >= total:
@@ -151,11 +245,11 @@ def get_leonardo_jobs():
     return jobs
 
 
-def make_job_id(job):
-    path = job.get("externalPath")
+def leonardo_job_id(job):
+    external_path = job.get("externalPath")
 
-    if path:
-        return path
+    if external_path:
+        return external_path
 
     return (
         f"{job.get('title', '')}|"
@@ -163,7 +257,7 @@ def make_job_id(job):
     )
 
 
-def make_job_url(job):
+def leonardo_job_url(job):
     external_path = job.get("externalPath", "")
 
     return (
@@ -173,66 +267,61 @@ def make_job_url(job):
     )
 
 
-# ---------------------------------------------------------
-# MAIN
-# ---------------------------------------------------------
-
-def main():
-
-    if not TELEGRAM_BOT_TOKEN:
-        print("ERRORE: TELEGRAM_BOT_TOKEN non configurato.")
-        sys.exit(1)
-
-    print("Pic_Job_Finder_Bot")
-    print("Controllo Leonardo in corso...")
+def process_leonardo(memory):
+    print("")
+    print("=== LEONARDO ===")
 
     jobs = get_leonardo_jobs()
 
-    print(f"Offerte trovate con i filtri Leonardo: {len(jobs)}")
+    print(
+        f"Offerte Leonardo trovate: {len(jobs)}"
+    )
 
     current_ids = {
-        make_job_id(job)
+        leonardo_job_id(job)
         for job in jobs
     }
 
-    seen_ids = load_seen_jobs()
+    seen_ids = set(
+        memory["sources"]["leonardo"].get("seen", [])
+    )
 
-    # -----------------------------------------------------
-    # PRIMO AVVIO
-    # -----------------------------------------------------
-
+    # Solo nel caso di installazione completamente nuova.
     if not seen_ids:
-
-        print("Prima esecuzione.")
-        print("Registro le offerte esistenti senza notificare.")
-
-        save_seen_jobs(current_ids)
-
         print(
-            f"Inizializzazione completata: "
-            f"{len(current_ids)} offerte memorizzate."
+            "Leonardo non inizializzato: "
+            "registro le offerte esistenti."
+        )
+
+        memory["sources"]["leonardo"]["seen"] = sorted(
+            current_ids
         )
 
         return
 
-    # -----------------------------------------------------
-    # CONTROLLI SUCCESSIVI
-    # -----------------------------------------------------
-
     new_jobs = [
         job
         for job in jobs
-        if make_job_id(job) not in seen_ids
+        if leonardo_job_id(job) not in seen_ids
     ]
 
-    print(f"Nuove offerte trovate: {len(new_jobs)}")
+    print(
+        f"Nuove offerte Leonardo: {len(new_jobs)}"
+    )
 
     for job in new_jobs:
+        title = job.get(
+            "title",
+            "Titolo non disponibile",
+        )
 
-        title = job.get("title", "Titolo non disponibile")
-        location = job.get("locationsText", "Località non disponibile")
+        location = job.get(
+            "locationsText",
+            "Località non disponibile",
+        )
+
         posted = job.get("postedOn", "")
-        url = make_job_url(job)
+        url = leonardo_job_url(job)
 
         message = (
             "🚨 NUOVA OFFERTA LEONARDO\n\n"
@@ -246,17 +335,278 @@ def main():
 
         notify_all(message)
 
-    # Manteniamo memoria anche delle offerte viste in passato.
-    # In questo modo una posizione rimossa e successivamente
-    # riapparsa non viene automaticamente considerata nuova.
+    updated_seen = seen_ids | current_ids
+
+    memory["sources"]["leonardo"]["seen"] = sorted(
+        updated_seen
+    )
+
+
+# =========================================================
+# INPA
+# =========================================================
+
+def inpa_request(page=0, size=50):
+    url = (
+        f"{INPA_ENDPOINT}"
+        f"?page={page}&size={size}"
+    )
+
+    request = urllib.request.Request(
+        url,
+        data=json.dumps(INPA_PAYLOAD).encode("utf-8"),
+        method="POST",
+        headers={
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "User-Agent": "Mozilla/5.0",
+            "Origin": "https://www.inpa.gov.it",
+            "Referer": "https://www.inpa.gov.it/",
+        },
+    )
+
+    with urllib.request.urlopen(
+        request,
+        timeout=30,
+    ) as response:
+        return json.loads(
+            response.read().decode("utf-8")
+        )
+
+
+def get_inpa_jobs():
+    jobs = []
+    page = 0
+
+    while True:
+        response = inpa_request(
+            page=page,
+            size=50,
+        )
+
+        batch = response.get("content", [])
+
+        jobs.extend(batch)
+
+        total_pages = response.get(
+            "totalPages",
+            1,
+        )
+
+        page += 1
+
+        if page >= total_pages:
+            break
+
+    return jobs
+
+
+def inpa_job_id(job):
+    return str(job.get("id", ""))
+
+
+def inpa_job_url(job):
+    job_id = inpa_job_id(job)
+
+    return (
+        "https://www.inpa.gov.it/"
+        "bandi-e-avvisi/"
+        "dettaglio-bando-avviso/"
+        f"?concorso_id={job_id}"
+    )
+
+
+def format_inpa_date(value):
+    if not value:
+        return "Non disponibile"
+
+    try:
+        dt = datetime.fromisoformat(
+            value.replace("Z", "+00:00")
+        )
+
+        return dt.strftime("%d/%m/%Y %H:%M")
+
+    except Exception:
+        return value
+
+
+def process_inpa(memory):
+    print("")
+    print("=== INPA ===")
+
+    jobs = get_inpa_jobs()
+
+    print(
+        f"Bandi inPA OPEN trovati: {len(jobs)}"
+    )
+
+    current_ids = {
+        inpa_job_id(job)
+        for job in jobs
+        if inpa_job_id(job)
+    }
+
+    seen_ids = set(
+        memory["sources"]["inpa"].get("seen", [])
+    )
+
+    # Primo avvio inPA:
+    # registra tutto senza inviare notifiche.
+    if not seen_ids:
+        print(
+            "Prima inizializzazione inPA."
+        )
+
+        print(
+            f"Registro {len(current_ids)} bandi "
+            "esistenti senza notificare."
+        )
+
+        memory["sources"]["inpa"]["seen"] = sorted(
+            current_ids
+        )
+
+        return
+
+    new_jobs = [
+        job
+        for job in jobs
+        if (
+            inpa_job_id(job)
+            and inpa_job_id(job) not in seen_ids
+        )
+    ]
+
+    print(
+        f"Nuovi bandi inPA: {len(new_jobs)}"
+    )
+
+    for job in new_jobs:
+        title = (
+            job.get("figuraRicercata")
+            or job.get("titolo")
+            or "Titolo non disponibile"
+        )
+
+        enti = job.get("entiRiferimento") or []
+
+        ente = (
+            ", ".join(enti)
+            if enti
+            else "Ente non disponibile"
+        )
+
+        sedi = job.get("sedi") or []
+
+        location = (
+            ", ".join(sedi)
+            if sedi
+            else "Sede non disponibile"
+        )
+
+        num_posti = job.get(
+            "numPosti",
+            "Non disponibile",
+        )
+
+        published = format_inpa_date(
+            job.get("dataPubblicazione")
+        )
+
+        deadline = format_inpa_date(
+            job.get("dataScadenza")
+        )
+
+        url = inpa_job_url(job)
+
+        message = (
+            "🚨 NUOVO BANDO inPA\n\n"
+            f"💼 {title}\n"
+            f"🏛 {ente}\n"
+            f"📍 {location}\n"
+            f"👥 Posti: {num_posti}\n\n"
+            f"📅 Pubblicato: {published}\n"
+            f"⏳ Scadenza: {deadline}\n\n"
+            "🏷 Comunicazione e informazione\n\n"
+            f"🔗 {url}\n\n"
+            "🤖 Pic_Job_Finder_Bot"
+        )
+
+        notify_all(message)
 
     updated_seen = seen_ids | current_ids
 
-    save_seen_jobs(updated_seen)
+    memory["sources"]["inpa"]["seen"] = sorted(
+        updated_seen
+    )
+
+
+# =========================================================
+# MAIN
+# =========================================================
+
+def main():
+    if not TELEGRAM_BOT_TOKEN:
+        print(
+            "ERRORE: TELEGRAM_BOT_TOKEN "
+            "non configurato."
+        )
+        sys.exit(1)
+
+    print("Pic_Job_Finder_Bot")
+    print("Avvio controllo sorgenti...")
+
+    memory = load_memory()
+
+    errors = []
+
+    # Leonardo e inPA vengono gestiti separatamente.
+    # Se una sorgente ha problemi, proviamo comunque l'altra.
+
+    try:
+        process_leonardo(memory)
+    except Exception as exc:
+        print(
+            f"ERRORE monitor Leonardo: {exc}"
+        )
+        errors.append(
+            f"Leonardo: {exc}"
+        )
+
+    try:
+        process_inpa(memory)
+    except Exception as exc:
+        print(
+            f"ERRORE monitor inPA: {exc}"
+        )
+        errors.append(
+            f"inPA: {exc}"
+        )
+
+    save_memory(memory)
+
+    print("")
+    print("=== RIEPILOGO ===")
+
+    if errors:
+        print(
+            "Controllo completato con errori:"
+        )
+
+        for error in errors:
+            print(f"- {error}")
+
+        # Facciamo fallire l'Action così GitHub
+        # segnala chiaramente il problema.
+        sys.exit(1)
+
+    print(
+        "Leonardo + inPA controllati correttamente."
+    )
 
     print("Controllo completato.")
 
 
 if __name__ == "__main__":
-    import urllib.parse
     main()
