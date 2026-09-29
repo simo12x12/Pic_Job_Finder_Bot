@@ -39,6 +39,7 @@ ACEA_URL="https://jobs.acea.it/Acea/go/Acea-Lavora-con-noi/3482701/"
 ITALO_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
 ITALO_LEGAL_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/direzione-legal-affairs-and-compliance.html"
 FINCANTIERI_URL="https://www.fincantieri.com/it/persone/lavora-con-noi/posizioni-aperte"
+FINCANTIERI_JOBS_FEED="https://it.linkedin.com/company/fincantieri/jobs"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -99,7 +100,7 @@ SOURCE_LABELS = {
     "italo": "Italo",
     "fincantieri": "Fincantieri",
 }
-MEMORY_SCHEMA_VERSION = 13
+MEMORY_SCHEMA_VERSION = 14
 
 
 def now_rome():
@@ -220,6 +221,10 @@ def load_memory():
             data["sources"][name] = empty_source()
 
     if data.get("schema_version", 1) < 13:
+        for name in ("italo", "fincantieri"):
+            data["sources"][name] = empty_source()
+
+    if data.get("schema_version", 1) < 14:
         for name in ("italo", "fincantieri"):
             data["sources"][name] = empty_source()
 
@@ -785,6 +790,7 @@ def get_acea_positions():
 
 
 def get_italo_positions():
+    items = {}
     pages = []
     for base in (ITALO_URL, ITALO_LEGAL_URL):
         try:
@@ -792,66 +798,65 @@ def get_italo_positions():
         except Exception as exc:
             print(f"Italo pagina non disponibile {base}: {exc}")
 
-    items = {}
     for base, page in pages:
         plain = strip_tags(page)
-        # First parse headings in any common level.
-        candidates = [strip_tags(x) for x in re.findall(r'<h[1-6][^>]*>(.*?)</h[1-6]>', page, re.I | re.S)]
-        # Italo can emit vacancy names in non-heading containers. Extract compact
-        # uppercase title-like strings around our corporate vocabulary as fallback.
-        for keyword in CORPORATE_KEYWORDS:
-            for m in re.finditer(re.escape(keyword), plain, re.I):
-                left = plain.rfind('  ', max(0, m.start()-160), m.start())
-                right = plain.find('  ', m.end(), min(len(plain), m.end()+160))
-                start = left + 2 if left >= 0 else max(0, m.start()-100)
-                end = right if right >= 0 else min(len(plain), m.end()+100)
-                candidate = normalize_space(plain[start:end])
-                if 4 <= len(candidate) <= 140:
-                    candidates.append(candidate)
-        # Deterministic fallback for the official area page wording.
-        for m in re.finditer(r'([A-Z][A-Z0-9 &/\-]{3,}(?:AFFAIRS|COMMUNICATION|MARKETING|MEDIA|RELATIONS)[A-Z0-9 &/\-]{0,80})', plain):
-            candidates.append(normalize_space(m.group(1)))
+        # Extract the exact visible job-title phrases surrounding a dictionary term.
+        # The official Italo pages can render the title inside generic DIVs rather than H tags.
+        patterns = [
+            r'([A-Z][A-Z0-9 &/\-]{0,100}CORPORATE AFFAIRS[A-Z0-9 &/\-]{0,100})',
+            r'([A-Z][A-Z0-9 &/\-]{0,100}COMMUNICATION[A-Z0-9 &/\-]{0,100})',
+            r'([A-Z][A-Z0-9 &/\-]{0,100}MARKETING[A-Z0-9 &/\-]{0,100})',
+            r'([A-Z][A-Z0-9 &/\-]{0,100}MEDIA RELATIONS[A-Z0-9 &/\-]{0,100})',
+        ]
+        candidates=[]
+        candidates += [strip_tags(x) for x in re.findall(r'<h[1-6][^>]*>(.*?)</h[1-6]>', page, re.I|re.S)]
+        for pattern in patterns:
+            candidates += [normalize_space(x) for x in re.findall(pattern, plain)]
 
         for title in candidates:
-            if not title or not matches_corporate_keywords(title):
+            title = normalize_space(title)
+            if not title or not matches_corporate_keywords(title) or len(title) > 130:
                 continue
-            low = title.lower()
-            if low in {'selezioni personale di staff','selezioni personale operativo','candidatura spontanea','legal affairs and compliance'}:
+            low=title.lower()
+            if low in {'legal affairs and compliance','lavora con noi','candidatura spontanea'}:
                 continue
-            # Collapse obvious page prose; keep job-like labels only.
-            if len(title) > 140:
-                continue
-            iid = 'italo:' + hashlib.sha256(title.lower().encode()).hexdigest()[:24]
-            items[iid] = {'id': iid, 'title': title, 'url': base, 'extra': 'Corporate keywords'}
+            # Trim location text if glued to the title.
+            title=re.sub(r'\s+Italia(?:\s*/\s*Roma)?\s*\(RM\).*$','',title,flags=re.I).strip()
+            iid='italo:'+hashlib.sha256(title.lower().encode()).hexdigest()[:24]
+            items[iid]={'id':iid,'title':title,'url':base,'extra':'Corporate keywords'}
     return list(items.values())
 
 
 def get_fincantieri_positions():
-    page = fetch_html(FINCANTIERI_URL, 45, 2)
-    items = {}
-    # Dedicated official positions page. Try explicit links first.
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
-        title = strip_tags(m.group('label'))
-        full = absolute_url(FINCANTIERI_URL, m.group('href')).rstrip('/')
-        if not title or len(title) > 180 or not matches_corporate_keywords(title):
-            continue
-        low = title.lower()
-        if low in {'persone','lavora con noi','posizioni aperte','scopri','approfondisci'}:
-            continue
-        iid = 'fincantieri:' + hashlib.sha256((title+'|'+full).encode()).hexdigest()[:24]
-        items[iid] = {'id': iid, 'title': title, 'url': full, 'extra': 'Corporate keywords'}
+    items={}
+    # The official positions page is authoritative, but its vacancy cards can be client-rendered.
+    try:
+        official=fetch_html(FINCANTIERI_URL,45,2)
+    except Exception:
+        official=''
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',official,re.I|re.S):
+        title=strip_tags(m.group('label')); full=absolute_url(FINCANTIERI_URL,m.group('href')).rstrip('/')
+        if not title or len(title)>180 or not matches_corporate_keywords(title): continue
+        if title.lower() in {'media center','social media','press kit','persone','lavora con noi','posizioni aperte'}: continue
+        # Require a vacancy-like destination on the official page.
+        if not any(token in full.lower() for token in ('job','career','recruit','posizion')): continue
+        iid='fincantieri:'+hashlib.sha256((title+'|'+full).encode()).hexdigest()[:24]
+        items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
 
-    # Some vacancy cards are rendered without useful anchor labels. Inspect headings,
-    # but link them to the official positions page rather than inventing a detail URL.
-    if not items:
-        for heading in re.findall(r'<h[2-6][^>]*>(.*?)</h[2-6]>', page, re.I | re.S):
-            title = strip_tags(heading)
-            if not title or len(title) > 180 or not matches_corporate_keywords(title):
-                continue
-            if title.lower() in {'posizioni aperte','lavora con noi'}:
-                continue
-            iid = 'fincantieri:' + hashlib.sha256(title.lower().encode()).hexdigest()[:24]
-            items[iid] = {'id': iid, 'title': title, 'url': FINCANTIERI_URL, 'extra': 'Corporate keywords'}
+    # Fallback: the public Fincantieri company jobs page exposes actual job headings.
+    # We only use it to discover titles; the link points to the public jobs listing.
+    try:
+        feed=fetch_html(FINCANTIERI_JOBS_FEED,30,1)
+    except Exception as exc:
+        print(f"Fincantieri feed posizioni non disponibile: {exc}")
+        feed=''
+    if feed:
+        for heading in re.findall(r'<h[2-4][^>]*>(.*?)</h[2-4]>',feed,re.I|re.S):
+            title=strip_tags(heading)
+            if not title or len(title)>180 or not matches_corporate_keywords(title): continue
+            if title.lower() in {'media center','social media','press kit','offerte di lavoro presso fincantieri'}: continue
+            iid='fincantieri:'+hashlib.sha256(title.lower().encode()).hexdigest()[:24]
+            items[iid]={'id':iid,'title':title,'url':FINCANTIERI_JOBS_FEED,'extra':'Corporate keywords'}
     return list(items.values())
 
 
