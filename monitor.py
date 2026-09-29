@@ -256,10 +256,27 @@ def main():
             items=getter();print(f"Elementi correnti {SOURCE_LABELS[source]}: {len(items)}");process_items(memory,source,items,formatter)
             snapshot["sources"][source]={"label":SOURCE_LABELS[source],"status":"ok","items":[{"title":x.get("title","Titolo non disponibile"),"url":x.get("url","")} for x in items]}
         except urllib.error.HTTPError as exc:
-            if source=="sogei" and exc.code==403:
-                print("Sogei: HTTP 403. Controllo non disponibile in questo run.");snapshot["sources"][source]={"label":"Sogei","status":"unavailable","items":[]};continue
-            errors.append(f"{SOURCE_LABELS[source]}: {exc}")
-            snapshot["sources"][source]={"label":SOURCE_LABELS[source],"status":"error","items":[],"error":str(exc)}
+          if source == "sogei" and exc.code == 403:
+            print("Sogei: HTTP 403. Controllo non disponibile in questo run.")
+            snapshot["sources"][source] = {
+              "label": "Sogei",
+              "status": "unavailable",
+              "items": [],
+            }
+          continue
+
+          print(
+            f"ERRORE monitor {SOURCE_LABELS[source]}: "
+            f"HTTP {exc.code} - {exc.reason}"
+          )
+          errors.append(f"{SOURCE_LABELS[source]}: {exc}")
+
+        snapshot["sources"][source] = {
+          "label": SOURCE_LABELS[source],
+          "status": "error",
+          "items": [],
+          "error": str(exc),
+        }
         except Exception as exc:
             print(f"ERRORE monitor {SOURCE_LABELS[source]}: {exc}");errors.append(f"{SOURCE_LABELS[source]}: {exc}");snapshot["sources"][source]={"label":SOURCE_LABELS[source],"status":"error","items":[],"error":str(exc)}
     save_memory(memory);save_current(snapshot)
