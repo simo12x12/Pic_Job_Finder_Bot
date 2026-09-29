@@ -176,31 +176,15 @@
     "anci": {
       "initialized": true,
       "seen": [
-        "anci:002275e017087841f4ed560d",
-        "anci:0beb9ed6f0fe32b0cd99c95e",
-        "anci:1d49ec6a886ab1b27357cd84",
         "anci:59d43d7e7d09ad9c20dc733d",
-        "anci:5a0bd860e46fdcc02066bf75",
-        "anci:713206b34220df96594e1cd6",
-        "anci:766c4e7629993a6ef2977a7d",
         "anci:7d2005a3040f9c82fd2a1118",
-        "anci:a64ada04220ac6b2c1f78fa1",
-        "anci:a8fce69729303cf69d7ca6ea",
-        "anci:beed729b1855e5181dd58b0a",
-        "anci:c64ecf57bed0909da2620ab3",
-        "anci:ca8908f9f5e6fde71c6fec49",
         "anci:e05a11311427bba1c2b056f1",
-        "anci:f1d67337a8cb6eb52d194cc5",
-        "anci:f7d2f40c704ee88a49aba8c1",
-        "anci:fe9e6bcb3f0ee8290e470826"
+        "anci:f7d2f40c704ee88a49aba8c1"
       ]
     },
     "ifel": {
       "initialized": true,
-      "seen": [
-        "ifel:1359e0dd241f1c3e92762ca1",
-        "ifel:c2eb6499b167800a61f49c11"
-      ]
+      "seen": []
     },
     "sna": {
       "initialized": true,
@@ -209,35 +193,21 @@
     "tagliacarne": {
       "initialized": true,
       "seen": [
-        "tagliacarne:0da90a634aac31201e6af8f1",
-        "tagliacarne:246bcca214a94b7efb7ab58d",
-        "tagliacarne:355cff7234fdab5893d98df7",
-        "tagliacarne:58246ec5b23720abe03b6be3",
-        "tagliacarne:6a6396bfd3b4cda333c5b81c",
-        "tagliacarne:731e4cfc784e36f8913bb948",
-        "tagliacarne:7aa75192724503ff3c9ec162",
-        "tagliacarne:9ca02c71f66be0bd699ccb13",
-        "tagliacarne:a083f4b2dbae2ade251b3623",
-        "tagliacarne:b8c1c2f9f8f064c8ef8b9661"
+        "tagliacarne:58246ec5b23720abe03b6be3"
       ]
     },
     "brodolini": {
       "initialized": true,
       "seen": [
         "brodolini:5d8d16381b2c9b3914c6be29",
-        "brodolini:7169f062f0876de41d9a74a7",
+        "brodolini:8242ebf79d144ee13e35842d",
         "brodolini:c0b0cab1dd71316d874a08c3"
       ]
     },
     "fondazione_sud": {
       "initialized": true,
       "seen": [
-        "fondazione-sud:2e57dd6692aa51f5a81ebf84",
-        "fondazione-sud:5cdeddd9894c441741801695",
-        "fondazione-sud:727e4b208f533c0431f5539e",
         "fondazione-sud:760cb36dbd286186b25756d1",
-        "fondazione-sud:8b31c71a3937eeaab251b3b8",
-        "fondazione-sud:c8df52f3010eae908d49ea7f",
         "fondazione-sud:ca9968bb462b798521f65328"
       ]
     },
@@ -246,6 +216,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-09-29T14:09:05.466376+00:00",
-  "schema_version": 16
+  "last_update": "2026-09-29T14:17:19.677905+00:00",
+  "schema_version": 17
 }

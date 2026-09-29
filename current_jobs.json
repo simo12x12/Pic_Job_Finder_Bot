@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 16:08",
+  "last_check": "29/09/2026 16:13",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -393,58 +393,6 @@
       "status": "ok",
       "items": [
         {
-          "title": "Torna all'inizio del contenuto",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html?ordina_per=oggetto&dir=desc&sort=t.oggetto&direction=desc&pagina=1"
-        },
-        {
-          "title": "Incarico di Direttore generale",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/personale/incarico-di-direttore-generale.html"
-        },
-        {
-          "title": "Selezione del personale",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale.html"
-        },
-        {
-          "title": "Reclutamento del Personale",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale.html"
-        },
-        {
-          "title": "Bandi e avvisi di selezione per i quali è possibile presentare domanda di partecipazione",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html"
-        },
-        {
-          "title": "Bandi e avvisi di selezione attivi per i quali non è più possibile presentare la domanda di partecipazione",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-attivi-per-i-quali-non-e-piu-possibile-presentare-la-domanda-di-partecipazione.html"
-        },
-        {
-          "title": "Esiti delle selezioni",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/esiti-delle-selezioni.html"
-        },
-        {
-          "title": "Criteri e modalità",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/criteri-e-modalita-1.html"
-        },
-        {
-          "title": "Avviso finalizzato ad acquisire le manifestazioni di interesse degli operatori economici in ordine ai lavori di possibile completamento di opere incompiute nonché alla gestione delle stesse",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/bandi-di-gara-e-contratti/atti-e-documenti-di-carattere-generale-riferiti-a-tutte-le-procedure/avviso-finalizzato-ad-acquisire-le-manifestazioni-di-interesse-degli-operatori-e.html"
-        },
-        {
-          "title": "Avviso sui risultati della procedura di affidamento diretto",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/bandi-di-gara-e-contratti/procedure-fino-al-31-12-2023/atti-relativi-alle-procedure-per-l-affidamento-di-appalti-pubblici-di-servizi-forniture-lavori-e-opere-di-concorsi-pubblici-di-progettazione-di-concorsi-di-idee-e-di-concessioni-compresi-quelli-tra-enti-nell-ambito-del-settore-pubblico-di-cui-all-art-5-del-dlgs-n-50-2016/avviso-sui-risultati-della-procedura-di-affidamento-diretto.html"
-        },
-        {
-          "title": "Avviso di avvio della procedura e avviso sui risultati della aggiudicazione di procedure negoziate senza bando",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/bandi-di-gara-e-contratti/procedure-fino-al-31-12-2023/atti-relativi-alle-procedure-per-l-affidamento-di-appalti-pubblici-di-servizi-forniture-lavori-e-opere-di-concorsi-pubblici-di-progettazione-di-concorsi-di-idee-e-di-concessioni-compresi-quelli-tra-enti-nell-ambito-del-settore-pubblico-di-cui-all-art-5-del-dlgs-n-50-2016/avviso-di-avvio-della-procedura-e-avviso-sui-risultati-della-aggiudicazione-di-procedure-negoziate-senza-bando.html"
-        },
-        {
-          "title": "Data pubblicazione",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html?ordina_per=oggetto&dir=desc&sort=t.dataPubblicazione&direction=desc&pagina=1"
-        },
-        {
-          "title": "Data di scadenza",
-          "url": "https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html?ordina_per=oggetto&dir=desc&sort=t.dataScadenza&direction=desc&pagina=1"
-        },
-        {
           "title": "Avviso pubblico per la selezione di n. 1 “Esperto/a specialista in organizzazione e gestione servizi sociali” con esperienza ≥10 anni, n. 2 “Esperti/e senior in organizzazione e gestione servizi sociali” con esperienza ≥7 anni, n. 1 “Esperto/a middle in organizzazione e gestione servizi sociali” con esperienza ≥3 anni, cui conferire incarichi di lavoro autonomo ex art. 7, comma 6 del D.Lgs. n. 165/2001, per lo svolgimento di attività per il progetto dell’ANCI “POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) - CUP B59I25003480006 – (Cod. Prog. 834)",
           "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/244/avviso-pubblico-per-la-selezione-di-n-1-esperto-a-specialista-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-10-anni-n-2-esperti-e-senior-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-7-anni-n-1-esperto-a-middle-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-3-anni-cui-conferire-incarichi-di-lavoro-autonomo-ex-art-7-comma-6-del-d-lgs-n-165-2001-per-lo-svolgimento-di-attivita-per-il-progetto-dell-anci-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
         },
@@ -465,16 +413,7 @@
     "ifel": {
       "label": "IFEL",
       "status": "ok",
-      "items": [
-        {
-          "title": "Avviso sui risultati della procedura di affidamento diretto",
-          "url": "https://fondazioneifel.portaletrasparenza.net/it/trasparenza/bandi-di-gara-e-contratti/procedure-fino-al-31-12-2023/atti-relativi-alle-procedure-per-l-affidamento-di-appalti-pubblici-di-servizi-forniture-lavori-e-opere-di-concorsi-pubblici-di-progettazione-di-concorsi-di-idee-e-di-concessioni-compresi-quelli-tra-enti-nell-ambito-del-settore-pubblico-di-cui-all-art-5-del-dlgs-n-50-2016/avviso-sui-risultati-della-procedura-di-affidamento-diretto.html"
-        },
-        {
-          "title": "Avviso di avvio della procedura e avviso sui risultati della aggiudicazione di procedure negoziate senza bando",
-          "url": "https://fondazioneifel.portaletrasparenza.net/it/trasparenza/bandi-di-gara-e-contratti/procedure-fino-al-31-12-2023/atti-relativi-alle-procedure-per-l-affidamento-di-appalti-pubblici-di-servizi-forniture-lavori-e-opere-di-concorsi-pubblici-di-progettazione-di-concorsi-di-idee-e-di-concessioni-compresi-quelli-tra-enti-nell-ambito-del-settore-pubblico-di-cui-all-art-5-del-dlgs-n-50-2016/avviso-di-avvio-della-procedura-e-avviso-sui-risultati-della-aggiudicazione-di-procedure-negoziate-senza-bando.html"
-        }
-      ]
+      "items": []
     },
     "sna": {
       "label": "SNA",
@@ -486,42 +425,6 @@
       "status": "ok",
       "items": [
         {
-          "title": "Torna all'inizio del contenuto",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html"
-        },
-        {
-          "title": "Incarico di Direttore generale",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/personale/incarico-di-direttore-generale.html"
-        },
-        {
-          "title": "Selezione del personale",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale.html"
-        },
-        {
-          "title": "Reclutamento del personale",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale.html"
-        },
-        {
-          "title": "Bandi e avvisi di selezione attivi per i quali non è più possibile presentare la domanda di partecipazione",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-attivi-per-i-quali-non-e-piu-possibile-presentare-la-domanda-di-partecipazione.html"
-        },
-        {
-          "title": "Esiti delle selezioni",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/esiti-delle-selezioni.html"
-        },
-        {
-          "title": "Avviso finalizzato ad acquisire le manifestazioni di interesse degli operatori economici in ordine ai lavori di possibile completamento di opere incompiute nonché alla gestione delle stesse",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/bandi-di-gara-e-contratti/atti-e-documenti-di-carattere-generale-riferiti-a-tutte-le-procedure/avviso-finalizzato-ad-acquisire-le-manifestazioni-di-interesse-degli-operatori-economici-in-ordine-ai-lavori-di-possibile-completamento-di-opere-incompiute-nonch-alla-gestione-delle-stesse.html"
-        },
-        {
-          "title": "Data pubblicazione",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html?sort=t.dataPubblicazione&direction=asc&pagina=1"
-        },
-        {
-          "title": "Data di scadenza",
-          "url": "https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html?sort=t.dataScadenza&direction=asc&pagina=1"
-        },
-        {
           "title": "AVVISO DI SELEZIONE AD EVIDENZA PUBBLICA PER IL REPERIMENTO DI UN PROFILO JUNIOR DI INTELLECTUAL PROPERTY DATA ANALYST DA ASSUMERE A TEMPO PIENO E DETERMINATO (Avviso n. 9 del 2026)",
           "url": "https://tagliacarne.portaletrasparenza.net/dettagli/concorsi/50/avviso-di-selezione-ad-evidenza-pubblica-per-il-reperimento-di-un-profilo-junior-di-intellectual-property-data-analyst-da-assumere-a-tempo-pieno-e-determinato-avviso-n-9-del-2026.html"
         }
@@ -532,16 +435,16 @@
       "status": "ok",
       "items": [
         {
+          "title": "en",
+          "url": "https://www.fondazionebrodolini.it/en/vacancy"
+        },
+        {
           "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
           "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
         },
         {
           "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
           "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
-        },
-        {
-          "title": "Leggi",
-          "url": "https://www.fondazionebrodolini.it/progetti/llm-bridge-venture-incubation-programme-ai-etica-europa"
         }
       ]
     },
@@ -550,32 +453,12 @@
       "status": "ok",
       "items": [
         {
-          "title": "Home",
-          "url": "https://www.fondazioneconilsud.it"
-        },
-        {
           "title": "Posizioni aperte",
           "url": "https://www.fondazioneconilsud.it/category/posizioni-aperte"
         },
         {
           "title": "Con i bambini cerca una risorsa per l’ufficio comunicazione",
           "url": "https://www.fondazioneconilsud.it/2026/07/16/lavora-con-noi-coordinatore-coordinatrice-ufficio-comunicazione"
-        },
-        {
-          "title": "La governance",
-          "url": "https://www.fondazioneconilsud.it/la-fondazione/la-governance"
-        },
-        {
-          "title": "Con i bambini",
-          "url": "https://www.fondazioneconilsud.it/la-fondazione/con-i-bambini"
-        },
-        {
-          "title": "Staff",
-          "url": "https://www.fondazioneconilsud.it/la-fondazione/staff"
-        },
-        {
-          "title": "Bilancio di missione",
-          "url": "https://www.fondazioneconilsud.it/bilancio-di-missione"
         }
       ]
     },
