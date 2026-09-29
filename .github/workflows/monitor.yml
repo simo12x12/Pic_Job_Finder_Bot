@@ -40,6 +40,17 @@ jobs:
           git config user.name "Pic Job Finder Bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          cp seen_jobs.json /tmp/seen_jobs.json
+          cp current_jobs.json /tmp/current_jobs.json
+          cp bot_state.json /tmp/bot_state.json
+
+          git fetch origin main
+          git reset --hard origin/main
+
+          cp /tmp/seen_jobs.json seen_jobs.json
+          cp /tmp/current_jobs.json current_jobs.json
+          cp /tmp/bot_state.json bot_state.json
+
           git add seen_jobs.json current_jobs.json bot_state.json
 
           if git diff --cached --quiet; then
@@ -48,8 +59,6 @@ jobs:
           fi
 
           git commit -m "Update Pic Job Finder state"
-
-          git pull --rebase origin main
           git push origin main
 
       - name: Notify Telegram on failure
