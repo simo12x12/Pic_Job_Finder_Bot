@@ -99,7 +99,7 @@ SOURCE_LABELS = {
     "italo": "Italo",
     "fincantieri": "Fincantieri",
 }
-MEMORY_SCHEMA_VERSION = 11
+MEMORY_SCHEMA_VERSION = 12
 
 
 def now_rome():
@@ -213,6 +213,10 @@ def load_memory():
     if data.get("schema_version", 1) < 11:
         # Parser refinements for Block 2: re-baseline these sources once.
         for name in ("terna", "italo", "fincantieri"):
+            data["sources"][name] = empty_source()
+
+    if data.get("schema_version", 1) < 12:
+        for name in ("bmti", "italo", "fincantieri"):
             data["sources"][name] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
@@ -700,11 +704,22 @@ def get_ama_roma_positions():
 
 
 def get_bmti_positions():
-    page=fetch_html(BMTI_URL,45,2);items={};a=page.lower().find('posizioni aperte');b=page.lower().find('per tutte le posizioni',a+1);sec=page[a:b if b>a else len(page)] if a>=0 else page
-    for href,label_html in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',sec,re.I|re.S):
-        label=strip_tags(label_html);full=absolute_url(BMTI_URL,href)
-        if not label or not full.lower().endswith('.pdf'):continue
-        iid='bmti:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':label,'url':full,'extra':'Posizione aperta'}
+    page = fetch_html(BMTI_URL, 45, 2)
+    items = {}
+    for href, label_html in re.findall(
+        r'<a[^>]+href=["\']([^"\']+\.pdf(?:\?[^"\']*)?)["\'][^>]*>(.*?)</a>',
+        page,
+        re.I | re.S,
+    ):
+        label = strip_tags(label_html)
+        full = absolute_url(BMTI_URL, href)
+        low = (label + " " + full).lower()
+        if not label or "privacy" in low or "nota-informativa" in low:
+            continue
+        if "avviso" not in low and "proc" not in low:
+            continue
+        iid = 'bmti:' + hashlib.sha256(full.encode()).hexdigest()[:24]
+        items[iid] = {'id': iid, 'title': label, 'url': full, 'extra': 'Posizione aperta'}
     return list(items.values())
 
 
@@ -766,42 +781,56 @@ def get_acea_positions():
 
 
 def get_italo_positions():
-    # Main page occasionally times out from GitHub. Try it once, then use the
-    # official Legal Affairs page which currently contains the Corporate Affairs role.
-    pages=[]
+    pages = []
     try:
-        pages.append((ITALO_URL,fetch_html(ITALO_URL,30,1)))
+        pages.append((ITALO_URL, fetch_html(ITALO_URL, 30, 1)))
     except Exception as exc:
         print(f"Italo pagina principale non disponibile: {exc}. Uso fallback ufficiale.")
     try:
-        pages.append((ITALO_LEGAL_URL,fetch_html(ITALO_LEGAL_URL,30,1)))
+        pages.append((ITALO_LEGAL_URL, fetch_html(ITALO_LEGAL_URL, 30, 1)))
     except Exception as exc:
         print(f"Italo fallback Legal Affairs non disponibile: {exc}")
-    items={}
-    for base,page in pages:
-        # Italo exposes the job names as headings rather than conventional detail links.
-        for title_html in re.findall(r'<h[2-5][^>]*>(.*?)</h[2-5]>',page,re.I|re.S):
-            title=strip_tags(title_html)
-            if not title or not matches_corporate_keywords(title): continue
-            if title.lower() in {'selezioni personale di staff','selezioni personale operativo','candidatura spontanea','legal affairs and compliance'}: continue
-            iid='italo:'+hashlib.sha256(title.lower().encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':base,'extra':'Corporate keywords'}
+
+    items = {}
+    for base, page in pages:
+        candidates = [strip_tags(x) for x in re.findall(r'<h[2-6][^>]*>(.*?)</h[2-6]>', page, re.I | re.S)]
+        # Fallback for markup where job titles are emitted outside heading tags.
+        plain = strip_tags(page)
+        candidates += re.findall(
+            r'\b([A-Z][A-Z &/\-]{5,}(?:SPECIALIST|MANAGER|AFFAIRS)[A-Z &/\-]*)\b',
+            plain,
+        )
+        for title in candidates:
+            title = normalize_space(title)
+            if not title or not matches_corporate_keywords(title):
+                continue
+            if title.lower() in {'selezioni personale di staff', 'selezioni personale operativo', 'candidatura spontanea', 'legal affairs and compliance'}:
+                continue
+            iid = 'italo:' + hashlib.sha256(title.lower().encode()).hexdigest()[:24]
+            items[iid] = {'id': iid, 'title': title, 'url': base, 'extra': 'Corporate keywords'}
     return list(items.values())
 
 
 def get_fincantieri_positions():
-    page=fetch_html(FINCANTIERI_URL,45,2);items={}
-    # Do not interpret generic corporate-page links as vacancies. Only retain links
-    # whose own label looks like a concrete role and matches the keyword dictionary.
-    blacklist={'persone','lavora con noi','approfondisci','scopri di più','candidatura spontanea'}
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(FINCANTIERI_URL,m.group('href')).rstrip('/')
-        if not title or title.lower() in blacklist: continue
-        if not matches_corporate_keywords(title): continue
-        # Require a job-like label, not prose/navigation.
-        if len(title)>160: continue
-        iid='fincantieri:'+hashlib.sha256((title+'|'+full).encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    page = fetch_html(FINCANTIERI_URL, 45, 2)
+    items = {}
+    for m in re.finditer(
+        r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',
+        page,
+        re.I | re.S,
+    ):
+        title = strip_tags(m.group('label'))
+        full = absolute_url(FINCANTIERI_URL, m.group('href')).rstrip('/')
+        low_url = full.lower()
+        if not title or not matches_corporate_keywords(title):
+            continue
+        # Only explicit recruiting/job destinations. This prevents corporate navigation
+        # from being counted as vacancies.
+        if not any(x in low_url for x in ('/job/', '/jobs/', 'career', 'recruit')):
+            continue
+        iid = 'fincantieri:' + hashlib.sha256(full.encode()).hexdigest()[:24]
+        items[iid] = {'id': iid, 'title': title, 'url': full, 'extra': 'Corporate keywords'}
     return list(items.values())
-
 
 
 # ---------- CDP ----------
