@@ -113,7 +113,7 @@ SOURCE_LABELS = {
     "fondazione_sud": "Fondazione con il Sud",
     "enav": "ENAV",
 }
-MEMORY_SCHEMA_VERSION = 16
+MEMORY_SCHEMA_VERSION = 17
 
 
 def now_rome():
@@ -243,6 +243,10 @@ def load_memory():
 
     if data.get("schema_version", 1) < 15:
         data["sources"]["bmti"] = empty_source()
+
+    if data.get("schema_version", 1) < 17:
+        for name in ("anci", "ifel", "tagliacarne", "brodolini", "fondazione_sud"):
+            data["sources"][name] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -932,18 +936,36 @@ def _portal_open_selection_items(url, prefix):
 
 
 def get_anci_positions():
-    return _portal_open_selection_items(ANCI_OPEN_URL,'anci')
+    page=fetch_html(ANCI_OPEN_URL,45,2);today=datetime.now(ROME).date();items={}
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>',page,re.I|re.S):
+        text=strip_tags(row);dates=re.findall(r'\b(\d{2}/\d{2}/\d{4})\b',text)
+        if len(dates)<2:continue
+        deadline=parse_it_date(dates[-1])
+        if not deadline or deadline<today:continue
+        links=re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',row,re.I|re.S)
+        if not links:continue
+        href,label_html=max(links,key=lambda x:len(strip_tags(x[1])));title=strip_tags(label_html)
+        if not title: title=text
+        full=absolute_url(ANCI_OPEN_URL,href).rstrip('/');iid='anci:'+hashlib.sha256(full.encode()).hexdigest()[:24]
+        items[iid]={'id':iid,'title':title,'url':full,'deadline':dates[-1]}
+    return list(items.values())
 
 
 def get_ifel_positions():
-    # Main transparency page links to recruitment records. Keep only non-expired details.
     page=fetch_html(IFEL_SELECTION_URL,45,2);today=datetime.now(ROME).date();items={}
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+(?:concorsi|dettagli)[^"\']*)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(IFEL_SELECTION_URL,m.group('href'))
-        if not title or not any(x in title.lower() for x in ('avviso','selezione','assunzione')):continue
-        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+500)]);dates=re.findall(r'\b(\d{2}/\d{2}/\d{4})\b',context);deadline=parse_it_date(dates[-1]) if dates else None
-        if deadline and deadline<today:continue
-        iid='ifel:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':dates[-1] if dates else ''}
+    candidates=[]
+    for href,label_html in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',page,re.I|re.S):
+        label=strip_tags(label_html);full=absolute_url(IFEL_SELECTION_URL,href)
+        if any(x in (label+' '+full).lower() for x in ('avviso','selezione','concorsi')): candidates.append((full,label))
+    for full,label in candidates:
+        try: detail=fetch_html(full,30,1)
+        except Exception: continue
+        text=strip_tags(detail);m=re.search(r'Data\s+di\s+scadenza:\s*(\d{2}/\d{2}/\d{4})',text,re.I)
+        if not m:continue
+        deadline=parse_it_date(m.group(1))
+        if not deadline or deadline<today:continue
+        title_match=re.search(r'<h1[^>]*>(.*?)</h1>',detail,re.I|re.S);title=strip_tags(title_match.group(1)) if title_match else label
+        iid='ifel:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':m.group(1)}
     return list(items.values())
 
 
@@ -962,27 +984,38 @@ def get_sna_positions():
 
 
 def get_tagliacarne_positions():
-    return _portal_open_selection_items(TAGLIACARNE_OPEN_URL,'tagliacarne')
+    page=fetch_html(TAGLIACARNE_OPEN_URL,45,2)
+    if 'nessun elemento presente' in strip_tags(page).lower(): return []
+    today=datetime.now(ROME).date();items={}
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>',page,re.I|re.S):
+        text=strip_tags(row);dates=re.findall(r'\b(\d{2}/\d{2}/\d{4})\b',text)
+        if len(dates)<2:continue
+        deadline=parse_it_date(dates[-1])
+        if not deadline or deadline<today:continue
+        links=re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',row,re.I|re.S)
+        if not links:continue
+        href,label_html=max(links,key=lambda x:len(strip_tags(x[1])));title=strip_tags(label_html) or text;full=absolute_url(TAGLIACARNE_OPEN_URL,href).rstrip('/');iid='tagliacarne:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':dates[-1]}
+    return list(items.values())
 
 
 def get_brodolini_positions():
-    page=fetch_html(BRODOLINI_URL,45,2);items={}
+    page=fetch_html(BRODOLINI_URL,45,2);items={};blacklist={'lavora con noi','home','news','contatti','chi siamo'}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(BRODOLINI_URL,m.group('href')).rstrip('/')
-        if not title or full.rstrip('/')==BRODOLINI_URL.rstrip('/'):continue
-        context=strip_tags(page[max(0,m.start()-600):min(len(page),m.end()+600)])
-        if not any(x in (title+' '+context).lower() for x in ('vacancy','esperto','expert','research','project','ufficio','assistant','manager')):continue
+        title=strip_tags(m.group('label'));full=absolute_url(BRODOLINI_URL,m.group('href')).rstrip('/');low=(title+' '+full).lower()
+        if not title or title.lower() in blacklist or full.rstrip('/')==BRODOLINI_URL.rstrip('/'):continue
+        if not any(x in low for x in ('vacancy','job','career','esperto','expert','researcher','project')):continue
         iid='brodolini:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full}
     return list(items.values())
 
 
 def get_fondazione_sud_positions():
     page=fetch_html(FONDAZIONE_SUD_URL,45,2);items={}
-    # Small curated page: keep job/open-position links and communication-oriented visible titles.
+    # Only concrete links/cards whose title/context says communication; exclude navigation/social.
+    blacklist=('facebook','linkedin','instagram','youtube','privacy','cookie','lavora con noi')
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(FONDAZIONE_SUD_URL,m.group('href')).rstrip('/');context=strip_tags(page[max(0,m.start()-400):min(len(page),m.end()+400)])
-        combined=title+' '+context
-        if not title or not any(x in combined.lower() for x in ('posizioni aperte','comunicazione','ufficio stampa','lavora con noi')):continue
+        title=strip_tags(m.group('label'));full=absolute_url(FONDAZIONE_SUD_URL,m.group('href')).rstrip('/');context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+500)]);combined=(title+' '+context).lower()
+        if not title or any(x in (title+' '+full).lower() for x in blacklist):continue
+        if not any(x in combined for x in ('comunicazione','communication','ufficio stampa','media relations')):continue
         if full.rstrip('/')==FONDAZIONE_SUD_URL.rstrip('/'):continue
         iid='fondazione-sud:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full}
     return list(items.values())
@@ -1124,10 +1157,10 @@ def main():
         ("acea", get_acea_positions, lambda x: standard_job_message("Acea", x["title"], x["url"], extra=x.get("extra"))),
         ("italo", get_italo_positions, lambda x: standard_job_message("Italo", x["title"], x["url"], extra=x.get("extra"))),
         ("fincantieri", get_fincantieri_positions, lambda x: standard_job_message("Fincantieri", x["title"], x["url"], extra=x.get("extra"))),
-        ("anci", get_anci_positions, lambda x: standard_job_message("ANCI", x["title"], x["url"])),
+        ("anci", get_anci_positions, lambda x: standard_job_message("ANCI", x["title"], x["url"], deadline=x.get("deadline"))),
         ("ifel", get_ifel_positions, lambda x: standard_job_message("IFEL", x["title"], x["url"], deadline=x.get("deadline"))),
         ("sna", get_sna_positions, lambda x: standard_job_message("SNA", x["title"], x["url"], deadline=x.get("deadline"))),
-        ("tagliacarne", get_tagliacarne_positions, lambda x: standard_job_message("Centro Studi Tagliacarne", x["title"], x["url"])),
+        ("tagliacarne", get_tagliacarne_positions, lambda x: standard_job_message("Centro Studi Tagliacarne", x["title"], x["url"], deadline=x.get("deadline"))),
         ("brodolini", get_brodolini_positions, lambda x: standard_job_message("Fondazione Giacomo Brodolini", x["title"], x["url"])),
         ("fondazione_sud", get_fondazione_sud_positions, lambda x: standard_job_message("Fondazione con il Sud", x["title"], x["url"])),
         ("enav", get_enav_positions, lambda x: standard_job_message("ENAV", x["title"], x["url"], extra=x.get("extra"))),
