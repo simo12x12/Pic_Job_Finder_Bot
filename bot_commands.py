@@ -33,6 +33,13 @@ SOURCE_ORDER = [
     "acea",
     "italo",
     "fincantieri",
+    "anci",
+    "ifel",
+    "sna",
+    "tagliacarne",
+    "brodolini",
+    "fondazione_sud",
+    "enav",
     "cdp",
 ]
 
