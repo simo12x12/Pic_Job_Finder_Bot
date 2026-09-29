@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 17:34",
+  "last_check": "29/09/2026 17:49",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -392,7 +392,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
@@ -516,9 +516,8 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
