@@ -26,7 +26,7 @@ AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
 AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
 INVITALIA_JOBS_URL = "https://www.invitalia.it/lavora-con-noi/le-posizioni-aperte"
 CDP_JOBS_URL = "https://www.opportunitadilavoro.cdp.it/"
-CORPORATE_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social", "public affairs", "corporate affairs", "external relations", "relazioni esterne", "relazioni istituzionali", "rapporti istituzionali", "stakeholder", "brand", "content", "press", "ufficio stampa", "digital communication"]
+CORPORATE_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social", "public affairs", "corporate affairs", "external relations", "relazioni esterne", "relazioni istituzionali", "rapporti istituzionali", "stakeholder", "brand", "content", "press", "ufficio stampa", "digital communication", "media relations", "institutional relations", "event", "events", "eventi", "partnership", "sponsorship", "sponsorizzazioni", "editorial", "editoriale", "reputation", "corporate communication", "campagne informative"]
 IPZS_URL="https://www.ipzs.it/chi-siamo/lavora-con-noi/"
 PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
 ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
@@ -47,6 +47,14 @@ TAGLIACARNE_OPEN_URL="https://tagliacarne.portaletrasparenza.net/it/trasparenza/
 BRODOLINI_URL="https://www.fondazionebrodolini.it/vacancy"
 FONDAZIONE_SUD_URL="https://www.fondazioneconilsud.it/lavora-con-noi/"
 ENAV_CAREER_URL="https://enav.intervieweb.it/it/career"
+SPORT_SALUTE_URL="https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/"
+FS_JOBS_URL="https://fscareers.gruppofs.it/jobs.php"
+AUTOSTRADE_CAREER_URL="https://career55.sapsf.eu/career?company=autostrade"
+INFOCAMERE_OPEN_URL="https://infocamere.it/posizioni-aperte/"
+FORMEZ_BANDI_URL="https://www.formez.it/lavora-con-noi/bandi"
+SVILUPPO_LAVORO_URL="https://lavoraconnoi.sviluppolavoroitalia.it/hr/core/StartInteraction.action?id_interaction=ST.HR.LSTAVVISI_PUBBLICATI"
+CAPCOE_URL="https://capcoe.it/opportunita/avvisi/"
+UNIONCAMERE_URL="https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -85,7 +93,7 @@ INPA_SEARCH_TERMS = [
     "digital communication",
 ]
 
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri", "anci", "ifel", "sna", "tagliacarne", "brodolini", "fondazione_sud", "enav"]
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri", "anci", "ifel", "sna", "tagliacarne", "brodolini", "fondazione_sud", "enav", "sport_salute", "fs", "autostrade", "infocamere", "formez", "sviluppo_lavoro", "capcoe", "unioncamere"]
 SOURCE_LABELS = {
     "leonardo": "Leonardo",
     "inpa": "inPA",
@@ -113,8 +121,16 @@ SOURCE_LABELS = {
     "brodolini": "Fondazione Giacomo Brodolini",
     "fondazione_sud": "Fondazione con il Sud",
     "enav": "ENAV",
+    "sport_salute": "Sport e Salute",
+    "fs": "Gruppo FS Italiane",
+    "autostrade": "Autostrade per l Italia",
+    "infocamere": "InfoCamere",
+    "formez": "Formez PA",
+    "sviluppo_lavoro": "Sviluppo Lavoro Italia",
+    "capcoe": "PN Capacita per la Coesione",
+    "unioncamere": "Unioncamere",
 }
-MEMORY_SCHEMA_VERSION = 18
+MEMORY_SCHEMA_VERSION = 19
 
 
 def now_rome():
@@ -251,6 +267,10 @@ def load_memory():
 
     if data.get("schema_version", 1) < 18:
         for name in ("anci", "tagliacarne", "brodolini", "fondazione_sud"):
+            data["sources"][name] = empty_source()
+
+    if data.get("schema_version", 1) < 19:
+        for name in ("anci", "tagliacarne", "sport_salute", "fs", "autostrade", "infocamere", "formez", "sviluppo_lavoro", "capcoe", "unioncamere"):
             data["sources"][name] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
@@ -1108,6 +1128,97 @@ def get_enav_positions():
     return list(items.values())
 
 
+# ---------- Block 4 and 5 ----------
+def get_sport_salute_positions():
+    page=fetch_html(SPORT_SALUTE_URL,30,1);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+/posizione/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(SPORT_SALUTE_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        iid='sport-salute:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_fs_positions():
+    page=fetch_html(FS_JOBS_URL,35,1);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*view-job\.php[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(FS_JOBS_URL,m.group('href'))
+        if not title or not matches_corporate_keywords(title):continue
+        iid='fs:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_autostrade_positions():
+    page=fetch_html(AUTOSTRADE_CAREER_URL,35,1);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(AUTOSTRADE_CAREER_URL,m.group('href')).rstrip('/')
+        if not title or len(title)>180 or not matches_corporate_keywords(title):continue
+        if any(x in title.lower() for x in ('privacy','cookie','candidatura spontanea')):continue
+        iid='autostrade:'+hashlib.sha256((title+'|'+full).encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_infocamere_positions():
+    page=fetch_html(INFOCAMERE_OPEN_URL,30,1);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(INFOCAMERE_OPEN_URL,m.group('href')).rstrip('/')
+        if not title or len(title)>180 or not matches_corporate_keywords(title):continue
+        if full.rstrip('/')==INFOCAMERE_OPEN_URL.rstrip('/'):continue
+        iid='infocamere:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_formez_positions():
+    page=fetch_html(FORMEZ_BANDI_URL,30,1);items={}
+    # Direct Formez employment notices only; avoid inPA duplicate links and PDFs.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/lavora-con-noi/bandi/d/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(FORMEZ_BANDI_URL,m.group('href')).rstrip('/')
+        if not title:continue
+        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+1000)])
+        if not matches_corporate_keywords(title+' '+context) and not any(x in context.lower() for x in ('assistenza tecnica','capacita istituzionale','eventi di lavoro')):continue
+        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Bando Formez PA'}
+    return list(items.values())
+
+
+def get_sviluppo_lavoro_positions():
+    page=fetch_html(SVILUPPO_LAVORO_URL,30,1);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(SVILUPPO_LAVORO_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        iid='sviluppo-lavoro:'+hashlib.sha256((title+'|'+full).encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate / PA keywords'}
+    return list(items.values())
+
+
+def get_capcoe_positions():
+    page=fetch_html(CAPCOE_URL,30,1);today=datetime.now(ROME).date();items={}
+    plain=strip_tags(page)
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(CAPCOE_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        # dedupe sources already monitored directly
+        if any(host in full.lower() for host in ('eutalia.eu','anci.portaletrasparenza.net','inpa.gov.it')):continue
+        context=strip_tags(page[m.end():min(len(page),m.end()+350)]);dm=re.search(r'(?:Scadenza|Data chiusura candidature):\s*(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})|(?:Scadenza|Data chiusura candidature):\s*(\d{1,2})/(\d{1,2})/(\d{4})',context,re.I)
+        # Keep only entries where expiry can be verified as current; otherwise skip.
+        if not dm:continue
+        months={'gennaio':1,'febbraio':2,'marzo':3,'aprile':4,'maggio':5,'giugno':6,'luglio':7,'agosto':8,'settembre':9,'ottobre':10,'novembre':11,'dicembre':12}
+        try:
+            if dm.group(1): deadline=datetime(int(dm.group(3)),months[dm.group(2).lower()],int(dm.group(1))).date()
+            else: deadline=datetime(int(dm.group(6)),int(dm.group(5)),int(dm.group(4))).date()
+        except Exception:continue
+        if deadline<today:continue
+        iid='capcoe:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':deadline.strftime('%d/%m/%Y')}
+    return list(items.values())
+
+
+def get_unioncamere_positions():
+    page=fetch_html(UNIONCAMERE_URL,30,1);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+/bandi-di-concorso/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(UNIONCAMERE_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        if any(x in full.lower() for x in ('bandi-scaduti','archivio')):continue
+        iid='unioncamere:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'PA / Corporate keywords'}
+    return list(items.values())
+
+
 # ---------- CDP ----------
 def get_cdp_positions():
     items = {}
@@ -1240,6 +1351,14 @@ def main():
         ("brodolini", get_brodolini_positions, lambda x: standard_job_message("Fondazione Giacomo Brodolini", x["title"], x["url"])),
         ("fondazione_sud", get_fondazione_sud_positions, lambda x: standard_job_message("Fondazione con il Sud", x["title"], x["url"])),
         ("enav", get_enav_positions, lambda x: standard_job_message("ENAV", x["title"], x["url"], extra=x.get("extra"))),
+        ("sport_salute", get_sport_salute_positions, lambda x: standard_job_message("Sport e Salute", x["title"], x["url"], extra=x.get("extra"))),
+        ("fs", get_fs_positions, lambda x: standard_job_message("Gruppo FS Italiane", x["title"], x["url"], extra=x.get("extra"))),
+        ("autostrade", get_autostrade_positions, lambda x: standard_job_message("Autostrade per l Italia", x["title"], x["url"], extra=x.get("extra"))),
+        ("infocamere", get_infocamere_positions, lambda x: standard_job_message("InfoCamere", x["title"], x["url"], extra=x.get("extra"))),
+        ("formez", get_formez_positions, lambda x: standard_job_message("Formez PA", x["title"], x["url"], extra=x.get("extra"))),
+        ("sviluppo_lavoro", get_sviluppo_lavoro_positions, lambda x: standard_job_message("Sviluppo Lavoro Italia", x["title"], x["url"], extra=x.get("extra"))),
+        ("capcoe", get_capcoe_positions, lambda x: standard_job_message("PN Capacita per la Coesione", x["title"], x["url"], deadline=x.get("deadline"))),
+        ("unioncamere", get_unioncamere_positions, lambda x: standard_job_message("Unioncamere", x["title"], x["url"], extra=x.get("extra"))),
         (
             "cdp",
             get_cdp_positions,
@@ -1326,7 +1445,7 @@ def main():
 
     print(
         "Leonardo + inPA + Eutalia + Consip + Sogei + AgID + "
-        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + ANCI + IFEL + SNA + Centro Studi Tagliacarne + Fondazione Giacomo Brodolini + Fondazione con il Sud + ENAV + CDP controllati."
+        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + ANCI + IFEL + SNA + Centro Studi Tagliacarne + Fondazione Giacomo Brodolini + Fondazione con il Sud + ENAV + Sport e Salute + Gruppo FS Italiane + Autostrade per l Italia + InfoCamere + Formez PA + Sviluppo Lavoro Italia + PN Capacita per la Coesione + Unioncamere + CDP controllati."
     )
     print("Controllo completato.")
 
