@@ -1591,10 +1591,13 @@ def main():
 
     print("\n=== RIEPILOGO ===")
     if errors:
-        print("Controllo completato con errori:")
+        print("Controllo completato con anomalie non bloccanti:")
         for error in errors:
             print(f"- {error}")
-        sys.exit(1)
+        # IMPORTANT: technical source errors must never fail the GitHub workflow.
+        # This prevents any external `if: failure()` Telegram notifier from firing.
+        # Error reporting is handled only by send_error_email() when SMTP is configured.
+        return
 
     print(
         "Leonardo + inPA + Eutalia + Consip + Sogei + AgID + "
