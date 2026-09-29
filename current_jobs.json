@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 15:59",
+  "last_check": "29/09/2026 16:01",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -377,7 +377,16 @@
     "fincantieri": {
       "label": "Fincantieri",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Accedi per scoprire chi già conosci presso FINCANTIERI",
+          "url": "https://it.linkedin.com/company/fincantieri/jobs"
+        },
+        {
+          "title": "Media Relations & ESG Communication Specialist",
+          "url": "https://it.linkedin.com/company/fincantieri/jobs"
+        }
+      ]
     },
     "cdp": {
       "label": "CDP",
