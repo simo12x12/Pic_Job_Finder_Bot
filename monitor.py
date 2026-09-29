@@ -14,60 +14,53 @@ from zoneinfo import ZoneInfo
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 AUTHORIZED_CHAT_IDS = ["2020881944"]
 SEEN_FILE = Path("seen_jobs.json")
+CURRENT_FILE = Path("current_jobs.json")
 ROME = ZoneInfo("Europe/Rome")
 
-# ---------- URLs ----------
 LEONARDO_ENDPOINT = "https://leonardocompany.wd3.myworkdayjobs.com/wday/cxs/leonardocompany/LeonardoCareerSite/jobs"
 INPA_ENDPOINT = "https://portale.inpa.gov.it/concorsi-smart/api/concorso-public-area/search-better"
 EUTALIA_URL = "https://www.eutalia.eu/selezione-personale-ed-esperti/"
 CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page=0"
-SOGEI_URL = "https://www.sogei.it/it/sogei-homepage/lavora-con-noi/avvisi-di-selezione-e-invio-candidature.html"
 SOGEI_TRANSPARENCY_URL = "https://www.sogei.it/it/sogei-homepage/societa-trasparente/selezione-del-personale/reclutamento-del-personale/avvisi-di-selezione0.html"
 AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
 AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
 INVITALIA_JOBS_URL = "https://www.invitalia.it/lavora-con-noi/le-posizioni-aperte"
-INVITALIA_INGATE_HOST = "https://ingate.invitalia.it"
 CDP_JOBS_URL = "https://www.opportunitadilavoro.cdp.it/"
 CDP_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social"]
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
-    "jobFamilyGroup": [
-        "8f7876e90e9c0101f751f430c4290000",
-        "8f7876e90e9c0101f751e65634a60000",
-    ],
+    "jobFamilyGroup": ["8f7876e90e9c0101f751f430c4290000", "8f7876e90e9c0101f751e65634a60000"],
 }
-
 INPA_BASE_PAYLOAD = {
-    "text": "", "categoriaId": None, "regioneId": None,
-    "status": ["OPEN"], "settoreId": None,
-    "dateFrom": None, "dateTo": None, "enteRiferimentoName": "",
-    "livelliAnzianitaIds": None, "provinciaCodice": None,
-    "salaryMax": None, "salaryMin": None, "tipoImpiegoId": None,
+    "text": "", "categoriaId": None, "regioneId": None, "status": ["OPEN"], "settoreId": None,
+    "dateFrom": None, "dateTo": None, "enteRiferimentoName": "", "livelliAnzianitaIds": None,
+    "provinciaCodice": None, "salaryMax": None, "salaryMin": None, "tipoImpiegoId": None,
 }
 INPA_COMMUNICATION_SECTOR = "b078865c126040558601"
 INPA_SEARCH_TERMS = ["marketing", "comunicazione istituzionale"]
 
-# ---------- Utilities ----------
-def now_rome():
-    return datetime.now(ROME).strftime("%d/%m/%Y %H:%M")
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp"]
+SOURCE_LABELS = {
+    "leonardo": "Leonardo", "inpa": "inPA", "eutalia": "Eutalia", "consip": "Consip",
+    "sogei": "Sogei", "agid": "AgID", "invitalia": "Invitalia", "cdp": "CDP",
+}
+MEMORY_SCHEMA_VERSION = 6
 
-def normalize_space(text):
-    return re.sub(r"\s+", " ", html.unescape(text or "")).strip()
-
-def strip_tags(text):
-    return normalize_space(re.sub(r"<[^>]+>", " ", text or ""))
+def now_rome(): return datetime.now(ROME).strftime("%d/%m/%Y %H:%M")
+def normalize_space(text): return re.sub(r"\s+", " ", html.unescape(text or "")).strip()
+def strip_tags(text): return normalize_space(re.sub(r"<[^>]+>", " ", text or ""))
+def absolute_url(base, href): return urllib.parse.urljoin(base, html.unescape(href)).split("#", 1)[0]
 
 def fetch_html(url, timeout=30, retries=1):
     last_error = None
     for attempt in range(retries):
         try:
-            request = urllib.request.Request(url, headers={
+            req = urllib.request.Request(url, headers={
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36",
-                "Accept": "text/html,application/xhtml+xml",
-                "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+                "Accept": "text/html,application/xhtml+xml", "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
             })
-            with urllib.request.urlopen(request, timeout=timeout) as response:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
                 return response.read().decode("utf-8", errors="replace")
         except Exception as exc:
             last_error = exc
@@ -76,82 +69,33 @@ def fetch_html(url, timeout=30, retries=1):
                 time.sleep(3)
     raise last_error
 
-def absolute_url(base, href):
-    return urllib.parse.urljoin(base, html.unescape(href)).split("#", 1)[0]
-
 def send_telegram(chat_id, text):
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-    data = urllib.parse.urlencode({
-        "chat_id": chat_id,
-        "text": text,
-        "disable_web_page_preview": "false",
-    }).encode("utf-8")
-    request = urllib.request.Request(url, data=data, method="POST")
-    with urllib.request.urlopen(request, timeout=30) as response:
-        response.read()
+    data = urllib.parse.urlencode({"chat_id": chat_id, "text": text, "disable_web_page_preview": "false"}).encode()
+    req = urllib.request.Request(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage", data=data, method="POST")
+    with urllib.request.urlopen(req, timeout=30) as response: response.read()
 
 def notify_all(text):
     errors = []
     for chat_id in AUTHORIZED_CHAT_IDS:
-        try:
-            send_telegram(chat_id, text)
-            print(f"Notifica inviata a {chat_id}")
-        except Exception as exc:
-            errors.append(f"{chat_id}: {exc}")
-    if errors:
-        raise RuntimeError("; ".join(errors))
+        try: send_telegram(chat_id, text); print(f"Notifica inviata a {chat_id}")
+        except Exception as exc: errors.append(f"{chat_id}: {exc}")
+    if errors: raise RuntimeError("; ".join(errors))
 
-# ---------- Memory ----------
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp"]
-MEMORY_SCHEMA_VERSION = 6
-
-def empty_source():
-    return {"initialized": False, "seen": []}
-
-def empty_memory():
-    return {"schema_version": MEMORY_SCHEMA_VERSION, "sources": {name: empty_source() for name in SOURCE_NAMES}}
+def empty_source(): return {"initialized": False, "seen": []}
+def empty_memory(): return {"schema_version": MEMORY_SCHEMA_VERSION, "sources": {n: empty_source() for n in SOURCE_NAMES}}
 
 def load_memory():
-    if not SEEN_FILE.exists():
-        return empty_memory()
-    try:
-        data = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
-    except Exception as exc:
-        raise RuntimeError(f"Memoria non leggibile: {exc}")
-
-    # Very old layout: {"seen": [...]} => Leonardo
+    if not SEEN_FILE.exists(): return empty_memory()
+    data = json.loads(SEEN_FILE.read_text(encoding="utf-8"))
     if "sources" not in data:
-        old_seen = data.get("seen", [])
-        data = empty_memory()
-        data["sources"]["leonardo"] = {"initialized": True, "seen": old_seen}
-
+        old = data.get("seen", []); data = empty_memory(); data["sources"]["leonardo"] = {"initialized": True, "seen": old}
     data.setdefault("sources", {})
-
-    # Merge the two historical Invitalia memories into one source.
     if data.get("schema_version", 1) < 6:
-        old_jobs = data["sources"].pop("invitalia_jobs", {"seen": []})
-        old_consulting = data["sources"].pop("invitalia_consulting", {"seen": []})
-        merged_seen = sorted(set(old_jobs.get("seen", [])) | set(old_consulting.get("seen", [])))
-        was_initialized = old_jobs.get("initialized", False) or old_consulting.get("initialized", False)
-        data["sources"]["invitalia"] = {"initialized": was_initialized, "seen": merged_seen}
-
-    # Schema v2: reset only the diagnostic baselines created by the earlier
-    # Consip/Presidenza parser. Leonardo, inPA and Eutalia are preserved.
-    if data.get("schema_version", 1) < MEMORY_SCHEMA_VERSION:
-        for name in ():
-            data["sources"][name] = empty_source()
-        data["schema_version"] = MEMORY_SCHEMA_VERSION
-
-    for name in SOURCE_NAMES:
-        if name not in data["sources"]:
-            data["sources"][name] = empty_source()
-        else:
-            src = data["sources"][name]
-            src.setdefault("seen", [])
-            # Existing sources from the previous bot are already initialized,
-            # even if their seen list is empty.
-            if "initialized" not in src:
-                src["initialized"] = name in {"leonardo", "inpa", "eutalia"}
+        a = data["sources"].pop("invitalia_jobs", {"seen": []}); b = data["sources"].pop("invitalia_consulting", {"seen": []})
+        data["sources"]["invitalia"] = {"initialized": a.get("initialized", False) or b.get("initialized", False), "seen": sorted(set(a.get("seen", [])) | set(b.get("seen", [])))}
+    data["schema_version"] = MEMORY_SCHEMA_VERSION
+    for n in SOURCE_NAMES:
+        data["sources"].setdefault(n, empty_source()); data["sources"][n].setdefault("seen", []); data["sources"][n].setdefault("initialized", False)
     return data
 
 def save_memory(memory):
@@ -159,567 +103,168 @@ def save_memory(memory):
     SEEN_FILE.write_text(json.dumps(memory, indent=2, ensure_ascii=False), encoding="utf-8")
 
 def process_items(memory, source, items, formatter):
-    src = memory["sources"][source]
-    current_ids = {item["id"] for item in items if item.get("id")}
-    seen_ids = set(src.get("seen", []))
-
+    src = memory["sources"][source]; current = {x["id"] for x in items if x.get("id")}; seen = set(src.get("seen", []))
     if not src.get("initialized", False):
-        print(f"Prima inizializzazione {source}: registro {len(current_ids)} elementi senza notificare.")
-        src["initialized"] = True
-        src["seen"] = sorted(current_ids)
-        return 0
-
-    new_items = [x for x in items if x.get("id") and x["id"] not in seen_ids]
-    print(f"Nuovi elementi {source}: {len(new_items)}")
-    for item in new_items:
-        notify_all(formatter(item))
-
-    # Keep historical IDs, so a removed/reappearing item is not re-notified.
-    src["seen"] = sorted(seen_ids | current_ids)
-    return len(new_items)
-
+        print(f"Prima inizializzazione {source}: registro {len(current)} elementi senza notificare.")
+        src["initialized"] = True; src["seen"] = sorted(current); return 0
+    new = [x for x in items if x.get("id") and x["id"] not in seen]
+    print(f"Nuovi elementi {source}: {len(new)}")
+    for item in new: notify_all(formatter(item))
+    src["seen"] = sorted(seen | current)
+    return len(new)
 
 def standard_job_message(source, title, url, published=None, deadline=None, extra=None):
-    lines = [
-        f"🚨 NUOVA OPPORTUNITÀ - {source.upper()}",
-        "",
-        f"💼 {title}",
-        f"🏢 Fonte: {source}",
-    ]
-    if published:
-        lines.append(f"📅 Pubblicata: {published}")
-    if deadline:
-        lines.append(f"⏳ Scadenza: {deadline}")
-    if extra:
-        lines.append(f"🏷 {extra}")
-    lines.extend([
-        f"🔔 Rilevata: {now_rome()}",
-        "",
-        f"🔗 {url}",
-        "",
-        "🤖 Pic_Job_Finder_Bot",
-    ])
+    lines = [f"🚨 NUOVA OPPORTUNITÀ - {source.upper()}", "", f"💼 {title}", f"🏢 Fonte: {source}"]
+    if published: lines.append(f"📅 Pubblicata: {published}")
+    if deadline: lines.append(f"⏳ Scadenza: {deadline}")
+    if extra: lines.append(f"🏷 {extra}")
+    lines += [f"🔔 Rilevata: {now_rome()}", "", f"🔗 {url}", "", "🤖 Pic_Job_Finder_Bot"]
     return "\n".join(lines)
 
-# ---------- Leonardo ----------
 def leonardo_request(offset=0):
     payload = {"appliedFacets": LEONARDO_FACETS, "limit": 20, "offset": offset, "searchText": ""}
-    request = urllib.request.Request(
-        LEONARDO_ENDPOINT,
-        data=json.dumps(payload).encode("utf-8"), method="POST",
-        headers={"Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0"},
-    )
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
+    req = urllib.request.Request(LEONARDO_ENDPOINT, data=json.dumps(payload).encode(), method="POST", headers={"Content-Type":"application/json","Accept":"application/json","User-Agent":"Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=30) as r: return json.loads(r.read().decode())
 
 def get_leonardo_jobs():
-    jobs, offset = [], 0
+    jobs=[]; offset=0
     while True:
-        response = leonardo_request(offset)
-        batch = response.get("jobPostings", [])
-        if not batch:
-            break
-        jobs.extend(batch)
-        offset += len(batch)
-        if offset >= response.get("total", len(jobs)):
-            break
-    return [{
-        "id": job.get("externalPath") or f"{job.get('title','')}|{job.get('locationsText','')}",
-        "title": job.get("title", "Titolo non disponibile"),
-        "location": job.get("locationsText", "Località non disponibile"),
-        "posted": job.get("postedOn", ""),
-        "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite" + job.get("externalPath", ""),
-    } for job in jobs]
+        r=leonardo_request(offset); batch=r.get("jobPostings", [])
+        if not batch: break
+        jobs += batch; offset += len(batch)
+        if offset >= r.get("total", len(jobs)): break
+    return [{"id":j.get("externalPath") or j.get("title",""),"title":j.get("title","Titolo non disponibile"),"location":j.get("locationsText","Località non disponibile"),"posted":j.get("postedOn",""),"url":"https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite"+j.get("externalPath","")} for j in jobs]
 
-def process_leonardo(memory):
-    print("\n=== LEONARDO ===")
-    items = get_leonardo_jobs()
-    print(f"Offerte Leonardo trovate: {len(items)}")
-    return process_items(memory, "leonardo", items, lambda x:
-        standard_job_message("Leonardo", x["title"], x["url"], published=x.get("posted"), extra=f"{x.get('location', '')} | Communications / Sales & Marketing"))
-
-# ---------- inPA ----------
-def inpa_request(payload, page=0, size=50):
-    url = f"{INPA_ENDPOINT}?page={page}&size={size}"
-    request = urllib.request.Request(
-        url, data=json.dumps(payload).encode("utf-8"), method="POST",
-        headers={"Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0", "Origin": "https://www.inpa.gov.it", "Referer": "https://www.inpa.gov.it/"},
-    )
-    with urllib.request.urlopen(request, timeout=30) as response:
-        return json.loads(response.read().decode("utf-8"))
-
+def inpa_request(payload,page=0,size=50):
+    req=urllib.request.Request(f"{INPA_ENDPOINT}?page={page}&size={size}",data=json.dumps(payload).encode(),method="POST",headers={"Content-Type":"application/json","Accept":"application/json","User-Agent":"Mozilla/5.0","Origin":"https://www.inpa.gov.it","Referer":"https://www.inpa.gov.it/"})
+    with urllib.request.urlopen(req,timeout=30) as r:return json.loads(r.read().decode())
 def get_inpa_results(payload):
-    jobs, page = [], 0
+    jobs=[]; page=0
     while True:
-        response = inpa_request(payload, page, 50)
-        jobs.extend(response.get("content", []))
-        page += 1
-        if page >= response.get("totalPages", 1):
-            break
+        r=inpa_request(payload,page,50); jobs+=r.get("content",[]); page+=1
+        if page>=r.get("totalPages",1):break
     return jobs
-
-def get_inpa_jobs():
-    by_id = {}
-    p = dict(INPA_BASE_PAYLOAD)
-    p["settoreId"] = INPA_COMMUNICATION_SECTOR
-    results = get_inpa_results(p)
-    print(f"inPA - Comunicazione e informazione: {len(results)}")
-    for job in results:
-        if job.get("id"):
-            by_id[str(job["id"])] = job
+def format_inpa_date(v):
+    if not v:return "Non disponibile"
+    try:return datetime.fromisoformat(v.replace("Z","+00:00")).astimezone(ROME).strftime("%d/%m/%Y %H:%M")
+    except:return v
+def get_inpa_items():
+    by={}; p=dict(INPA_BASE_PAYLOAD); p["settoreId"]=INPA_COMMUNICATION_SECTOR; results=get_inpa_results(p); print(f"inPA - Comunicazione e informazione: {len(results)}")
+    for j in results:
+        if j.get("id"):by[str(j["id"])]=j
     for term in INPA_SEARCH_TERMS:
-        p = dict(INPA_BASE_PAYLOAD)
-        p["text"] = term
-        results = get_inpa_results(p)
-        print(f"inPA - ricerca '{term}': {len(results)}")
-        for job in results:
-            if job.get("id"):
-                by_id[str(job["id"])] = job
-    print(f"inPA - risultati unici complessivi: {len(by_id)}")
-    return list(by_id.values())
+        p=dict(INPA_BASE_PAYLOAD);p["text"]=term; results=get_inpa_results(p);print(f"inPA - ricerca '{term}': {len(results)}")
+        for j in results:
+            if j.get("id"):by[str(j["id"])]=j
+    print(f"inPA - risultati unici complessivi: {len(by)}")
+    out=[]
+    for j in by.values():
+        jid=str(j.get("id",""));out.append({"id":jid,"title":j.get("figuraRicercata") or j.get("titolo") or "Titolo non disponibile","published":format_inpa_date(j.get("dataPubblicazione")),"deadline":format_inpa_date(j.get("dataScadenza")),"extra":", ".join(j.get("entiRiferimento") or []),"url":f"https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id={jid}"})
+    return out
 
-def format_inpa_date(value):
-    if not value:
-        return "Non disponibile"
-    try:
-        return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(ROME).strftime("%d/%m/%Y %H:%M")
-    except Exception:
-        return value
-
-def process_inpa(memory):
-    print("\n=== INPA ===")
-    jobs = get_inpa_jobs()
-    items = []
-    for job in jobs:
-        jid = str(job.get("id", ""))
-        items.append({"id": jid, "title": job.get("figuraRicercata") or job.get("titolo") or "Titolo non disponibile", "ente": ", ".join(job.get("entiRiferimento") or []) or "Ente non disponibile", "location": ", ".join(job.get("sedi") or []) or "Sede non disponibile", "posts": job.get("numPosti", "Non disponibile"), "published": format_inpa_date(job.get("dataPubblicazione")), "deadline": format_inpa_date(job.get("dataScadenza")), "sectors": ", ".join(job.get("settori") or []) or "Marketing / Comunicazione", "url": f"https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id={jid}"})
-    print(f"Bandi inPA OPEN trovati: {len(items)}")
-    return process_items(memory, "inpa", items, lambda x:
-        standard_job_message("inPA", x["title"], x["url"], published=x["published"], deadline=x["deadline"], extra=f"{x['ente']} | {x['location']} | Posti: {x['posts']} | {x['sectors']}"))
-
-# ---------- Eutalia ----------
 def get_eutalia_open_notices():
-    page = fetch_html(EUTALIA_URL, timeout=45, retries=2)
-    notices = {}
-
-    # Split around explicit status labels. Each status segment represents the
-    # following Eutalia card much more reliably than inspecting a fixed window.
-    status_pattern = re.compile(r'Avviso\s+(Aperto|Chiuso)', re.I)
-    marks = list(status_pattern.finditer(page))
-
-    for i, mark in enumerate(marks):
-        if mark.group(1).lower() != "aperto":
-            continue
-
-        end = marks[i + 1].start() if i + 1 < len(marks) else min(len(page), mark.end() + 5000)
-        segment = page[mark.start():end]
-
-        link_match = re.search(
-            r'href=["\'](?P<url>(?:https?://www\.eutalia\.eu)?/avvisi/[^"\']+)["\']',
-            segment,
-            re.I,
-        )
-        if not link_match:
-            continue
-
-        full = absolute_url(EUTALIA_URL, link_match.group("url")).rstrip("/")
-        headings = re.findall(r'<h[2-4][^>]*>(.*?)</h[2-4]>', segment, re.I | re.S)
-        title = ""
-        for heading in headings:
-            candidate = strip_tags(heading)
-            if candidate and "selezione del personale" not in candidate.lower():
-                title = candidate
-                break
-        if not title:
-            slug = urllib.parse.urlparse(full).path.rstrip("/").rsplit("/", 1)[-1]
-            title = slug.replace("-", " ").replace("_", " ").strip().title()
-
-        notices[full] = {"id": full, "title": title, "url": full + "/"}
-
+    page=fetch_html(EUTALIA_URL,45,2); notices={}; marks=list(re.finditer(r'Avviso\s+(Aperto|Chiuso)',page,re.I))
+    for i,m in enumerate(marks):
+        if m.group(1).lower()!="aperto":continue
+        seg=page[m.start():(marks[i+1].start() if i+1<len(marks) else min(len(page),m.end()+5000))]
+        lm=re.search(r'href=["\'](?P<url>(?:https?://www\.eutalia\.eu)?/avvisi/[^"\']+)["\']',seg,re.I)
+        if not lm:continue
+        full=absolute_url(EUTALIA_URL,lm.group("url")).rstrip("/");heads=re.findall(r'<h[2-4][^>]*>(.*?)</h[2-4]>',seg,re.I|re.S);title=strip_tags(heads[0]) if heads else full.rsplit("/",1)[-1].replace("-"," ").title();notices[full]={"id":full,"title":title,"url":full+"/"}
     return list(notices.values())
 
-def process_eutalia(memory):
-    print("\n=== EUTALIA ===")
-    items = get_eutalia_open_notices()
-    print(f"Avvisi Eutalia aperti trovati: {len(items)}")
-    return process_items(memory, "eutalia", items, lambda x:
-        standard_job_message("Eutalia", x["title"], x["url"], extra="Avviso Aperto"))
-
-# ---------- Consip: all listed job positions ----------
 def get_consip_positions():
-    # We deliberately monitor only the first page of the current listing.
-    # Following pagination was pulling older/archive-like records into memory.
-    page = fetch_html(CONSIP_URL, timeout=45, retries=2)
-    items = {}
-
-    # Pair each explicit position heading with its detail link.
-    cards = re.findall(
-        r'<h3[^>]*>(?P<title>.*?)</h3>.*?<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>.*?</a>',
-        page,
-        re.I | re.S,
-    )
-    for title_html, href in cards:
-        full = absolute_url("https://www.consip.it", href).rstrip("/")
-        title = strip_tags(title_html)
-        if title:
-            items[full] = {"id": full, "title": title, "url": full}
-
-    # Markup fallback, still restricted to detail pages and page 0 only.
-    if not items:
-        for href in re.findall(r'href=["\'](/posizioni/[^"\'?/#]+)["\']', page, re.I):
-            full = absolute_url("https://www.consip.it", href).rstrip("/")
-            slug = full.rsplit("/", 1)[-1]
-            items[full] = {"id": full, "title": slug.replace("-", " ").title(), "url": full}
-
+    page=fetch_html(CONSIP_URL,45,2);items={}
+    cards=re.findall(r'<h3[^>]*>(?P<title>.*?)</h3>.*?<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>.*?</a>',page,re.I|re.S)
+    for t,h in cards:
+        full=absolute_url("https://www.consip.it",h).rstrip("/");items[full]={"id":full,"title":strip_tags(t),"url":full}
     return list(items.values())
 
-def process_consip(memory):
-    print("\n=== CONSIP ===")
-    items = get_consip_positions()
-    print(f"Posizioni Consip trovate: {len(items)}")
-    return process_items(memory, "consip", items, lambda x:
-        standard_job_message("Consip", x["title"], x["url"]))
-
-# ---------- Sogei: all positions ----------
 def get_sogei_positions():
-    # Sogei Societa Trasparente contains two distinct areas:
-    # 1) Avvisi di selezione in corso
-    # 2) Avvisi di selezione conclusi
-    # We monitor ONLY the first area.
-    page = fetch_html(SOGEI_TRANSPARENCY_URL, timeout=45, retries=2)
-
-    start_match = re.search(
-        r'Avvisi\s+di\s+selezione\s+in\s+corso',
-        page,
-        re.I,
-    )
-    end_match = re.search(
-        r'Avvisi\s+di\s+selezione\s+conclusi',
-        page,
-        re.I,
-    )
-
-    if not start_match:
-        raise RuntimeError("Sezione 'Avvisi di selezione in corso' Sogei non trovata")
-
-    start_pos = start_match.end()
-    end_pos = end_match.start() if end_match and end_match.start() > start_pos else len(page)
-    current_section = page[start_pos:end_pos]
-    current_text = strip_tags(current_section).lower()
-
-    if "al momento non esistono posizioni disponibili" in current_text:
-        return []
-
-    items = {}
-
-    # Extract only selection notices contained in the current-openings section.
-    links = re.findall(
-        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
-        current_section,
-        re.I | re.S,
-    )
-
-    for href, label_html in links:
-        label = strip_tags(label_html)
-        low = label.lower()
-
-        if not label:
-            continue
-
-        # Only actual personnel selection notices.
-        if "avviso di selezione" not in low and "assunzione" not in low:
-            continue
-
-        full = absolute_url(SOGEI_TRANSPARENCY_URL, href)
-
-        code_match = re.search(
-            r'\((20\d{2}/\d+[A-Z]?)\)',
-            label,
-            re.I,
-        )
-
-        if code_match:
-            item_id = "sogei:" + code_match.group(1).upper()
-        else:
-            item_id = "sogei:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-
-        items[item_id] = {
-            "id": item_id,
-            "title": label,
-            "url": full,
-        }
-
+    page=fetch_html(SOGEI_TRANSPARENCY_URL,45,2); a=re.search(r'Avvisi\s+di\s+selezione\s+in\s+corso',page,re.I); b=re.search(r'Avvisi\s+di\s+selezione\s+conclusi',page,re.I)
+    if not a:raise RuntimeError("Sezione Sogei non trovata")
+    sec=page[a.end():(b.start() if b and b.start()>a.end() else len(page))]
+    if "al momento non esistono posizioni disponibili" in strip_tags(sec).lower():return []
+    items={}
+    for href,label_html in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',sec,re.I|re.S):
+        label=strip_tags(label_html);full=absolute_url(SOGEI_TRANSPARENCY_URL,href);cm=re.search(r'\((20\d{2}/\d+[A-Z]?)\)',label,re.I);iid="sogei:"+(cm.group(1).upper() if cm else hashlib.sha256(full.encode()).hexdigest()[:24]);items[iid]={"id":iid,"title":label,"url":full}
     return list(items.values())
 
-def process_sogei(memory):
-    print("\n=== SOGEI ===")
-    try:
-        items = get_sogei_positions()
-    except urllib.error.HTTPError as exc:
-        if exc.code == 403:
-            print("Sogei: il sito blocca GitHub Actions (HTTP 403). Fonte ufficiale configurata ma controllo HTML non disponibile in questo run.")
-            return 0
-        raise
-    print(f"Posizioni Sogei aperte trovate: {len(items)}")
-    return process_items(memory, "sogei", items, lambda x:
-        standard_job_message("Sogei", x["title"], x["url"]))
-
-
-# ---------- AgID: active competitions + non-expired notices ----------
-def parse_it_date(value):
-    if not value:
-        return None
-    try:
-        return datetime.strptime(value.strip(), "%d/%m/%Y").date()
-    except Exception:
-        return None
-
-
-def get_agid_table_items(url, require_not_expired=False):
-    page = fetch_html(url, timeout=45, retries=2)
-    today = datetime.now(ROME).date()
-    items = {}
-
-    # AgID transparency pages render recruitment records as table rows.
-    rows = re.findall(r"<tr[^>]*>(.*?)</tr>", page, re.I | re.S)
-    for row in rows:
-        link = re.search(
-            r'<a[^>]+href=["\'](?P<href>[^"\']+/details/[^"\']+)["\'][^>]*>(?P<title>.*?)</a>',
-            row,
-            re.I | re.S,
-        )
-        if not link:
-            continue
-
-        title = strip_tags(link.group("title"))
-        full = absolute_url(url, link.group("href"))
-        if not title:
-            continue
-
-        cells = [strip_tags(x) for x in re.findall(r"<td[^>]*>(.*?)</td>", row, re.I | re.S)]
-        dates = []
-        for cell in cells:
-            m = re.search(r"\b(\d{2}/\d{2}/\d{4})\b", cell)
-            if m:
-                dates.append(m.group(1))
-
-        published = dates[0] if dates else "Non disponibile"
-        deadline = dates[1] if len(dates) > 1 else ""
-        deadline_date = parse_it_date(deadline)
-
-        if require_not_expired and deadline_date and deadline_date < today:
-            continue
-
-        # In the Avvisi archive, records without a deadline can be historical.
-        # We keep deadline-less records only when this is the dedicated active page.
-        if require_not_expired and not deadline_date:
-            continue
-
-        item_id = "agid:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-        items[item_id] = {
-            "id": item_id,
-            "title": title,
-            "url": full,
-            "published": published,
-            "deadline": deadline or "Non disponibile",
-        }
-
+def parse_it_date(v):
+    try:return datetime.strptime(v.strip(),"%d/%m/%Y").date()
+    except:return None
+def get_agid_table_items(url,nonexpired=False):
+    page=fetch_html(url,45,2);today=datetime.now(ROME).date();items={}
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>',page,re.I|re.S):
+        lm=re.search(r'<a[^>]+href=["\'](?P<href>[^"\']+/details/[^"\']+)["\'][^>]*>(?P<title>.*?)</a>',row,re.I|re.S)
+        if not lm:continue
+        full=absolute_url(url,lm.group("href")); dates=re.findall(r'\b\d{2}/\d{2}/\d{4}\b',strip_tags(row));deadline=dates[1] if len(dates)>1 else "";dd=parse_it_date(deadline)
+        if nonexpired and (not dd or dd<today):continue
+        iid="agid:"+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={"id":iid,"title":strip_tags(lm.group("title")),"url":full,"published":dates[0] if dates else "","deadline":deadline}
     return list(items.values())
-
-
 def get_agid_positions():
-    by_id = {}
+    a=get_agid_table_items(AGID_ACTIVE_URL);print(f"AgID - Concorsi attivi: {len(a)}");b=get_agid_table_items(AGID_NOTICES_URL,True);print(f"AgID - Avvisi non scaduti: {len(b)}");return list({x["id"]:x for x in a+b}.values())
 
-    active = get_agid_table_items(AGID_ACTIVE_URL, require_not_expired=False)
-    print(f"AgID - Concorsi attivi: {len(active)}")
-    for item in active:
-        by_id[item["id"]] = item
-
-    notices = get_agid_table_items(AGID_NOTICES_URL, require_not_expired=True)
-    print(f"AgID - Avvisi non scaduti: {len(notices)}")
-    for item in notices:
-        by_id[item["id"]] = item
-
-    return list(by_id.values())
-
-
-def process_agid(memory):
-    print("\n=== AGID ===")
-    items = get_agid_positions()
-    print(f"Opportunita AgID candidabili trovate: {len(items)}")
-    return process_items(memory, "agid", items, lambda x:
-        standard_job_message("AgID", x["title"], x["url"], published=x["published"], deadline=x["deadline"]))
-
-
-# ---------- Invitalia: all current jobs + individual consulting notices ----------
 def get_invitalia_jobs():
-    page = fetch_html(INVITALIA_JOBS_URL, timeout=45, retries=2)
-    items = {}
-
-    # The current-search area ends before the closed-selections link.
-    start = page.lower().find("le ricerche in corso")
-    end = page.lower().find("vedi le selezioni chiuse")
-    section = page[start:end if end > start else len(page)] if start >= 0 else page
-
-    links = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', section, re.I | re.S)
-    for href, label_html in links:
-        label = strip_tags(label_html)
-        full = absolute_url(INVITALIA_JOBS_URL, href)
-        low = (label + " " + full).lower()
-        if not label:
-            continue
-        if "ingate.invitalia.it" in full.lower():
-            continue
-        if "selezioni-chiuse" in low or "candidatura-spontanea" in low:
-            continue
-        # Keep only links that look like vacancy/detail pages in Lavora con noi.
-        if "/lavora-con-noi/" not in full.lower():
-            continue
-        if full.rstrip("/") == INVITALIA_JOBS_URL.rstrip("/"):
-            continue
-        item_id = "invitalia-job:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-        items[item_id] = {"id": item_id, "title": label, "url": full}
+    page=fetch_html(INVITALIA_JOBS_URL,45,2);start=page.lower().find("le ricerche in corso");end=page.lower().find("vedi le selezioni chiuse");sec=page[start:end if end>start else len(page)] if start>=0 else page;items={}
+    for href,lhtml in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',sec,re.I|re.S):
+        label=strip_tags(lhtml);full=absolute_url(INVITALIA_JOBS_URL,href);low=(label+full).lower()
+        if label and "ingate.invitalia.it" not in full.lower() and "/lavora-con-noi/" in full.lower() and "selezioni-chiuse" not in low and "candidatura-spontanea" not in low and full.rstrip("/")!=INVITALIA_JOBS_URL.rstrip("/"):
+            iid="invitalia-job:"+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={"id":iid,"title":label,"url":full}
     return list(items.values())
-
-
 def get_invitalia_consulting():
-    # Invitalia's official page currently exposes a direct InGaTe opportunity link
-    # for expert/specialist consulting. We track those links but reject procurement
-    # wording so ordinary tenders are not treated as personal opportunities.
-    page = fetch_html(INVITALIA_JOBS_URL, timeout=45, retries=2)
-    items = {}
-    for href, label_html in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', page, re.I | re.S):
-        full = absolute_url(INVITALIA_JOBS_URL, href)
-        label = strip_tags(label_html)
-        if "ingate.invitalia.it" not in full.lower():
-            continue
-        low = label.lower()
-        if not any(x in low for x in ("consulenza", "esperti", "specialisti", "profession")):
-            continue
-        if any(x in low for x in ("gara", "fornitura", "lavori", "appalto")):
-            continue
-        q = urllib.parse.parse_qs(urllib.parse.urlparse(full).query)
-        oid = (q.get("opportunityId") or [full])[0]
-        item_id = "invitalia-consulting:" + str(oid)
-        items[item_id] = {"id": item_id, "title": label, "url": full}
+    page=fetch_html(INVITALIA_JOBS_URL,45,2);items={}
+    for href,lhtml in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',page,re.I|re.S):
+        full=absolute_url(INVITALIA_JOBS_URL,href);label=strip_tags(lhtml);low=label.lower()
+        if "ingate.invitalia.it" in full.lower() and any(x in low for x in ("consulenza","esperti","specialisti","profession")) and not any(x in low for x in ("gara","fornitura","lavori","appalto")):
+            oid=(urllib.parse.parse_qs(urllib.parse.urlparse(full).query).get("opportunityId") or [full])[0];iid="invitalia-consulting:"+str(oid);items[iid]={"id":iid,"title":label,"url":full}
     return list(items.values())
+def get_invitalia_positions():
+    jobs=get_invitalia_jobs();cons=get_invitalia_consulting();print(f"Invitalia - posizioni: {len(jobs)}");print(f"Invitalia - consulenze/esperti: {len(cons)}");out=[]
+    for x in jobs: y=dict(x);y["extra"]="Posizione";out.append(y)
+    for x in cons: y=dict(x);y["extra"]="Consulenza / Esperti / Specialisti";out.append(y)
+    out=list({x["id"]:x for x in out}.values());print(f"Invitalia - opportunita uniche complessive: {len(out)}");return out
 
-
-def process_invitalia(memory):
-    print("\n=== INVITALIA ===")
-    jobs = get_invitalia_jobs()
-    consulting = get_invitalia_consulting()
-
-    print(f"Invitalia - posizioni: {len(jobs)}")
-    print(f"Invitalia - consulenze/esperti: {len(consulting)}")
-
-    items_by_id = {}
-    for item in jobs:
-        enriched = dict(item)
-        enriched["kind"] = "Posizione"
-        items_by_id[enriched["id"]] = enriched
-    for item in consulting:
-        enriched = dict(item)
-        enriched["kind"] = "Consulenza / Esperti / Specialisti"
-        items_by_id[enriched["id"]] = enriched
-
-    items = list(items_by_id.values())
-    print(f"Invitalia - opportunita uniche complessive: {len(items)}")
-    return process_items(memory, "invitalia", items, lambda x:
-        standard_job_message("Invitalia", x["title"], x["url"], extra=x.get("kind")))
-
-
-# ---------- CDP: communication / marketing only ----------
 def get_cdp_positions():
-    items = {}
-
+    items={}
     for term in CDP_KEYWORDS:
-        query = urllib.parse.urlencode({
-            "createNewAlert": "false",
-            "q": term,
-            "locationsearch": "",
-        })
-        url = f"{CDP_JOBS_URL.rstrip('/')}/search/?{query}"
-        page = fetch_html(url, timeout=45, retries=2)
-        term_items = {}
+        url=f"{CDP_JOBS_URL.rstrip('/')}/search/?"+urllib.parse.urlencode({"createNewAlert":"false","q":term,"locationsearch":""});page=fetch_html(url,45,2);found={}
+        for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+            full=absolute_url(url,m.group("href")).rstrip("/");label=strip_tags(m.group("label"));iid="cdp:"+hashlib.sha256(full.encode()).hexdigest()[:24]
+            if label:found[iid]={"id":iid,"title":label,"url":full,"extra":"Comunicazione / Marketing"}
+        print(f"CDP - ricerca '{term}': {len(found)}");items.update(found)
+    print(f"CDP - posizioni uniche complessive: {len(items)}");return list(items.values())
 
-        # SuccessFactors public search results expose vacancy detail links as /job/...
-        # (or absolute links containing /job/). Deduplicate by the canonical URL.
-        for m in re.finditer(
-            r'<a[^>]+href=["\'](?P<href>[^"\']*/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',
-            page,
-            re.I | re.S,
-        ):
-            full = absolute_url(url, m.group("href")).rstrip("/")
-            label = strip_tags(m.group("label"))
-            if not label:
-                continue
-            low = label.lower()
-            if low in {"visualizza posizione", "view job", "apply now", "candidati"}:
-                context = page[max(0, m.start() - 1600):m.start()]
-                headings = re.findall(r'<h[1-4][^>]*>(.*?)</h[1-4]>', context, re.I | re.S)
-                label = strip_tags(headings[-1]) if headings else label
+def save_current(snapshot):
+    CURRENT_FILE.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False), encoding="utf-8")
 
-            item_id = "cdp:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-            term_items[item_id] = {
-                "id": item_id,
-                "title": label,
-                "url": full,
-            }
-
-        print(f"CDP - ricerca '{term}': {len(term_items)}")
-        items.update(term_items)
-
-    print(f"CDP - posizioni uniche complessive: {len(items)}")
-    return list(items.values())
-
-def process_cdp(memory):
-    print("\n=== CDP ===")
-    items = get_cdp_positions()
-    print(f"Posizioni CDP comunicazione/marketing trovate: {len(items)}")
-    return process_items(memory, "cdp", items, lambda x:
-        standard_job_message("CDP - Cassa Depositi e Prestiti", x["title"], x["url"], extra="Comunicazione / Marketing"))
-
-
-# ---------- Main ----------
 def main():
-    if not TELEGRAM_BOT_TOKEN:
-        print("ERRORE: TELEGRAM_BOT_TOKEN non configurato.")
-        sys.exit(1)
-
-    print("Pic_Job_Finder_Bot")
-    print("Avvio controllo sorgenti...")
-    memory = load_memory()
-    errors = []
-
-    processors = [
-        ("Leonardo", process_leonardo),
-        ("inPA", process_inpa),
-        ("Eutalia", process_eutalia),
-        ("Consip", process_consip),
-        ("Sogei", process_sogei),
-        ("AgID", process_agid),
-        ("Invitalia", process_invitalia),
-        ("CDP", process_cdp),
+    if not TELEGRAM_BOT_TOKEN: print("ERRORE: TELEGRAM_BOT_TOKEN non configurato.");sys.exit(1)
+    print("Pic_Job_Finder_Bot");print("Avvio controllo sorgenti...");memory=load_memory();errors=[];snapshot={"last_check":now_rome(),"sources":{}}
+    specs=[
+        ("leonardo",get_leonardo_jobs,lambda x: standard_job_message("Leonardo",x["title"],x["url"],published=x.get("posted"),extra=x.get("location"))),
+        ("inpa",get_inpa_items,lambda x: standard_job_message("inPA",x["title"],x["url"],published=x.get("published"),deadline=x.get("deadline"),extra=x.get("extra"))),
+        ("eutalia",get_eutalia_open_notices,lambda x: standard_job_message("Eutalia",x["title"],x["url"],extra="Avviso Aperto")),
+        ("consip",get_consip_positions,lambda x: standard_job_message("Consip",x["title"],x["url"])),
+        ("sogei",get_sogei_positions,lambda x: standard_job_message("Sogei",x["title"],x["url"])),
+        ("agid",get_agid_positions,lambda x: standard_job_message("AgID",x["title"],x["url"],published=x.get("published"),deadline=x.get("deadline"))),
+        ("invitalia",get_invitalia_positions,lambda x: standard_job_message("Invitalia",x["title"],x["url"],extra=x.get("extra"))),
+        ("cdp",get_cdp_positions,lambda x: standard_job_message("CDP - Cassa Depositi e Prestiti",x["title"],x["url"],extra=x.get("extra"))),
     ]
-
-    for name, processor in processors:
+    for source,getter,formatter in specs:
+        print(f"\n=== {SOURCE_LABELS[source].upper()} ===")
         try:
-            processor(memory)
+            items=getter();print(f"Elementi correnti {SOURCE_LABELS[source]}: {len(items)}");process_items(memory,source,items,formatter)
+            snapshot["sources"][source]={"label":SOURCE_LABELS[source],"status":"ok","items":[{"title":x.get("title","Titolo non disponibile"),"url":x.get("url","")} for x in items]}
+        except urllib.error.HTTPError as exc:
+            if source=="sogei" and exc.code==403:
+                print("Sogei: HTTP 403. Controllo non disponibile in questo run.");snapshot["sources"][source]={"label":"Sogei","status":"unavailable","items":[]};continue
+            errors.append(f"{SOURCE_LABELS[source]}: {exc}")
+            snapshot["sources"][source]={"label":SOURCE_LABELS[source],"status":"error","items":[],"error":str(exc)}
         except Exception as exc:
-            print(f"ERRORE monitor {name}: {exc}")
-            errors.append(f"{name}: {exc}")
-
-    save_memory(memory)
+            print(f"ERRORE monitor {SOURCE_LABELS[source]}: {exc}");errors.append(f"{SOURCE_LABELS[source]}: {exc}");snapshot["sources"][source]={"label":SOURCE_LABELS[source],"status":"error","items":[],"error":str(exc)}
+    save_memory(memory);save_current(snapshot)
     print("\n=== RIEPILOGO ===")
     if errors:
-        print("Controllo completato con errori:")
-        for error in errors:
-            print(f"- {error}")
-        sys.exit(1)
-
-    print("Leonardo + inPA + Eutalia + Consip + Sogei + AgID + Invitalia + CDP controllati correttamente.")
-    print("Controllo completato.")
-
-if __name__ == "__main__":
-    main()
+        print("Controllo completato con errori:");[print(f"- {e}") for e in errors];sys.exit(1)
+    print("Leonardo + inPA + Eutalia + Consip + Sogei + AgID + Invitalia + CDP controllati.");print("Controllo completato.")
+if __name__=="__main__":main()
