@@ -256,8 +256,25 @@
       "seen": [
         "unioncamere:9ba1b1ac054dc1fd5ae71aab"
       ]
+    },
+    "agenas": {
+      "initialized": true,
+      "seen": []
+    },
+    "ice": {
+      "initialized": true,
+      "seen": [
+        "ice:06369839e75e2caa1b3f9c26",
+        "ice:213f3244461c1638b35c0de2",
+        "ice:509aeccce11d7eb60830892c",
+        "ice:5bf08e6a10f4a08c80b14955",
+        "ice:b2267b6a008da5836172b552",
+        "ice:ea74828a0922799faf2a1797",
+        "ice:ee4b86fc9a22deb3ddfb1d85",
+        "ice:fcfe3df33a93c989ec06ff7c"
+      ]
     }
   },
-  "last_update": "2026-09-29T14:41:14.210865+00:00",
-  "schema_version": 20
+  "last_update": "2026-09-29T14:43:29.742179+00:00",
+  "schema_version": 21
 }

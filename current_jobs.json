@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 16:40",
+  "last_check": "29/09/2026 16:42",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -535,6 +535,49 @@
         {
           "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
           "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
+        }
+      ]
+    },
+    "agenas": {
+      "label": "AGENAS",
+      "status": "ok",
+      "items": []
+    },
+    "ice": {
+      "label": "Agenzia ICE",
+      "status": "ok",
+      "items": [
+        {
+          "title": "Avviso di selezione per la raccolta di manifestazioni di interesse al conferimento di n. 1 incarico dirigenziale di livello generale per la Direzione Centrale \"Servizi alle Imprese, Marketing e Innovazione\"",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20PER%20DC%20SERVIZI.pdf"
+        },
+        {
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 2 unità di personale dell’Area Assistenti, appartenenti alle categorie protette di cui all’articolo 1 della Legge 12 marzo 1999, n. 68, da destinare agli Uffici dell’ICE-Agenzia.",
+          "url": "https://ice.patisweb.it/download/1671334.html"
+        },
+        {
+          "title": "Avviso di procedura di selezione per il conferimento di incarico dirigenziale a tempo determinato per la direzione dell’ufficio Servizi integrati per l’internazionalizzazione e la digitalizzazione, presso la sede di ICE-Agenzia di Roma, ai sensi dell'articolo 19, comma 6, del decreto legislativo n. 165/2001 e ss.mm.ii.",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/Avviso%20di%20selezione%20Ufficio%20Servizi%20integrati%20per%20l%27int.%20e%20digitalizzazione_%20art.%2019%2C%20co%206%20dlgs%20165-2001.pdf"
+        },
+        {
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 12 unità dell’Area Funzionari, da adibire agli Uffici dell’ICE – Agenzia.",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/Avviso%20mobilit%C3%A0%20funzionari_2025.pdf"
+        },
+        {
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 19 unità dell’Area Assistenti, di cui 1 appartenente alle categorie protette, ai sensi dell’art. 18 comma 2 della legge 12 marzo 1999 n. 68, da adibire agli Uffici dell’ICE – Agenzia.",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/Avviso%20mobilit%C3%A0%20assistenti_2025.pdf"
+        },
+        {
+          "title": "Avviso Pubblico di mobilità volontaria esterna per la copertura, mediante passaggio diretto tra pubbliche amministrazioni, ai sensi dell’art. 30 comma 1 del D.Lgs. n. 165/2001 e ss.mm.ii., di n. 1 posto, a tempo pieno e indeterminato con inquadramento giuridico ed economico nell’Area Assistenti con mansioni di “conducente di automezzi”.",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20assistente%20con%20mansioni%20conducente%20prot%20signed.pdf"
+        },
+        {
+          "title": "Avviso Pubblico di mobilità volontaria esterna per la copertura, mediante passaggio diretto tra pubbliche amministrazioni, ai sensi dell’art. 30 comma 1 del D.Lgs. n. 165/2001 e ss.mm.ii., di n. 2 posti, a tempo pieno e indeterminato con inquadramento giuridico ed economico nell’Area Assistenti con mansioni di \"conducente di automezzi\"",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20AUTISTI%20-%20MOBILITA%27%20%283%29.pdf"
+        },
+        {
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 16 unità dell’Area Funzionari, ex terza area – CCNL Comparto Funzioni Centrali 2019-2021, da adibire agli Uffici dell’ICE – Agenzia di cui 5 da assegnare alla famiglia",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/ICE-Agenzia%20-%20Avviso%20Procedura%20Mobilit%C3%A0%20Funzionari%20Passaggio%20Diretto%20tra%20PA_0.pdf"
         }
       ]
     },
