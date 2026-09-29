@@ -130,7 +130,7 @@ SOURCE_LABELS = {
     "capcoe": "PN Capacita per la Coesione",
     "unioncamere": "Unioncamere",
 }
-MEMORY_SCHEMA_VERSION = 19
+MEMORY_SCHEMA_VERSION = 20
 
 
 def now_rome():
@@ -272,6 +272,11 @@ def load_memory():
     if data.get("schema_version", 1) < 19:
         for name in ("anci", "tagliacarne", "sport_salute", "fs", "autostrade", "infocamere", "formez", "sviluppo_lavoro", "capcoe", "unioncamere"):
             data["sources"][name] = empty_source()
+
+    if data.get("schema_version", 1) < 20:
+        # The corporate vocabulary was expanded in the previous release.
+        # Re-baseline Terna once so pre-existing matches are not notified as new.
+        data["sources"]["terna"] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -1415,7 +1420,7 @@ def main():
             }
 
         except Exception as exc:
-            if source in {"italo", "fincantieri"}:
+            if source in {"italo", "fincantieri", "formez"}:
                 print(f"{SOURCE_LABELS[source]}: controllo non disponibile in questo run. Dettaglio: {exc}")
                 snapshot["sources"][source] = {
                     "label": SOURCE_LABELS[source],
