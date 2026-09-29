@@ -48,6 +48,9 @@ SOURCE_ORDER = [
     "sviluppo_lavoro",
     "capcoe",
     "unioncamere",
+    "agenas",
+    "ice",
+    "inapp",
     "cdp",
 ]
 
