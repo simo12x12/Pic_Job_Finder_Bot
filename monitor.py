@@ -75,7 +75,7 @@ SOURCE_LABELS = {
     "ama_roma": "AMA Roma",
     "bmti": "BMTI",
 }
-MEMORY_SCHEMA_VERSION = 7
+MEMORY_SCHEMA_VERSION = 8
 
 
 def now_rome():
@@ -175,6 +175,11 @@ def load_memory():
                 set(old_jobs.get("seen", [])) | set(old_consulting.get("seen", []))
             ),
         }
+
+    if data.get("schema_version", 1) < 8:
+        # The corporate keyword set was expanded. Re-baseline CDP once so the
+        # newly discovered existing matches are not sent as fresh alerts.
+        data["sources"]["cdp"] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -821,12 +826,11 @@ def main():
             }
 
         except urllib.error.HTTPError as exc:
-            if source == "sogei" and exc.code == 403:
-                print(
-                    "Sogei: HTTP 403. Controllo non disponibile in questo run."
-                )
+            if source in {"sogei", "ama_roma"} and exc.code == 403:
+                label = SOURCE_LABELS[source]
+                print(f"{label}: HTTP 403. Controllo non disponibile in questo run.")
                 snapshot["sources"][source] = {
-                    "label": "Sogei",
+                    "label": label,
                     "status": "unavailable",
                     "items": [],
                 }
