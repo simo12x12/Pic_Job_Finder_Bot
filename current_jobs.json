@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 16:45",
+  "last_check": "29/09/2026 16:58",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -392,7 +392,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
@@ -458,13 +458,9 @@
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Con i bambini cerca una risorsa per l’ufficio comunicazione",
-          "url": "https://www.fondazioneconilsud.it/2026/07/16/lavora-con-noi-coordinatore-coordinatrice-ufficio-comunicazione"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
     },
     "enav": {
       "label": "ENAV",
