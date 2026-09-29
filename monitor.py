@@ -57,6 +57,7 @@ CAPCOE_URL="https://capcoe.it/opportunita/avvisi/"
 UNIONCAMERE_URL="https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso"
 AGENAS_URL="https://www.agenas.gov.it/bandi-di-concorso/avvisi-attivi"
 ICE_URL="https://www.ice.it/it/chi-siamo/lavora-con-noi/concorsi"
+INAPP_URL="https://www.inapp.gov.it/amministrazione-trasparente/bandi-di-concorso/avvisi-incarico/"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -95,7 +96,7 @@ INPA_SEARCH_TERMS = [
     "digital communication",
 ]
 
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri", "anci", "ifel", "sna", "tagliacarne", "brodolini", "fondazione_sud", "enav", "sport_salute", "fs", "autostrade", "infocamere", "formez", "sviluppo_lavoro", "capcoe", "unioncamere", "agenas", "ice"]
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri", "anci", "ifel", "sna", "tagliacarne", "brodolini", "fondazione_sud", "enav", "sport_salute", "fs", "autostrade", "infocamere", "formez", "sviluppo_lavoro", "capcoe", "unioncamere", "agenas", "ice", "inapp"]
 SOURCE_LABELS = {
     "leonardo": "Leonardo",
     "inpa": "inPA",
@@ -133,8 +134,9 @@ SOURCE_LABELS = {
     "unioncamere": "Unioncamere",
     "agenas": "AGENAS",
     "ice": "Agenzia ICE",
+    "inapp": "INAPP",
 }
-MEMORY_SCHEMA_VERSION = 21
+MEMORY_SCHEMA_VERSION = 22
 
 
 def now_rome():
@@ -285,6 +287,9 @@ def load_memory():
     if data.get("schema_version", 1) < 21:
         for name in ("agenas", "ice"):
             data["sources"][name] = empty_source()
+
+    if data.get("schema_version", 1) < 22:
+        data["sources"]["inapp"] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -1271,6 +1276,49 @@ def get_ice_positions():
     return list(items.values())
 
 
+# ---------- INAPP ----------
+def get_inapp_positions():
+    page = fetch_html(INAPP_URL, 30, 1)
+    today = datetime.now(ROME).date()
+    items = {}
+
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>', page, re.I | re.S):
+        text = strip_tags(row)
+        low = text.lower()
+
+        # Only actual professional assignments, not generic notices or disposals.
+        if not any(x in low for x in ('incarico di lavoro autonomo', 'esperto', 'esperta', 'progetto di comunicazione')):
+            continue
+        if not matches_corporate_keywords(text):
+            continue
+
+        # The INAPP table exposes the application deadline in the row.
+        dates = re.findall(r'\b(\d{2}/\d{2}/\d{4})\b', text)
+        if not dates:
+            continue
+        deadline = parse_it_date(dates[-1])
+        if not deadline or deadline < today:
+            continue
+
+        links = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', row, re.I | re.S)
+        if not links:
+            continue
+        href, label_html = max(links, key=lambda x: len(strip_tags(x[1])))
+        title = strip_tags(label_html) or text
+        full = absolute_url(INAPP_URL, href).rstrip('/')
+
+        iid = 'inapp:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
+        items[iid] = {
+            'id': iid,
+            'title': title,
+            'url': full,
+            'deadline': dates[-1],
+            'extra': 'Incarico / esperto INAPP',
+        }
+
+    return list(items.values())
+
+
 # ---------- CDP ----------
 def get_cdp_positions():
     items = {}
@@ -1413,6 +1461,7 @@ def main():
         ("unioncamere", get_unioncamere_positions, lambda x: standard_job_message("Unioncamere", x["title"], x["url"], extra=x.get("extra"))),
         ("agenas", get_agenas_positions, lambda x: standard_job_message("AGENAS", x["title"], x["url"], deadline=x.get("deadline"))),
         ("ice", get_ice_positions, lambda x: standard_job_message("Agenzia ICE", x["title"], x["url"], extra=x.get("extra"))),
+        ("inapp", get_inapp_positions, lambda x: standard_job_message("INAPP", x["title"], x["url"], deadline=x.get("deadline"), extra=x.get("extra"))),
         (
             "cdp",
             get_cdp_positions,
@@ -1499,7 +1548,7 @@ def main():
 
     print(
         "Leonardo + inPA + Eutalia + Consip + Sogei + AgID + "
-        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + ANCI + IFEL + SNA + Centro Studi Tagliacarne + Fondazione Giacomo Brodolini + Fondazione con il Sud + ENAV + Sport e Salute + Gruppo FS Italiane + Autostrade per l Italia + InfoCamere + Formez PA + Sviluppo Lavoro Italia + PN Capacita per la Coesione + Unioncamere + AGENAS + Agenzia ICE + CDP controllati."
+        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + ANCI + IFEL + SNA + Centro Studi Tagliacarne + Fondazione Giacomo Brodolini + Fondazione con il Sud + ENAV + Sport e Salute + Gruppo FS Italiane + Autostrade per l Italia + InfoCamere + Formez PA + Sviluppo Lavoro Italia + PN Capacita per la Coesione + Unioncamere + AGENAS + Agenzia ICE + INAPP + CDP controllati."
     )
     print("Controllo completato.")
 
