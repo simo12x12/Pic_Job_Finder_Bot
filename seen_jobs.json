@@ -273,8 +273,12 @@
         "ice:ee4b86fc9a22deb3ddfb1d85",
         "ice:fcfe3df33a93c989ec06ff7c"
       ]
+    },
+    "inapp": {
+      "initialized": true,
+      "seen": []
     }
   },
-  "last_update": "2026-09-29T14:43:29.742179+00:00",
-  "schema_version": 21
+  "last_update": "2026-09-29T14:46:44.429450+00:00",
+  "schema_version": 22
 }

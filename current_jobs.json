@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 16:42",
+  "last_check": "29/09/2026 16:45",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -580,6 +580,11 @@
           "url": "https://www.ice.it/it/sites/default/files/inline-files/ICE-Agenzia%20-%20Avviso%20Procedura%20Mobilit%C3%A0%20Funzionari%20Passaggio%20Diretto%20tra%20PA_0.pdf"
         }
       ]
+    },
+    "inapp": {
+      "label": "INAPP",
+      "status": "ok",
+      "items": []
     },
     "cdp": {
       "label": "CDP",
