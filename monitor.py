@@ -3,15 +3,23 @@ import hashlib
 import json
 import os
 import re
+import smtplib
 import sys
 import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
+from email.message import EmailMessage
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+ERROR_EMAIL_TO = os.environ.get("ERROR_EMAIL_TO")
+SMTP_HOST = os.environ.get("SMTP_HOST")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("SMTP_USER")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
+SMTP_FROM = os.environ.get("SMTP_FROM") or SMTP_USER
 AUTHORIZED_CHAT_IDS = ["2020881944"]
 SEEN_FILE = Path("seen_jobs.json")
 CURRENT_FILE = Path("current_jobs.json")
@@ -188,6 +196,26 @@ def send_telegram(chat_id, text):
     )
     with urllib.request.urlopen(req, timeout=30) as response:
         response.read()
+
+
+def send_error_email(subject, body):
+    # Optional SMTP error channel. Telegram is intentionally never used here.
+    # If SMTP is not configured, GitHub Actions can still notify by email when
+    # the workflow exits with code 1.
+    if not (ERROR_EMAIL_TO and SMTP_HOST and SMTP_USER and SMTP_PASSWORD and SMTP_FROM):
+        return False
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = SMTP_FROM
+    msg["To"] = ERROR_EMAIL_TO
+    msg.set_content(body)
+
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as server:
+        server.starttls()
+        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.send_message(msg)
+    return True
 
 
 def notify_all(text):
@@ -1372,6 +1400,7 @@ def main():
 
     memory = load_memory()
     errors = []
+    warnings = []
     snapshot = {"last_check": now_rome(), "sources": {}}
 
     specs = [
@@ -1503,6 +1532,7 @@ def main():
                     "status": "unavailable",
                     "items": [],
                 }
+                warnings.append(f"{label}: HTTP 403")
                 continue
 
             print(
@@ -1525,6 +1555,7 @@ def main():
                     "status": "unavailable",
                     "items": [],
                 }
+                warnings.append(f"{SOURCE_LABELS[source]}: {exc}")
                 continue
 
             print(f"ERRORE monitor {SOURCE_LABELS[source]}: {exc}")
@@ -1538,6 +1569,25 @@ def main():
 
     save_memory(memory)
     save_current(snapshot)
+
+    if warnings or errors:
+        lines = [f"Pic_Job_Finder_Bot - anomalie {now_rome()}", ""]
+        if warnings:
+            lines.append("Sorgenti non disponibili:")
+            lines.extend(f"- {item}" for item in warnings)
+        if errors:
+            if warnings:
+                lines.append("")
+            lines.append("Errori:")
+            lines.extend(f"- {item}" for item in errors)
+        try:
+            sent = send_error_email("Pic_Job_Finder_Bot - anomalie monitor", "\n".join(lines))
+            if sent:
+                print("Email anomalie inviata.")
+            else:
+                print("Email anomalie non configurata: nessuna notifica Telegram inviata per errori.")
+        except Exception as mail_exc:
+            print(f"ERRORE invio email anomalie: {mail_exc}")
 
     print("\n=== RIEPILOGO ===")
     if errors:
