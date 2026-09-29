@@ -57,7 +57,18 @@ INPA_BASE_PAYLOAD = {
     "tipoImpiegoId": None,
 }
 INPA_COMMUNICATION_SECTOR = "b078865c126040558601"
-INPA_SEARCH_TERMS = ["marketing", "comunicazione istituzionale"]
+INPA_SEARCH_TERMS = [
+    "marketing",
+    "comunicazione istituzionale",
+    "public affairs",
+    "corporate affairs",
+    "relazioni esterne",
+    "relazioni istituzionali",
+    "rapporti istituzionali",
+    "stakeholder",
+    "ufficio stampa",
+    "digital communication",
+]
 
 SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti"]
 SOURCE_LABELS = {
@@ -75,7 +86,7 @@ SOURCE_LABELS = {
     "ama_roma": "AMA Roma",
     "bmti": "BMTI",
 }
-MEMORY_SCHEMA_VERSION = 8
+MEMORY_SCHEMA_VERSION = 9
 
 
 def now_rome():
@@ -180,6 +191,11 @@ def load_memory():
         # The corporate keyword set was expanded. Re-baseline CDP once so the
         # newly discovered existing matches are not sent as fresh alerts.
         data["sources"]["cdp"] = empty_source()
+
+    if data.get("schema_version", 1) < 9:
+        # The inPA search vocabulary was expanded. Re-baseline inPA once so
+        # existing vacancies uncovered by the new queries are not sent as new.
+        data["sources"]["inpa"] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
