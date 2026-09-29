@@ -22,6 +22,17 @@ SOURCE_ORDER = [
     "sogei",
     "agid",
     "invitalia",
+    "ipzs",
+    "pagopa",
+    "rome_technopole",
+    "ama_roma",
+    "bmti",
+    "sace",
+    "gse",
+    "terna",
+    "acea",
+    "italo",
+    "fincantieri",
     "cdp",
 ]
 
