@@ -26,7 +26,12 @@ AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
 AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
 INVITALIA_JOBS_URL = "https://www.invitalia.it/lavora-con-noi/le-posizioni-aperte"
 CDP_JOBS_URL = "https://www.opportunitadilavoro.cdp.it/"
-CDP_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social"]
+CORPORATE_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social", "public affairs", "corporate affairs", "external relations", "relazioni esterne", "relazioni istituzionali", "rapporti istituzionali", "stakeholder", "brand", "content", "press", "ufficio stampa", "digital communication"]
+IPZS_URL="https://www.ipzs.it/chi-siamo/lavora-con-noi/"
+PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
+ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
+AMA_ROMA_URL="https://www.amaroma.it/lavora-con-noi"
+BMTI_URL="https://www.bmti.it/lavora-con-noi/"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -54,7 +59,7 @@ INPA_BASE_PAYLOAD = {
 INPA_COMMUNICATION_SECTOR = "b078865c126040558601"
 INPA_SEARCH_TERMS = ["marketing", "comunicazione istituzionale"]
 
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp"]
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti"]
 SOURCE_LABELS = {
     "leonardo": "Leonardo",
     "inpa": "inPA",
@@ -64,8 +69,13 @@ SOURCE_LABELS = {
     "agid": "AgID",
     "invitalia": "Invitalia",
     "cdp": "CDP",
+    "ipzs": "IPZS",
+    "pagopa": "PagoPA",
+    "rome_technopole": "Rome Technopole",
+    "ama_roma": "AMA Roma",
+    "bmti": "BMTI",
 }
-MEMORY_SCHEMA_VERSION = 6
+MEMORY_SCHEMA_VERSION = 7
 
 
 def now_rome():
@@ -606,11 +616,64 @@ def get_invitalia_positions():
     return items
 
 
+def matches_corporate_keywords(text):
+    low = normalize_space(text).lower()
+    return any(k in low for k in CORPORATE_KEYWORDS)
+
+
+def get_ipzs_positions():
+    page=fetch_html(IPZS_URL,45,2);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>https?://www\.recruiting\.ipzs\.it/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        full=absolute_url(IPZS_URL,m.group('href')).rstrip('/');label=strip_tags(m.group('label'));context=strip_tags(page[max(0,m.start()-1200):min(len(page),m.end()+1200)])
+        if not matches_corporate_keywords(label+' '+context): continue
+        title=label
+        if not title or title.lower() in {'scopri','candidati'}:
+            heads=re.findall(r'<h[2-5][^>]*>(.*?)</h[2-5]>',page[max(0,m.start()-1200):m.start()],re.I|re.S);title=strip_tags(heads[-1]) if heads else context[:300]
+        iid='ipzs:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_pagopa_positions():
+    page=fetch_html(PAGOPA_URL,45,2);items={};a=page.lower().find('posizioni aperte');b=page.lower().find('posizioni chiuse');sec=page[a:b if b>a else len(page)] if a>=0 else page
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.pagopa\.it)?/it/lavora-con-noi/jobposition-[^"\']+/)["\'][^>]*>(?P<label>.*?)</a>',sec,re.I|re.S):
+        full=absolute_url(PAGOPA_URL,m.group('href'));title=strip_tags(m.group('label'));context=strip_tags(sec[max(0,m.start()-400):min(len(sec),m.end()+400)])
+        if not matches_corporate_keywords(title+' '+context):continue
+        iid='pagopa:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_rome_technopole_positions():
+    page=fetch_html(ROME_TECHNOPOLE_URL,45,2);items={};ms=list(re.finditer(r'AVVISO\s+PUBBLICO\s+N\.\s*(\d+)/2026',page,re.I))
+    for i,m in enumerate(ms):
+        seg=page[m.start():(ms[i+1].start() if i+1<len(ms) else min(len(page),m.end()+5000))];text=strip_tags(seg)
+        if not matches_corporate_keywords(text):continue
+        heads=re.findall(r'<h[2-6][^>]*>(.*?)</h[2-6]>',seg,re.I|re.S);title=next((strip_tags(h) for h in heads if 'avviso pubblico n.' not in strip_tags(h).lower()),text[:400]);hrefs=re.findall(r'href=["\']([^"\']+)["\']',seg,re.I);url=absolute_url(ROME_TECHNOPOLE_URL,hrefs[0]) if hrefs else ROME_TECHNOPOLE_URL;iid=f'rome-technopole:2026-{m.group(1)}';items[iid]={'id':iid,'title':title,'url':url,'extra':f'Avviso {m.group(1)}/2026'}
+    return list(items.values())
+
+
+def get_ama_roma_positions():
+    page=fetch_html(AMA_ROMA_URL,45,2);items={};a=page.lower().find('procedure selettive aperte');b=page.lower().find('procedure selettive chiuse');sec=page[a:b if b>a else len(page)] if a>=0 else page
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.amaroma\.it)?/lavora-con-noi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',sec,re.I|re.S):
+        full=absolute_url(AMA_ROMA_URL,m.group('href')).rstrip('/');label=strip_tags(m.group('label'));context=strip_tags(sec[max(0,m.start()-700):m.end()])
+        if not matches_corporate_keywords(label+' '+context):continue
+        title=re.split(r'Consulta gli aggiornamenti',context,maxsplit=1,flags=re.I)[0].strip() or label;iid='ama:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Procedura aperta'}
+    return list(items.values())
+
+
+def get_bmti_positions():
+    page=fetch_html(BMTI_URL,45,2);items={};a=page.lower().find('posizioni aperte');b=page.lower().find('per tutte le posizioni',a+1);sec=page[a:b if b>a else len(page)] if a>=0 else page
+    for href,label_html in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',sec,re.I|re.S):
+        label=strip_tags(label_html);full=absolute_url(BMTI_URL,href)
+        if not label or not full.lower().endswith('.pdf'):continue
+        iid='bmti:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':label,'url':full,'extra':'Posizione aperta'}
+    return list(items.values())
+
+
 # ---------- CDP ----------
 def get_cdp_positions():
     items = {}
 
-    for term in CDP_KEYWORDS:
+    for term in CORPORATE_KEYWORDS:
         query = urllib.parse.urlencode(
             {"createNewAlert": "false", "q": term, "locationsearch": ""}
         )
@@ -720,6 +783,11 @@ def main():
                 "Invitalia", x["title"], x["url"], extra=x.get("extra")
             ),
         ),
+        ("ipzs", get_ipzs_positions, lambda x: standard_job_message("IPZS", x["title"], x["url"], extra=x.get("extra"))),
+        ("pagopa", get_pagopa_positions, lambda x: standard_job_message("PagoPA", x["title"], x["url"], extra=x.get("extra"))),
+        ("rome_technopole", get_rome_technopole_positions, lambda x: standard_job_message("Rome Technopole", x["title"], x["url"], extra=x.get("extra"))),
+        ("ama_roma", get_ama_roma_positions, lambda x: standard_job_message("AMA Roma", x["title"], x["url"], extra=x.get("extra"))),
+        ("bmti", get_bmti_positions, lambda x: standard_job_message("BMTI", x["title"], x["url"], extra=x.get("extra"))),
         (
             "cdp",
             get_cdp_positions,
@@ -798,7 +866,7 @@ def main():
 
     print(
         "Leonardo + inPA + Eutalia + Consip + Sogei + AgID + "
-        "Invitalia + CDP controllati."
+        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + CDP controllati."
     )
     print("Controllo completato.")
 
