@@ -113,7 +113,7 @@ SOURCE_LABELS = {
     "fondazione_sud": "Fondazione con il Sud",
     "enav": "ENAV",
 }
-MEMORY_SCHEMA_VERSION = 17
+MEMORY_SCHEMA_VERSION = 18
 
 
 def now_rome():
@@ -246,6 +246,10 @@ def load_memory():
 
     if data.get("schema_version", 1) < 17:
         for name in ("anci", "ifel", "tagliacarne", "brodolini", "fondazione_sud"):
+            data["sources"][name] = empty_source()
+
+    if data.get("schema_version", 1) < 18:
+        for name in ("anci", "tagliacarne", "brodolini", "fondazione_sud"):
             data["sources"][name] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
@@ -936,18 +940,38 @@ def _portal_open_selection_items(url, prefix):
 
 
 def get_anci_positions():
-    page=fetch_html(ANCI_OPEN_URL,45,2);today=datetime.now(ROME).date();items={}
-    for row in re.findall(r'<tr[^>]*>(.*?)</tr>',page,re.I|re.S):
-        text=strip_tags(row);dates=re.findall(r'\b(\d{2}/\d{2}/\d{4})\b',text)
-        if len(dates)<2:continue
-        deadline=parse_it_date(dates[-1])
-        if not deadline or deadline<today:continue
-        links=re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',row,re.I|re.S)
-        if not links:continue
-        href,label_html=max(links,key=lambda x:len(strip_tags(x[1])));title=strip_tags(label_html)
-        if not title: title=text
-        full=absolute_url(ANCI_OPEN_URL,href).rstrip('/');iid='anci:'+hashlib.sha256(full.encode()).hexdigest()[:24]
-        items[iid]={'id':iid,'title':title,'url':full,'deadline':dates[-1]}
+    page = fetch_html(ANCI_OPEN_URL, 45, 2)
+    today = datetime.now(ROME).date()
+    items = {}
+
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>', page, re.I | re.S):
+        text = strip_tags(row)
+        dates = re.findall(r'\b(\d{2}/\d{2}/\d{4})\b', text)
+        if len(dates) < 2:
+            continue
+
+        deadline = parse_it_date(dates[-1])
+        if not deadline or deadline < today:
+            continue
+
+        detail = re.search(
+            r'<a[^>]+href=["\'](?P<href>[^"\']*/dettagli/concorsi/[^"\']+)["\'][^>]*>(?P<title>.*?)</a>',
+            row,
+            re.I | re.S,
+        )
+        if not detail:
+            continue
+
+        title = strip_tags(detail.group('title'))
+        full = absolute_url(ANCI_OPEN_URL, detail.group('href')).rstrip('/')
+        iid = 'anci:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
+        items[iid] = {
+            'id': iid,
+            'title': title,
+            'url': full,
+            'deadline': dates[-1],
+        }
+
     return list(items.values())
 
 
@@ -984,40 +1008,80 @@ def get_sna_positions():
 
 
 def get_tagliacarne_positions():
-    page=fetch_html(TAGLIACARNE_OPEN_URL,45,2)
-    if 'nessun elemento presente' in strip_tags(page).lower(): return []
-    today=datetime.now(ROME).date();items={}
-    for row in re.findall(r'<tr[^>]*>(.*?)</tr>',page,re.I|re.S):
-        text=strip_tags(row);dates=re.findall(r'\b(\d{2}/\d{2}/\d{4})\b',text)
-        if len(dates)<2:continue
-        deadline=parse_it_date(dates[-1])
-        if not deadline or deadline<today:continue
-        links=re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',row,re.I|re.S)
-        if not links:continue
-        href,label_html=max(links,key=lambda x:len(strip_tags(x[1])));title=strip_tags(label_html) or text;full=absolute_url(TAGLIACARNE_OPEN_URL,href).rstrip('/');iid='tagliacarne:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':dates[-1]}
+    page = fetch_html(TAGLIACARNE_OPEN_URL, 45, 2)
+    page_text = strip_tags(page).lower()
+
+    if 'nessun elemento presente' in page_text:
+        return []
+
+    today = datetime.now(ROME).date()
+    items = {}
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>', page, re.I | re.S):
+        text = strip_tags(row)
+        dates = re.findall(r'\b(\d{2}/\d{2}/\d{4})\b', text)
+        if len(dates) < 2:
+            continue
+        deadline = parse_it_date(dates[-1])
+        if not deadline or deadline < today:
+            continue
+        detail = re.search(
+            r'<a[^>]+href=["\'](?P<href>[^"\']*/dettagli/concorsi/[^"\']+)["\'][^>]*>(?P<title>.*?)</a>',
+            row,
+            re.I | re.S,
+        )
+        if not detail:
+            continue
+        title = strip_tags(detail.group('title'))
+        full = absolute_url(TAGLIACARNE_OPEN_URL, detail.group('href')).rstrip('/')
+        iid = 'tagliacarne:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
+        items[iid] = {'id': iid, 'title': title, 'url': full, 'deadline': dates[-1]}
     return list(items.values())
 
 
 def get_brodolini_positions():
-    page=fetch_html(BRODOLINI_URL,45,2);items={};blacklist={'lavora con noi','home','news','contatti','chi siamo'}
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(BRODOLINI_URL,m.group('href')).rstrip('/');low=(title+' '+full).lower()
-        if not title or title.lower() in blacklist or full.rstrip('/')==BRODOLINI_URL.rstrip('/'):continue
-        if not any(x in low for x in ('vacancy','job','career','esperto','expert','researcher','project')):continue
-        iid='brodolini:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full}
+    page = fetch_html(BRODOLINI_URL, 45, 2)
+    items = {}
+
+    for m in re.finditer(
+        r'<a[^>]+href=["\'](?P<href>[^"\']*/vacancy/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',
+        page,
+        re.I | re.S,
+    ):
+        full = absolute_url(BRODOLINI_URL, m.group('href')).rstrip('/')
+        if full == BRODOLINI_URL.rstrip('/'):
+            continue
+        title = strip_tags(m.group('label'))
+        if not title:
+            # Prefer the closest heading before the vacancy link.
+            before = page[max(0, m.start() - 800):m.start()]
+            heads = re.findall(r'<h[2-5][^>]*>(.*?)</h[2-5]>', before, re.I | re.S)
+            title = strip_tags(heads[-1]) if heads else 'Vacancy Fondazione Giacomo Brodolini'
+        iid = 'brodolini:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
+        items[iid] = {'id': iid, 'title': title, 'url': full}
+
     return list(items.values())
 
 
 def get_fondazione_sud_positions():
-    page=fetch_html(FONDAZIONE_SUD_URL,45,2);items={}
-    # Only concrete links/cards whose title/context says communication; exclude navigation/social.
-    blacklist=('facebook','linkedin','instagram','youtube','privacy','cookie','lavora con noi')
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(FONDAZIONE_SUD_URL,m.group('href')).rstrip('/');context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+500)]);combined=(title+' '+context).lower()
-        if not title or any(x in (title+' '+full).lower() for x in blacklist):continue
-        if not any(x in combined for x in ('comunicazione','communication','ufficio stampa','media relations')):continue
-        if full.rstrip('/')==FONDAZIONE_SUD_URL.rstrip('/'):continue
-        iid='fondazione-sud:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full}
+    page = fetch_html(FONDAZIONE_SUD_URL, 45, 2)
+    items = {}
+
+    for m in re.finditer(
+        r'<a[^>]+href=["\'](?P<href>https?://www\.fondazioneconilsud\.it/2026/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',
+        page,
+        re.I | re.S,
+    ):
+        full = m.group('href').rstrip('/')
+        title = strip_tags(m.group('label'))
+        context = strip_tags(page[max(0, m.start() - 500):min(len(page), m.end() + 500)])
+        if not title:
+            continue
+        combined = (title + ' ' + context).lower()
+        if not any(x in combined for x in ('comunicazione', 'communication', 'ufficio stampa', 'media relations')):
+            continue
+        iid = 'fondazione-sud:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
+        items[iid] = {'id': iid, 'title': title, 'url': full}
+
     return list(items.values())
 
 
