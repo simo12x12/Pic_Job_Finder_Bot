@@ -200,15 +200,13 @@
       "initialized": true,
       "seen": [
         "brodolini:5d8d16381b2c9b3914c6be29",
-        "brodolini:8242ebf79d144ee13e35842d",
         "brodolini:c0b0cab1dd71316d874a08c3"
       ]
     },
     "fondazione_sud": {
       "initialized": true,
       "seen": [
-        "fondazione-sud:760cb36dbd286186b25756d1",
-        "fondazione-sud:ca9968bb462b798521f65328"
+        "fondazione-sud:760cb36dbd286186b25756d1"
       ]
     },
     "enav": {
@@ -216,6 +214,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-09-29T14:21:38.906025+00:00",
-  "schema_version": 17
+  "last_update": "2026-09-29T14:26:09.359068+00:00",
+  "schema_version": 18
 }

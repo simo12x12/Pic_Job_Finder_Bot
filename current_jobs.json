@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 16:17",
+  "last_check": "29/09/2026 16:25",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -435,10 +435,6 @@
       "status": "ok",
       "items": [
         {
-          "title": "en",
-          "url": "https://www.fondazionebrodolini.it/en/vacancy"
-        },
-        {
           "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
           "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
         },
@@ -452,10 +448,6 @@
       "label": "Fondazione con il Sud",
       "status": "ok",
       "items": [
-        {
-          "title": "Posizioni aperte",
-          "url": "https://www.fondazioneconilsud.it/category/posizioni-aperte"
-        },
         {
           "title": "Con i bambini cerca una risorsa per l’ufficio comunicazione",
           "url": "https://www.fondazioneconilsud.it/2026/07/16/lavora-con-noi-coordinatore-coordinatrice-ufficio-comunicazione"
