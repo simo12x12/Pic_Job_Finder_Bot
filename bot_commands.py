@@ -40,9 +40,16 @@ SOURCE_ORDER = [
     "brodolini",
     "fondazione_sud",
     "enav",
+    "sport_salute",
+    "fs",
+    "autostrade",
+    "infocamere",
+    "formez",
+    "sviluppo_lavoro",
+    "capcoe",
+    "unioncamere",
     "cdp",
 ]
-
 
 def telegram_api(method, data=None):
     url = f"https://api.telegram.org/bot{TOKEN}/{method}"
