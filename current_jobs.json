@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 15:45",
+  "last_check": "29/09/2026 15:50",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -386,7 +386,20 @@
     "fincantieri": {
       "label": "Fincantieri",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Media Center",
+          "url": "https://www.fincantieri.com/it/newsroom/media-center"
+        },
+        {
+          "title": "Social Media",
+          "url": "https://www.fincantieri.com/it/newsroom/social-media"
+        },
+        {
+          "title": "Press Kit",
+          "url": "https://www.fincantieri.com/it/newsroom/press-kit"
+        }
+      ]
     },
     "cdp": {
       "label": "CDP",
