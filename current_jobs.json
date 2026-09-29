@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 15:21",
+  "last_check": "29/09/2026 15:31",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -142,6 +142,54 @@
         {
           "title": "Agente di Polizia Locale - Area degli Istruttori",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0f349f9d5698400cbddc780ec262c101"
+        },
+        {
+          "title": "Area dei funzionari",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=db88cb5be2b84c4a9655102fa6d5e446"
+        },
+        {
+          "title": "ASSISTENTE SOCIALE",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=fbdc5687b2b8409aaa9bf8b42aed6944"
+        },
+        {
+          "title": "Dirigente",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=ff1ce4122697495390e7941d5b8d3df7"
+        },
+        {
+          "title": "istruttore amministrativo contabile",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=daae606484a14930a37a84a68261a2b7"
+        },
+        {
+          "title": "DIRIGENTE DI POLIZIA LOCALE",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=576fe79c32194f5187729140870d6971"
+        },
+        {
+          "title": "ISTRUTTORE TECNICO",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=cf9235d992a44ccdac32884685ed7f3f"
+        },
+        {
+          "title": "Funzionario",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=61893b1176fe482791b8b82726825052"
+        },
+        {
+          "title": "ASSISTENTE SOCIALE",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=8848601f43ab4c239102c55fbf70683c"
+        },
+        {
+          "title": "Funzionario Amministrativo",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=836f760452cd407989b88889fa052516"
+        },
+        {
+          "title": "collaboratore amministrativo-addetto alle relazioni istituzionali",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=acc4a3048d834c6d8b24faa4e5cfa365"
+        },
+        {
+          "title": "FUNZIONARIO AMMINISTRATIVO CONTABILE",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=f27e66dc00784f74a7b032ad8dd3248f"
+        },
+        {
+          "title": "Istruttore direttivo Tecnico (area dei funzionari e dell'elevata qualificazione)",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=c763dc6d286a4e198a9aaf69a5ac8a58"
         }
       ]
     },
@@ -282,7 +330,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "cdp": {
       "label": "CDP",
