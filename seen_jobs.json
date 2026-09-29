@@ -140,8 +140,36 @@
         "bmti:9f7ccd0aaf5ca91008fb8111",
         "bmti:d809465de077bf1c0c31601f"
       ]
+    },
+    "sace": {
+      "initialized": true,
+      "seen": []
+    },
+    "gse": {
+      "initialized": true,
+      "seen": []
+    },
+    "terna": {
+      "initialized": true,
+      "seen": []
+    },
+    "acea": {
+      "initialized": true,
+      "seen": []
+    },
+    "italo": {
+      "initialized": true,
+      "seen": []
+    },
+    "fincantieri": {
+      "initialized": true,
+      "seen": [
+        "fincantieri:619e0bb9a0466f9694bda3bd",
+        "fincantieri:d5eea1817b586da372fb6cc5",
+        "fincantieri:f841f42b3a2d7e1bfc90b4e1"
+      ]
     }
   },
-  "last_update": "2026-09-29T13:32:02.392989+00:00",
-  "schema_version": 9
+  "last_update": "2026-09-29T13:38:59.693289+00:00",
+  "schema_version": 10
 }

@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 15:31",
+  "last_check": "29/09/2026 15:37",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -338,6 +338,49 @@
         {
           "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
           "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
+    },
+    "sace": {
+      "label": "SACE",
+      "status": "ok",
+      "items": []
+    },
+    "gse": {
+      "label": "GSE",
+      "status": "ok",
+      "items": []
+    },
+    "terna": {
+      "label": "Terna",
+      "status": "ok",
+      "items": []
+    },
+    "acea": {
+      "label": "Acea",
+      "status": "ok",
+      "items": []
+    },
+    "italo": {
+      "label": "Italo",
+      "status": "ok",
+      "items": []
+    },
+    "fincantieri": {
+      "label": "Fincantieri",
+      "status": "ok",
+      "items": [
+        {
+          "title": "Media Center",
+          "url": "https://www.fincantieri.com/it/newsroom/media-center"
+        },
+        {
+          "title": "Social Media",
+          "url": "https://www.fincantieri.com/it/newsroom/social-media"
+        },
+        {
+          "title": "Press Kit",
+          "url": "https://www.fincantieri.com/it/newsroom/press-kit"
         }
       ]
     },
