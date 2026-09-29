@@ -37,6 +37,7 @@ GSE_URL="https://gse.taleo.net/careersection/ex/joblist.ftl?lang=it"
 TERNA_URL="https://www.terna.it/it/persone/lavora-noi/posizioni-aperte"
 ACEA_URL="https://jobs.acea.it/Acea/go/Acea-Lavora-con-noi/3482701/"
 ITALO_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
+ITALO_LEGAL_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/direzione-legal-affairs-and-compliance.html"
 FINCANTIERI_URL="https://www.fincantieri.com/it/persone/lavora-con-noi"
 
 LEONARDO_FACETS = {
@@ -98,7 +99,7 @@ SOURCE_LABELS = {
     "italo": "Italo",
     "fincantieri": "Fincantieri",
 }
-MEMORY_SCHEMA_VERSION = 10
+MEMORY_SCHEMA_VERSION = 11
 
 
 def now_rome():
@@ -208,6 +209,11 @@ def load_memory():
         # The inPA search vocabulary was expanded. Re-baseline inPA once so
         # existing vacancies uncovered by the new queries are not sent as new.
         data["sources"]["inpa"] = empty_source()
+
+    if data.get("schema_version", 1) < 11:
+        # Parser refinements for Block 2: re-baseline these sources once.
+        for name in ("terna", "italo", "fincantieri"):
+            data["sources"][name] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -739,12 +745,13 @@ def get_gse_positions():
 
 def get_terna_positions():
     page=fetch_html(TERNA_URL,45,2);items={}
-    # Use explicit vacancy anchors on the landing page. Filter primarily by title to avoid
-    # matching generic description text shared by unrelated technical jobs.
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(TERNA_URL,m.group('href')).rstrip('/')
-        if not title or not matches_corporate_keywords(title):continue
-        if 'candidatura spontanea' in title.lower():continue
+    # Capture explicit recruiting job links from the official Terna page.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>https?://jobs\.terna\.it/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        full=m.group('href').rstrip('/');title=strip_tags(m.group('label'))
+        if not title: continue
+        # Use title first; surrounding text only if it belongs to this vacancy block.
+        context=strip_tags(page[max(0,m.start()-900):min(len(page),m.end()+900)])
+        if not matches_corporate_keywords(title+' '+context): continue
         iid='terna:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
     return list(items.values())
 
@@ -759,25 +766,42 @@ def get_acea_positions():
 
 
 def get_italo_positions():
-    page=fetch_html(ITALO_URL,45,2);items={}
-    # Italo renders staff job titles as headings. Capture titles that match the dictionary.
-    for title_html in re.findall(r'<h3[^>]*>(.*?)</h3>',page,re.I|re.S):
-        title=strip_tags(title_html)
-        if not title or not matches_corporate_keywords(title):continue
-        if title.lower() in {'selezioni personale di staff','selezioni personale operativo','candidatura spontanea'}:continue
-        iid='italo:'+hashlib.sha256(title.lower().encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':ITALO_URL,'extra':'Corporate keywords'}
+    # Main page occasionally times out from GitHub. Try it once, then use the
+    # official Legal Affairs page which currently contains the Corporate Affairs role.
+    pages=[]
+    try:
+        pages.append((ITALO_URL,fetch_html(ITALO_URL,30,1)))
+    except Exception as exc:
+        print(f"Italo pagina principale non disponibile: {exc}. Uso fallback ufficiale.")
+    try:
+        pages.append((ITALO_LEGAL_URL,fetch_html(ITALO_LEGAL_URL,30,1)))
+    except Exception as exc:
+        print(f"Italo fallback Legal Affairs non disponibile: {exc}")
+    items={}
+    for base,page in pages:
+        # Italo exposes the job names as headings rather than conventional detail links.
+        for title_html in re.findall(r'<h[2-5][^>]*>(.*?)</h[2-5]>',page,re.I|re.S):
+            title=strip_tags(title_html)
+            if not title or not matches_corporate_keywords(title): continue
+            if title.lower() in {'selezioni personale di staff','selezioni personale operativo','candidatura spontanea','legal affairs and compliance'}: continue
+            iid='italo:'+hashlib.sha256(title.lower().encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':base,'extra':'Corporate keywords'}
     return list(items.values())
 
 
 def get_fincantieri_positions():
     page=fetch_html(FINCANTIERI_URL,45,2);items={}
-    # Corporate page may only expose entry points. Keep links whose own visible label
-    # contains a corporate keyword; do not use generic surrounding prose.
+    # Do not interpret generic corporate-page links as vacancies. Only retain links
+    # whose own label looks like a concrete role and matches the keyword dictionary.
+    blacklist={'persone','lavora con noi','approfondisci','scopri di più','candidatura spontanea'}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
         title=strip_tags(m.group('label'));full=absolute_url(FINCANTIERI_URL,m.group('href')).rstrip('/')
-        if not title or not matches_corporate_keywords(title):continue
-        iid='fincantieri:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+        if not title or title.lower() in blacklist: continue
+        if not matches_corporate_keywords(title): continue
+        # Require a job-like label, not prose/navigation.
+        if len(title)>160: continue
+        iid='fincantieri:'+hashlib.sha256((title+'|'+full).encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
     return list(items.values())
+
 
 
 # ---------- CDP ----------
