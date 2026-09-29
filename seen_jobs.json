@@ -151,7 +151,12 @@
     },
     "terna": {
       "initialized": true,
-      "seen": []
+      "seen": [
+        "terna:2b006dca8006ce991b5dd9c6",
+        "terna:6d94f95de4b8193f4f2fece8",
+        "terna:a02f1b84b5631dc7c8e3bfff",
+        "terna:ab5d5e158d9b4fd45441a653"
+      ]
     },
     "acea": {
       "initialized": true,
@@ -164,12 +169,12 @@
     "fincantieri": {
       "initialized": true,
       "seen": [
-        "fincantieri:619e0bb9a0466f9694bda3bd",
-        "fincantieri:d5eea1817b586da372fb6cc5",
-        "fincantieri:f841f42b3a2d7e1bfc90b4e1"
+        "fincantieri:48db998985c3433127a40b66",
+        "fincantieri:96ba8542ce6f57eb1d1bb59a",
+        "fincantieri:a91c161ef96ed4cdf1fa62fd"
       ]
     }
   },
-  "last_update": "2026-09-29T13:39:55.942120+00:00",
-  "schema_version": 10
+  "last_update": "2026-09-29T13:42:49.421149+00:00",
+  "schema_version": 11
 }

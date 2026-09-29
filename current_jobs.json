@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 15:39",
+  "last_check": "29/09/2026 15:41",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -345,7 +345,24 @@
     "terna": {
       "label": "Terna",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Candidati ora >",
+          "url": "https://jobs.terna.it/job/Specialista-Connessioni-RTN/29819-it_IT/?st=FF5C70068DFCB0D6C692881FAB2626E8A4F295D0"
+        },
+        {
+          "title": "Candidati ora >",
+          "url": "https://jobs.terna.it/job/Project-&amp;-Program-Manager/29822-it_IT/?st=5B5B952B2D34F8ED9822B841DCE7AADBE87564FE"
+        },
+        {
+          "title": "Candidati ora >",
+          "url": "https://jobs.terna.it/job/Tecnico-Operation-&amp;-Maintenance/29823-it_IT/?st=5E2BC5CBE96EC98D6656BDEB915BD0291BB29931"
+        },
+        {
+          "title": "Candidati ora >",
+          "url": "https://jobs.terna.it/job/Specialista-Digital-Construction-&amp;-BIM/29827-it_IT/?st=8083C2D659BDC913913B63A4DEF41124F8C5B356"
+        }
+      ]
     },
     "acea": {
       "label": "Acea",
