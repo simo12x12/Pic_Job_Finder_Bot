@@ -39,6 +39,13 @@ ACEA_URL="https://jobs.acea.it/Acea/go/Acea-Lavora-con-noi/3482701/"
 ITALO_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
 ITALO_LEGAL_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/direzione-legal-affairs-and-compliance.html"
 FINCANTIERI_URL="https://www.fincantieri.com/it/persone/lavora-con-noi/posizioni-aperte"
+ANCI_OPEN_URL="https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html?ordina_per=oggetto&dir=desc&sort=t.oggetto&direction=desc&pagina=1"
+IFEL_SELECTION_URL="https://fondazioneifel.portaletrasparenza.net/it/trasparenza/selezione-del-personale.html"
+SNA_CONCORSI_URL="https://sna.gov.it/home/amministrazione-trasparente/bandi-di-concorso/"
+TAGLIACARNE_OPEN_URL="https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html"
+BRODOLINI_URL="https://www.fondazionebrodolini.it/vacancy"
+FONDAZIONE_SUD_URL="https://www.fondazioneconilsud.it/lavora-con-noi/"
+ENAV_CAREER_URL="https://enav.intervieweb.it/it/career"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -77,7 +84,7 @@ INPA_SEARCH_TERMS = [
     "digital communication",
 ]
 
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri"]
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri", "anci", "ifel", "sna", "tagliacarne", "brodolini", "fondazione_sud", "enav"]
 SOURCE_LABELS = {
     "leonardo": "Leonardo",
     "inpa": "inPA",
@@ -98,8 +105,15 @@ SOURCE_LABELS = {
     "acea": "Acea",
     "italo": "Italo",
     "fincantieri": "Fincantieri",
+    "anci": "ANCI",
+    "ifel": "IFEL",
+    "sna": "SNA",
+    "tagliacarne": "Centro Studi Tagliacarne",
+    "brodolini": "Fondazione Giacomo Brodolini",
+    "fondazione_sud": "Fondazione con il Sud",
+    "enav": "ENAV",
 }
-MEMORY_SCHEMA_VERSION = 15
+MEMORY_SCHEMA_VERSION = 16
 
 
 def now_rome():
@@ -903,6 +917,88 @@ def get_fincantieri_positions():
     return list(items.values())
 
 
+# ---------- Block 3 ----------
+def _portal_open_selection_items(url, prefix):
+    page=fetch_html(url,45,2);items={}
+    # Transparency portals expose detail links and row text with dates.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(url,m.group('href')).rstrip('/')
+        if not title or len(title)<15:continue
+        low=(title+' '+full).lower()
+        if not any(x in low for x in ('avviso','selezione','concorso','esperto','long list','incarico')):continue
+        if any(x in low for x in ('privacy','esito','graduatoria','archivio')):continue
+        iid=prefix+':'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full}
+    return list(items.values())
+
+
+def get_anci_positions():
+    return _portal_open_selection_items(ANCI_OPEN_URL,'anci')
+
+
+def get_ifel_positions():
+    # Main transparency page links to recruitment records. Keep only non-expired details.
+    page=fetch_html(IFEL_SELECTION_URL,45,2);today=datetime.now(ROME).date();items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+(?:concorsi|dettagli)[^"\']*)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(IFEL_SELECTION_URL,m.group('href'))
+        if not title or not any(x in title.lower() for x in ('avviso','selezione','assunzione')):continue
+        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+500)]);dates=re.findall(r'\b(\d{2}/\d{2}/\d{4})\b',context);deadline=parse_it_date(dates[-1]) if dates else None
+        if deadline and deadline<today:continue
+        iid='ifel:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':dates[-1] if dates else ''}
+    return list(items.values())
+
+
+def get_sna_positions():
+    page=fetch_html(SNA_CONCORSI_URL,45,2);today=datetime.now(ROME).date();items={}
+    # SNA page contains current and historic notices; require an explicit future/non-expired deadline.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'))
+        if not title or not matches_corporate_keywords(title):continue
+        context=strip_tags(page[max(0,m.start()-300):min(len(page),m.end()+300)]);dm=re.search(r'scadenza\s+(\d{1,2})/(\d{1,2})/(\d{4})',context,re.I)
+        if not dm:continue
+        deadline=datetime(int(dm.group(3)),int(dm.group(2)),int(dm.group(1))).date()
+        if deadline<today:continue
+        full=absolute_url(SNA_CONCORSI_URL,m.group('href'));iid='sna:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':deadline.strftime('%d/%m/%Y')}
+    return list(items.values())
+
+
+def get_tagliacarne_positions():
+    return _portal_open_selection_items(TAGLIACARNE_OPEN_URL,'tagliacarne')
+
+
+def get_brodolini_positions():
+    page=fetch_html(BRODOLINI_URL,45,2);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(BRODOLINI_URL,m.group('href')).rstrip('/')
+        if not title or full.rstrip('/')==BRODOLINI_URL.rstrip('/'):continue
+        context=strip_tags(page[max(0,m.start()-600):min(len(page),m.end()+600)])
+        if not any(x in (title+' '+context).lower() for x in ('vacancy','esperto','expert','research','project','ufficio','assistant','manager')):continue
+        iid='brodolini:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full}
+    return list(items.values())
+
+
+def get_fondazione_sud_positions():
+    page=fetch_html(FONDAZIONE_SUD_URL,45,2);items={}
+    # Small curated page: keep job/open-position links and communication-oriented visible titles.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(FONDAZIONE_SUD_URL,m.group('href')).rstrip('/');context=strip_tags(page[max(0,m.start()-400):min(len(page),m.end()+400)])
+        combined=title+' '+context
+        if not title or not any(x in combined.lower() for x in ('posizioni aperte','comunicazione','ufficio stampa','lavora con noi')):continue
+        if full.rstrip('/')==FONDAZIONE_SUD_URL.rstrip('/'):continue
+        iid='fondazione-sud:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full}
+    return list(items.values())
+
+
+def get_enav_positions():
+    page=fetch_html(ENAV_CAREER_URL,45,2);items={}
+    # Intervieweb career page contains vacancy cards. Filter large-company listings by corporate dictionary.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(ENAV_CAREER_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        if 'candidatura spontanea' in title.lower():continue
+        iid='enav:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
 # ---------- CDP ----------
 def get_cdp_positions():
     items = {}
@@ -1028,6 +1124,13 @@ def main():
         ("acea", get_acea_positions, lambda x: standard_job_message("Acea", x["title"], x["url"], extra=x.get("extra"))),
         ("italo", get_italo_positions, lambda x: standard_job_message("Italo", x["title"], x["url"], extra=x.get("extra"))),
         ("fincantieri", get_fincantieri_positions, lambda x: standard_job_message("Fincantieri", x["title"], x["url"], extra=x.get("extra"))),
+        ("anci", get_anci_positions, lambda x: standard_job_message("ANCI", x["title"], x["url"])),
+        ("ifel", get_ifel_positions, lambda x: standard_job_message("IFEL", x["title"], x["url"], deadline=x.get("deadline"))),
+        ("sna", get_sna_positions, lambda x: standard_job_message("SNA", x["title"], x["url"], deadline=x.get("deadline"))),
+        ("tagliacarne", get_tagliacarne_positions, lambda x: standard_job_message("Centro Studi Tagliacarne", x["title"], x["url"])),
+        ("brodolini", get_brodolini_positions, lambda x: standard_job_message("Fondazione Giacomo Brodolini", x["title"], x["url"])),
+        ("fondazione_sud", get_fondazione_sud_positions, lambda x: standard_job_message("Fondazione con il Sud", x["title"], x["url"])),
+        ("enav", get_enav_positions, lambda x: standard_job_message("ENAV", x["title"], x["url"], extra=x.get("extra"))),
         (
             "cdp",
             get_cdp_positions,
@@ -1114,7 +1217,7 @@ def main():
 
     print(
         "Leonardo + inPA + Eutalia + Consip + Sogei + AgID + "
-        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + CDP controllati."
+        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + ANCI + IFEL + SNA + Centro Studi Tagliacarne + Fondazione Giacomo Brodolini + Fondazione con il Sud + ENAV + CDP controllati."
     )
     print("Controllo completato.")
 
