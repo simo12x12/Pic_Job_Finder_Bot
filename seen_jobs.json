@@ -131,8 +131,11 @@
       ]
     },
     "ama_roma": {
-      "initialized": false,
-      "seen": []
+      "initialized": true,
+      "seen": [
+        "ama:2fc949e7861286a30356790c",
+        "ama:8b3c325b388b29b7cba8115f"
+      ]
     },
     "bmti": {
       "initialized": true,
@@ -279,6 +282,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-09-29T18:13:52.619896+00:00",
+  "last_update": "2026-09-29T18:33:23.966551+00:00",
   "schema_version": 22
 }
