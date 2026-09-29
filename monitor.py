@@ -55,6 +55,8 @@ FORMEZ_BANDI_URL="https://www.formez.it/lavora-con-noi/bandi"
 SVILUPPO_LAVORO_URL="https://lavoraconnoi.sviluppolavoroitalia.it/hr/core/StartInteraction.action?id_interaction=ST.HR.LSTAVVISI_PUBBLICATI"
 CAPCOE_URL="https://capcoe.it/opportunita/avvisi/"
 UNIONCAMERE_URL="https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso"
+AGENAS_URL="https://www.agenas.gov.it/bandi-di-concorso/avvisi-attivi"
+ICE_URL="https://www.ice.it/it/chi-siamo/lavora-con-noi/concorsi"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -93,7 +95,7 @@ INPA_SEARCH_TERMS = [
     "digital communication",
 ]
 
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri", "anci", "ifel", "sna", "tagliacarne", "brodolini", "fondazione_sud", "enav", "sport_salute", "fs", "autostrade", "infocamere", "formez", "sviluppo_lavoro", "capcoe", "unioncamere"]
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri", "anci", "ifel", "sna", "tagliacarne", "brodolini", "fondazione_sud", "enav", "sport_salute", "fs", "autostrade", "infocamere", "formez", "sviluppo_lavoro", "capcoe", "unioncamere", "agenas", "ice"]
 SOURCE_LABELS = {
     "leonardo": "Leonardo",
     "inpa": "inPA",
@@ -129,8 +131,10 @@ SOURCE_LABELS = {
     "sviluppo_lavoro": "Sviluppo Lavoro Italia",
     "capcoe": "PN Capacita per la Coesione",
     "unioncamere": "Unioncamere",
+    "agenas": "AGENAS",
+    "ice": "Agenzia ICE",
 }
-MEMORY_SCHEMA_VERSION = 20
+MEMORY_SCHEMA_VERSION = 21
 
 
 def now_rome():
@@ -277,6 +281,10 @@ def load_memory():
         # The corporate vocabulary was expanded in the previous release.
         # Re-baseline Terna once so pre-existing matches are not notified as new.
         data["sources"]["terna"] = empty_source()
+
+    if data.get("schema_version", 1) < 21:
+        for name in ("agenas", "ice"):
+            data["sources"][name] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -1224,6 +1232,45 @@ def get_unioncamere_positions():
     return list(items.values())
 
 
+# ---------- AGENAS and Agenzia ICE ----------
+def get_agenas_positions():
+    page=fetch_html(AGENAS_URL,30,1);today=datetime.now(ROME).date();items={}
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>',page,re.I|re.S):
+        text=strip_tags(row)
+        if not matches_corporate_keywords(text):continue
+        links=re.findall(r'<a[^>]+href=["\']([^"\']+/bandi-di-concorso/avvisi-attivi/[^"\']+)["\'][^>]*>(.*?)</a>',row,re.I|re.S)
+        if not links:continue
+        href,label_html=max(links,key=lambda x:len(strip_tags(x[1])));title=strip_tags(label_html)
+        # Italian numeric deadline or textual month deadline.
+        dm=re.search(r'(\d{2})/(\d{2})/(\d{4})',text)
+        if dm:
+            deadline=datetime(int(dm.group(3)),int(dm.group(2)),int(dm.group(1))).date()
+        else:
+            months={'gennaio':1,'febbraio':2,'marzo':3,'aprile':4,'maggio':5,'giugno':6,'luglio':7,'agosto':8,'settembre':9,'ottobre':10,'novembre':11,'dicembre':12}
+            tm=re.search(r'(\d{1,2})\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+(\d{4})',text,re.I)
+            deadline=datetime(int(tm.group(3)),months[tm.group(2).lower()],int(tm.group(1))).date() if tm else None
+        if not deadline or deadline<today:continue
+        full=absolute_url(AGENAS_URL,href).rstrip('/');iid='agenas:'+hashlib.sha256(full.encode()).hexdigest()[:24]
+        items[iid]={'id':iid,'title':title,'url':full,'deadline':deadline.strftime('%d/%m/%Y')}
+    return list(items.values())
+
+
+def get_ice_positions():
+    page=fetch_html(ICE_URL,30,1);items={}
+    # ICE mixes live procedures and their subsequent documents on one page. Keep only
+    # primary notices that match our professional dictionary, excluding explicit concluded items.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(ICE_URL,m.group('href')).rstrip('/')
+        if not title or len(title)>500 or not matches_corporate_keywords(title):continue
+        context=strip_tags(page[max(0,m.start()-180):min(len(page),m.end()+180)]).lower()
+        low=title.lower()
+        if any(x in low for x in ('elenco candidature','commissione','graduatoria','candidati ammessi','calendario','esito','verbale','scorrimento')):continue
+        if any(x in context for x in ('(concluso)','(conclusa)','scaduto','scaduta')):continue
+        if not any(x in low for x in ('avviso','selezione','concorso','incarico','mobilità','mobilita')):continue
+        iid='ice:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'PA / Corporate keywords'}
+    return list(items.values())
+
+
 # ---------- CDP ----------
 def get_cdp_positions():
     items = {}
@@ -1364,6 +1411,8 @@ def main():
         ("sviluppo_lavoro", get_sviluppo_lavoro_positions, lambda x: standard_job_message("Sviluppo Lavoro Italia", x["title"], x["url"], extra=x.get("extra"))),
         ("capcoe", get_capcoe_positions, lambda x: standard_job_message("PN Capacita per la Coesione", x["title"], x["url"], deadline=x.get("deadline"))),
         ("unioncamere", get_unioncamere_positions, lambda x: standard_job_message("Unioncamere", x["title"], x["url"], extra=x.get("extra"))),
+        ("agenas", get_agenas_positions, lambda x: standard_job_message("AGENAS", x["title"], x["url"], deadline=x.get("deadline"))),
+        ("ice", get_ice_positions, lambda x: standard_job_message("Agenzia ICE", x["title"], x["url"], extra=x.get("extra"))),
         (
             "cdp",
             get_cdp_positions,
@@ -1450,7 +1499,7 @@ def main():
 
     print(
         "Leonardo + inPA + Eutalia + Consip + Sogei + AgID + "
-        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + ANCI + IFEL + SNA + Centro Studi Tagliacarne + Fondazione Giacomo Brodolini + Fondazione con il Sud + ENAV + Sport e Salute + Gruppo FS Italiane + Autostrade per l Italia + InfoCamere + Formez PA + Sviluppo Lavoro Italia + PN Capacita per la Coesione + Unioncamere + CDP controllati."
+        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + ANCI + IFEL + SNA + Centro Studi Tagliacarne + Fondazione Giacomo Brodolini + Fondazione con il Sud + ENAV + Sport e Salute + Gruppo FS Italiane + Autostrade per l Italia + InfoCamere + Formez PA + Sviluppo Lavoro Italia + PN Capacita per la Coesione + Unioncamere + AGENAS + Agenzia ICE + CDP controllati."
     )
     print("Controllo completato.")
 
