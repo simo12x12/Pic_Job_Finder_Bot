@@ -41,6 +41,7 @@ ITALO_LEGAL_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aper
 FINCANTIERI_URL="https://www.fincantieri.com/it/persone/lavora-con-noi/posizioni-aperte"
 ANCI_OPEN_URL="https://anci.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html?ordina_per=oggetto&dir=desc&sort=t.oggetto&direction=desc&pagina=1"
 IFEL_SELECTION_URL="https://fondazioneifel.portaletrasparenza.net/it/trasparenza/selezione-del-personale.html"
+IFEL_RECRUITMENT_URL="https://fondazioneifel.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale.html"
 SNA_CONCORSI_URL="https://sna.gov.it/home/amministrazione-trasparente/bandi-di-concorso/"
 TAGLIACARNE_OPEN_URL="https://tagliacarne.portaletrasparenza.net/it/trasparenza/selezione-del-personale/reclutamento-del-personale/bandi-e-avvisi-di-selezione-per-i-quali-e-possibile-presentare-domanda-di-partecipazione.html"
 BRODOLINI_URL="https://www.fondazionebrodolini.it/vacancy"
@@ -513,7 +514,7 @@ def get_consip_positions():
 
 # ---------- Sogei ----------
 def get_sogei_positions():
-    page = fetch_html(SOGEI_TRANSPARENCY_URL, 45, 2)
+    page = fetch_html(SOGEI_TRANSPARENCY_URL, 15, 1)
 
     start_match = re.search(r"Avvisi\s+di\s+selezione\s+in\s+corso", page, re.I)
     end_match = re.search(r"Avvisi\s+di\s+selezione\s+conclusi", page, re.I)
@@ -728,7 +729,7 @@ def get_rome_technopole_positions():
 
 
 def get_ama_roma_positions():
-    page=fetch_html(AMA_ROMA_URL,45,2);items={};a=page.lower().find('procedure selettive aperte');b=page.lower().find('procedure selettive chiuse');sec=page[a:b if b>a else len(page)] if a>=0 else page
+    page=fetch_html(AMA_ROMA_URL,15,1);items={};a=page.lower().find('procedure selettive aperte');b=page.lower().find('procedure selettive chiuse');sec=page[a:b if b>a else len(page)] if a>=0 else page
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.amaroma\.it)?/lavora-con-noi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',sec,re.I|re.S):
         full=absolute_url(AMA_ROMA_URL,m.group('href')).rstrip('/');label=strip_tags(m.group('label'));context=strip_tags(sec[max(0,m.start()-700):m.end()])
         if not matches_corporate_keywords(label+' '+context):continue
@@ -976,20 +977,31 @@ def get_anci_positions():
 
 
 def get_ifel_positions():
-    page=fetch_html(IFEL_SELECTION_URL,45,2);today=datetime.now(ROME).date();items={}
-    candidates=[]
-    for href,label_html in re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',page,re.I|re.S):
-        label=strip_tags(label_html);full=absolute_url(IFEL_SELECTION_URL,href)
-        if any(x in (label+' '+full).lower() for x in ('avviso','selezione','concorsi')): candidates.append((full,label))
-    for full,label in candidates:
-        try: detail=fetch_html(full,30,1)
-        except Exception: continue
-        text=strip_tags(detail);m=re.search(r'Data\s+di\s+scadenza:\s*(\d{2}/\d{2}/\d{4})',text,re.I)
-        if not m:continue
-        deadline=parse_it_date(m.group(1))
-        if not deadline or deadline<today:continue
-        title_match=re.search(r'<h1[^>]*>(.*?)</h1>',detail,re.I|re.S);title=strip_tags(title_match.group(1)) if title_match else label
-        iid='ifel:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'deadline':m.group(1)}
+    page = fetch_html(IFEL_RECRUITMENT_URL, 20, 1)
+    today = datetime.now(ROME).date()
+    items = {}
+
+    # Parse the recruitment listing directly. Do not open every detail page.
+    for row in re.findall(r'<tr[^>]*>(.*?)</tr>', page, re.I | re.S):
+        text = strip_tags(row)
+        links = re.findall(r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>', row, re.I | re.S)
+        if not links:
+            continue
+        dates = re.findall(r'\b(\d{2}/\d{2}/\d{4})\b', text)
+        if len(dates) < 2:
+            continue
+        deadline = parse_it_date(dates[-1])
+        if not deadline or deadline < today:
+            continue
+        href, label_html = max(links, key=lambda x: len(strip_tags(x[1])))
+        title = strip_tags(label_html)
+        full = absolute_url(IFEL_RECRUITMENT_URL, href).rstrip('/')
+        low = (title + ' ' + full).lower()
+        if not any(x in low for x in ('avviso', 'selezione', 'concorso', 'assunzione')):
+            continue
+        iid = 'ifel:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
+        items[iid] = {'id': iid, 'title': title, 'url': full, 'deadline': dates[-1]}
+
     return list(items.values())
 
 
