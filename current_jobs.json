@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 15:02",
+  "last_check": "29/09/2026 15:19",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -233,10 +233,99 @@
         }
       ]
     },
+    "ipzs": {
+      "label": "IPZS",
+      "status": "ok",
+      "items": []
+    },
+    "pagopa": {
+      "label": "PagoPA",
+      "status": "ok",
+      "items": [
+        {
+          "title": "Junior Software Engineer NEW Data di apertura: 2026-09-25",
+          "url": "https://www.pagopa.it/it/lavora-con-noi/jobposition-121/"
+        }
+      ]
+    },
+    "rome_technopole": {
+      "label": "Rome Technopole",
+      "status": "ok",
+      "items": [
+        {
+          "title": "Avviso pubblico per l’individuazione di n. 1 Unità di Consulenza Specialistica Middle per Web & Social Media Specialist",
+          "url": "mailto:rometechnopole@pec.it"
+        },
+        {
+          "title": "Avviso pubblico per l’individuazione di n. 1 Tecnologo con funzioni di “EU Programmes & Strategic Networking Officer”",
+          "url": "mailto:rometechnopole@pec.it"
+        },
+        {
+          "title": "Avviso pubblico per l’individuazione del Responsabile tecnico-scientifico della Fondazione Rome Technopole",
+          "url": "mailto:rometechnopole@pec.it"
+        },
+        {
+          "title": "Avviso pubblico per l’individuazione di n. 1 unità a supporto della Direzione Generale e del Responsabile Amministrativo",
+          "url": "mailto:rometechnopole@pec.it"
+        },
+        {
+          "title": "AVVISO PUBBLICO N. 2/2026 del 21 aprile 2026 Avviso Pubblico per l’individuazione di n. 1 Tecnologo con le funzioni di “Manager Infrastrutture di Ricerca Rome Technopole” È indetta una procedura di selezione per titoli e colloquio, per l’individuazione di n. 1 Tecnologo con le funzioni di “Manager Infrastrutture di Ricerca Rome Technopole”. L’Avviso ha ad oggetto, nello specifico, l’affidamento di",
+          "url": "mailto:rometechnopole@pec.it"
+        }
+      ]
+    },
+    "ama_roma": {
+      "label": "AMA Roma",
+      "status": "unavailable",
+      "items": []
+    },
+    "bmti": {
+      "label": "BMTI",
+      "status": "ok",
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
+    },
     "cdp": {
       "label": "CDP",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "(CDPE)_Strategic Planning & Control Specialist",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Milano-%28CDPE%29_Strategic-Planning-&-Control-Specialist/1365340757"
+        },
+        {
+          "title": "(CDP)_Head of Back Office Finanziamenti e Contributi",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28CDP%29_Head-of-Back-Office-Finanziamenti-e-Contributi/1367891257"
+        },
+        {
+          "title": "(CDP)_Procurement Governance Analyst_Tempo Determinato",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28CDP%29_Procurement-Governance-Analyst_Tempo-Determinato/1372712257"
+        },
+        {
+          "title": "(CDP)_Procurement Planning Analyst_Tempo Determinato",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28CDP%29_Procurement-Planning-Analyst_Tempo-Determinato/1372713457"
+        },
+        {
+          "title": "(CDP)_Payroll & HR Administration Analyst_Tempo Determinato",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28CDP%29_Payroll-&-HR-Administration-Analyst_Tempo-Determinato/1372998657"
+        },
+        {
+          "title": "(CDP)_Development Finance Senior Expert",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28CDP%29_Development-Finance-Senior-Expert/1372163257"
+        },
+        {
+          "title": "(CDP)_Advisory Development Strategist",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28CDP%29_Advisory-Development-Strategist/1371442057"
+        }
+      ]
     }
   }
 }

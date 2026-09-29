@@ -84,15 +84,54 @@
     },
     "cdp": {
       "initialized": true,
-      "seen": []
+      "seen": [
+        "cdp:43865862ef83c7f4c3102a46",
+        "cdp:457161b401e4bc73fa5f0c65",
+        "cdp:53ab8314f6a424545d77d8c9",
+        "cdp:71cc7590cfb916086770ac23",
+        "cdp:92a84da8ab3157e29fab3368",
+        "cdp:a85d8abf1d09096edaab88dd",
+        "cdp:b4777b130e1fbe360925b28f"
+      ]
     },
     "invitalia": {
       "initialized": true,
       "seen": [
         "invitalia-consulting:17813  "
       ]
+    },
+    "ipzs": {
+      "initialized": true,
+      "seen": []
+    },
+    "pagopa": {
+      "initialized": true,
+      "seen": [
+        "pagopa:baf50b327f3107ad0fc9e0f3"
+      ]
+    },
+    "rome_technopole": {
+      "initialized": true,
+      "seen": [
+        "rome-technopole:2026-10",
+        "rome-technopole:2026-11",
+        "rome-technopole:2026-2",
+        "rome-technopole:2026-3",
+        "rome-technopole:2026-4"
+      ]
+    },
+    "ama_roma": {
+      "initialized": false,
+      "seen": []
+    },
+    "bmti": {
+      "initialized": true,
+      "seen": [
+        "bmti:9f7ccd0aaf5ca91008fb8111",
+        "bmti:d809465de077bf1c0c31601f"
+      ]
     }
   },
-  "last_update": "2026-09-29T13:02:46.203689+00:00",
-  "schema_version": 6
+  "last_update": "2026-09-29T13:20:32.451144+00:00",
+  "schema_version": 8
 }
