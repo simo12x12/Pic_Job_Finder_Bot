@@ -32,6 +32,12 @@ PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
 ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
 AMA_ROMA_URL="https://www.amaroma.it/lavora-con-noi"
 BMTI_URL="https://www.bmti.it/lavora-con-noi/"
+SACE_URL="https://sace.wd103.myworkdayjobs.com/it-IT/Sace001"
+GSE_URL="https://gse.taleo.net/careersection/ex/joblist.ftl?lang=it"
+TERNA_URL="https://www.terna.it/it/persone/lavora-noi/posizioni-aperte"
+ACEA_URL="https://jobs.acea.it/Acea/go/Acea-Lavora-con-noi/3482701/"
+ITALO_URL="https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
+FINCANTIERI_URL="https://www.fincantieri.com/it/persone/lavora-con-noi"
 
 LEONARDO_FACETS = {
     "locationCountry": ["8cd04a563fd94da7b06857a79faaf815"],
@@ -70,7 +76,7 @@ INPA_SEARCH_TERMS = [
     "digital communication",
 ]
 
-SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti"]
+SOURCE_NAMES = ["leonardo", "inpa", "eutalia", "consip", "sogei", "agid", "invitalia", "cdp", "ipzs", "pagopa", "rome_technopole", "ama_roma", "bmti", "sace", "gse", "terna", "acea", "italo", "fincantieri"]
 SOURCE_LABELS = {
     "leonardo": "Leonardo",
     "inpa": "inPA",
@@ -85,8 +91,14 @@ SOURCE_LABELS = {
     "rome_technopole": "Rome Technopole",
     "ama_roma": "AMA Roma",
     "bmti": "BMTI",
+    "sace": "SACE",
+    "gse": "GSE",
+    "terna": "Terna",
+    "acea": "Acea",
+    "italo": "Italo",
+    "fincantieri": "Fincantieri",
 }
-MEMORY_SCHEMA_VERSION = 9
+MEMORY_SCHEMA_VERSION = 10
 
 
 def now_rome():
@@ -690,6 +702,84 @@ def get_bmti_positions():
     return list(items.values())
 
 
+# ---------- Block 2 corporate sources ----------
+def _extract_job_links(page, base_url, host_hint=None):
+    items = {}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
+        label = strip_tags(m.group("label"))
+        full = absolute_url(base_url, m.group("href")).rstrip("/")
+        if not label:
+            continue
+        if host_hint and host_hint not in full.lower():
+            continue
+        items[full] = label
+    return items
+
+
+def get_sace_positions():
+    page = fetch_html(SACE_URL, 45, 2); items = {}
+    for full, title in _extract_job_links(page, SACE_URL, "sace.wd103.myworkdayjobs.com").items():
+        if "/job/" not in full.lower() or "spontaneous" in full.lower(): continue
+        context = title
+        if not matches_corporate_keywords(context): continue
+        iid='sace:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_gse_positions():
+    page=fetch_html(GSE_URL,45,2);items={}
+    # Taleo page exposes headings even when links use fragments; title is sufficient for filtering.
+    for title_html in re.findall(r'<h[1-4][^>]*>(.*?)</h[1-4]>',page,re.I|re.S):
+        title=strip_tags(title_html)
+        if not title or title.lower() in {'candidatura spontanea','stage e tirocini','categorie protette'}:continue
+        if not matches_corporate_keywords(title):continue
+        iid='gse:'+hashlib.sha256(title.lower().encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':GSE_URL,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_terna_positions():
+    page=fetch_html(TERNA_URL,45,2);items={}
+    # Use explicit vacancy anchors on the landing page. Filter primarily by title to avoid
+    # matching generic description text shared by unrelated technical jobs.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(TERNA_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        if 'candidatura spontanea' in title.lower():continue
+        iid='terna:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_acea_positions():
+    page=fetch_html(ACEA_URL,45,2);items={}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+/Acea/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(ACEA_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        iid='acea:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_italo_positions():
+    page=fetch_html(ITALO_URL,45,2);items={}
+    # Italo renders staff job titles as headings. Capture titles that match the dictionary.
+    for title_html in re.findall(r'<h3[^>]*>(.*?)</h3>',page,re.I|re.S):
+        title=strip_tags(title_html)
+        if not title or not matches_corporate_keywords(title):continue
+        if title.lower() in {'selezioni personale di staff','selezioni personale operativo','candidatura spontanea'}:continue
+        iid='italo:'+hashlib.sha256(title.lower().encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':ITALO_URL,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
+def get_fincantieri_positions():
+    page=fetch_html(FINCANTIERI_URL,45,2);items={}
+    # Corporate page may only expose entry points. Keep links whose own visible label
+    # contains a corporate keyword; do not use generic surrounding prose.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(FINCANTIERI_URL,m.group('href')).rstrip('/')
+        if not title or not matches_corporate_keywords(title):continue
+        iid='fincantieri:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+    return list(items.values())
+
+
 # ---------- CDP ----------
 def get_cdp_positions():
     items = {}
@@ -809,6 +899,12 @@ def main():
         ("rome_technopole", get_rome_technopole_positions, lambda x: standard_job_message("Rome Technopole", x["title"], x["url"], extra=x.get("extra"))),
         ("ama_roma", get_ama_roma_positions, lambda x: standard_job_message("AMA Roma", x["title"], x["url"], extra=x.get("extra"))),
         ("bmti", get_bmti_positions, lambda x: standard_job_message("BMTI", x["title"], x["url"], extra=x.get("extra"))),
+        ("sace", get_sace_positions, lambda x: standard_job_message("SACE", x["title"], x["url"], extra=x.get("extra"))),
+        ("gse", get_gse_positions, lambda x: standard_job_message("GSE", x["title"], x["url"], extra=x.get("extra"))),
+        ("terna", get_terna_positions, lambda x: standard_job_message("Terna", x["title"], x["url"], extra=x.get("extra"))),
+        ("acea", get_acea_positions, lambda x: standard_job_message("Acea", x["title"], x["url"], extra=x.get("extra"))),
+        ("italo", get_italo_positions, lambda x: standard_job_message("Italo", x["title"], x["url"], extra=x.get("extra"))),
+        ("fincantieri", get_fincantieri_positions, lambda x: standard_job_message("Fincantieri", x["title"], x["url"], extra=x.get("extra"))),
         (
             "cdp",
             get_cdp_positions,
@@ -886,7 +982,7 @@ def main():
 
     print(
         "Leonardo + inPA + Eutalia + Consip + Sogei + AgID + "
-        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + CDP controllati."
+        "Invitalia + IPZS + PagoPA + Rome Technopole + AMA Roma + BMTI + SACE + GSE + Terna + Acea + Italo + Fincantieri + CDP controllati."
     )
     print("Controllo completato.")
 
