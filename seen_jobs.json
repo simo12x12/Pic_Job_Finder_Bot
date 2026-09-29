@@ -168,13 +168,9 @@
     },
     "fincantieri": {
       "initialized": true,
-      "seen": [
-        "fincantieri:48db998985c3433127a40b66",
-        "fincantieri:96ba8542ce6f57eb1d1bb59a",
-        "fincantieri:a91c161ef96ed4cdf1fa62fd"
-      ]
+      "seen": []
     }
   },
-  "last_update": "2026-09-29T13:42:49.421149+00:00",
-  "schema_version": 11
+  "last_update": "2026-09-29T13:46:00.023313+00:00",
+  "schema_version": 12
 }
