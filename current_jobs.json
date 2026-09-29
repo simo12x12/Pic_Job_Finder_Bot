@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 21:51",
+  "last_check": "29/09/2026 21:59",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -322,16 +322,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -384,7 +375,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
@@ -395,24 +386,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Avviso pubblico per la selezione di n. 1 “Esperto/a specialista in organizzazione e gestione servizi sociali” con esperienza ≥10 anni, n. 2 “Esperti/e senior in organizzazione e gestione servizi sociali” con esperienza ≥7 anni, n. 1 “Esperto/a middle in organizzazione e gestione servizi sociali” con esperienza ≥3 anni, cui conferire incarichi di lavoro autonomo ex art. 7, comma 6 del D.Lgs. n. 165/2001, per lo svolgimento di attività per il progetto dell’ANCI “POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) - CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/244/avviso-pubblico-per-la-selezione-di-n-1-esperto-a-specialista-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-10-anni-n-2-esperti-e-senior-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-7-anni-n-1-esperto-a-middle-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-3-anni-cui-conferire-incarichi-di-lavoro-autonomo-ex-art-7-comma-6-del-d-lgs-n-165-2001-per-lo-svolgimento-di-attivita-per-il-progetto-dell-anci-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "Avviso pubblico per la selezione di n. 1 “Esperto/a specialista in organizzazione e gestione del personale degli Enti locali” con esperienza ≥10 anni, n. 1 “Esperto/a specialista in analisi e sviluppo organizzativo per la gestione associata dei servizi” con esperienza ≥10 anni, n. 1 “Esperto/a senior in analisi e sviluppo organizzativo per la gestione associata dei servizi” con esperienza ≥7 anni, n. 1 “Esperto/a middle in analisi e sviluppo organizzativo per la gestione associata dei servizi” con esperienza ≥3 anni, cui conferire incarichi di lavoro autonomo ex art. 7, comma 6 del D.Lgs. n. 165/2001, per lo svolgimento di attività per il Progetto dell’ANCI “POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/247/avviso-pubblico-per-la-selezione-di-n-1-esperto-a-specialista-in-organizzazione-e-gestione-del-personale-degli-enti-locali-con-esperienza-10-anni-n-1-esperto-a-specialista-in-analisi-e-sviluppo-organizzativo-per-la-gestione-associata-dei-servizi-con-esperienza-10-anni-n-1-esperto-a-senior-in-analisi-e-sviluppo-organizzativo-per-la-gestione-associata-dei-servizi-con-esperienza-7-anni-n-1-esperto-a-middle-in-analisi-e-sviluppo-organizzativo-per-la-gestione-associata-dei-servizi-con-esperienza-3-anni-cui-conferire-incarichi-di-lavoro-autonomo-ex-art-7-comma-6-del-d-lgs-n-165-2001-per-lo-svolgimento-di-attivita-per-il-progetto-dell-anci-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        },
-        {
-          "title": "AVVISO DI SELEZIONE Avviso pubblico per la selezione di n. 1 risorsa a tempo determinato da inserire all’interno dell’Ufficio di staff - Politiche per la coesione e Mezzogiorno, PNRR, Consulta delle Città Capoluogo dell’ANCI, Coordinamento dei Sindaci delle Città metropolitane",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/241/avviso-di-selezione-avviso-pubblico-per-la-selezione-di-n-1-risorsa-a-tempo-determinato-da-inserire-all-interno-dell-ufficio-di-staff-politiche-per-la-coesione-e-mezzogiorno-pnrr-consulta-delle-citta-capoluogo-dell-anci-coordinamento-dei-sindaci-delle-citta-metropolitane.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -427,12 +401,7 @@
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO DI SELEZIONE AD EVIDENZA PUBBLICA PER IL REPERIMENTO DI UN PROFILO JUNIOR DI INTELLECTUAL PROPERTY DATA ANALYST DA ASSUMERE A TEMPO PIENO E DETERMINATO (Avviso n. 9 del 2026)",
-          "url": "https://tagliacarne.portaletrasparenza.net/dettagli/concorsi/50/avviso-di-selezione-ad-evidenza-pubblica-per-il-reperimento-di-un-profilo-junior-di-intellectual-property-data-analyst-da-assumere-a-tempo-pieno-e-determinato-avviso-n-9-del-2026.html"
-        }
-      ]
+      "items": []
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
