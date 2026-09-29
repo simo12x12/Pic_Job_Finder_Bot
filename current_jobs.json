@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 23:55",
+  "last_check": "30/09/2026 00:02",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -59,6 +59,10 @@
       "label": "inPA",
       "status": "ok",
       "items": [
+        {
+          "title": "Funzionario Contabile Amministrativo",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0efc9309f7fe46348cc16fa231a7b633"
+        },
         {
           "title": "Agente di polizia municipale, ufficio SUAPE e ufficio tecnico",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=379ef84b52f44d7bbcb26eccbab71423"
