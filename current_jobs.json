@@ -1,5 +1,5 @@
 {
-  "last_check": "29/09/2026 16:25",
+  "last_check": "29/09/2026 16:40",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -357,6 +357,18 @@
       "items": [
         {
           "title": "Candidati ora >",
+          "url": "https://jobs.terna.it/job/Project-Engineer/29812-it_IT/?st=82B53F4291CD7693946D80B675BCAEB8D0440F0D"
+        },
+        {
+          "title": "Candidati ora >",
+          "url": "https://jobs.terna.it/job/Project-Leader/29816-it_IT/?st=7C3B01203C2F9DFF0CF274A479037FCF9F24E0E1"
+        },
+        {
+          "title": "Candidati ora >",
+          "url": "https://jobs.terna.it/job/Supporto-Tecnico-al-CNC-Gestione-Emergenze/29818-it_IT/?st=18189B5F17A2DA3290802DB958EE38F923C2A185"
+        },
+        {
+          "title": "Candidati ora >",
           "url": "https://jobs.terna.it/job/Specialista-Connessioni-RTN/29819-it_IT/?st=FF5C70068DFCB0D6C692881FAB2626E8A4F295D0"
         },
         {
@@ -458,6 +470,73 @@
       "label": "ENAV",
       "status": "ok",
       "items": []
+    },
+    "sport_salute": {
+      "label": "Sport e Salute",
+      "status": "ok",
+      "items": [
+        {
+          "title": ": Comitato Italiano Paralimpico - Impiegato/a Amministrativo/a presso sede territoriale Basilicata",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/232-comitato-italiano-paralimpico-impiegato/a-amministrativo/a-presso-sede-territoriale-basilicata.html"
+        },
+        {
+          "title": ": Sport e Salute S.p.A. - Senior Marketing Manager",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/220-sport-e-salute-spa-senior-marketing-manager.html"
+        },
+        {
+          "title": ": Sport e Salute S.p.A. - Junior Marketing Specialist",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/218-sport-e-salute-spa-junior-marketing-specialist.html"
+        }
+      ]
+    },
+    "fs": {
+      "label": "Gruppo FS Italiane",
+      "status": "ok",
+      "items": []
+    },
+    "autostrade": {
+      "label": "Autostrade per l Italia",
+      "status": "ok",
+      "items": []
+    },
+    "infocamere": {
+      "label": "InfoCamere",
+      "status": "ok",
+      "items": [
+        {
+          "title": "Ufficio Stampa",
+          "url": "https://infocamere.it/ufficio-stampa"
+        },
+        {
+          "title": "Social Media Policy",
+          "url": "https://infocamere.it/dam/jcr:163d71fd-df98-4877-91af-a59bbb7d08c4/09-2025-IC-social-media-policy.2025-09-25-16-37-04.pdf"
+        }
+      ]
+    },
+    "formez": {
+      "label": "Formez PA",
+      "status": "unavailable",
+      "items": []
+    },
+    "sviluppo_lavoro": {
+      "label": "Sviluppo Lavoro Italia",
+      "status": "ok",
+      "items": []
+    },
+    "capcoe": {
+      "label": "PN Capacita per la Coesione",
+      "status": "ok",
+      "items": []
+    },
+    "unioncamere": {
+      "label": "Unioncamere",
+      "status": "ok",
+      "items": [
+        {
+          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
+          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
+        }
+      ]
     },
     "cdp": {
       "label": "CDP",

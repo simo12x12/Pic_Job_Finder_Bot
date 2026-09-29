@@ -153,9 +153,12 @@
       "initialized": true,
       "seen": [
         "terna:2b006dca8006ce991b5dd9c6",
+        "terna:4fd65c151644d089294ecf06",
         "terna:6d94f95de4b8193f4f2fece8",
         "terna:a02f1b84b5631dc7c8e3bfff",
-        "terna:ab5d5e158d9b4fd45441a653"
+        "terna:ab5d5e158d9b4fd45441a653",
+        "terna:b912e33095eed9465914844d",
+        "terna:ea2b38d74a9d2f0af8596974"
       ]
     },
     "acea": {
@@ -212,8 +215,49 @@
     "enav": {
       "initialized": true,
       "seen": []
+    },
+    "sport_salute": {
+      "initialized": true,
+      "seen": [
+        "sport-salute:43f9944455808c9e16549c53",
+        "sport-salute:5811ea1887c4ca0635006a22",
+        "sport-salute:d145b39f371d60f03047d348"
+      ]
+    },
+    "fs": {
+      "initialized": true,
+      "seen": []
+    },
+    "autostrade": {
+      "initialized": true,
+      "seen": []
+    },
+    "infocamere": {
+      "initialized": true,
+      "seen": [
+        "infocamere:96f713774f575b2b18850bb1",
+        "infocamere:f7b48b8f8c80ca747f52e406"
+      ]
+    },
+    "formez": {
+      "initialized": false,
+      "seen": []
+    },
+    "sviluppo_lavoro": {
+      "initialized": true,
+      "seen": []
+    },
+    "capcoe": {
+      "initialized": true,
+      "seen": []
+    },
+    "unioncamere": {
+      "initialized": true,
+      "seen": [
+        "unioncamere:9ba1b1ac054dc1fd5ae71aab"
+      ]
     }
   },
-  "last_update": "2026-09-29T14:26:09.359068+00:00",
-  "schema_version": 18
+  "last_update": "2026-09-29T14:41:14.210865+00:00",
+  "schema_version": 20
 }
