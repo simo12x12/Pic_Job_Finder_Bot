@@ -39,7 +39,6 @@ IPZS_URL="https://www.ipzs.it/chi-siamo/lavora-con-noi/"
 PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
 ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
 AMA_ROMA_URL="https://www.amaroma.it/lavora-con-noi"
-AMA_ROMA_TRANSPARENCY_URL="https://www.amaroma.it/societa-trasparente/selezione-del-personale/6702-avvisi-criteri-esiti-delle-selezioni"
 BMTI_URL="https://www.bmti.it/lavora-con-noi/"
 SACE_URL="https://sace.wd103.myworkdayjobs.com/it-IT/Sace001"
 GSE_URL="https://gse.taleo.net/careersection/ex/joblist.ftl?lang=it"
@@ -159,6 +158,34 @@ def normalize_space(text):
 
 def strip_tags(text):
     return normalize_space(re.sub(r"<[^>]+>", " ", text or ""))
+
+def parse_status_date(value):
+    """Parse a known date without guessing; returns None when it cannot be verified."""
+    if not value:
+        return None
+    text = normalize_space(str(value))
+    for fmt in ("%d/%m/%Y %H:%M", "%d/%m/%Y"):
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            pass
+    try:
+        return datetime.fromisoformat(text.replace("Z", "+00:00")).astimezone(ROME).date()
+    except Exception:
+        return None
+
+
+def classify_item_status(item):
+    """Return open, expired/closed or unknown using only explicit evidence."""
+    raw = normalize_space(str(item.get("status", ""))).lower()
+    if raw in {"closed", "chiuso", "chiusa", "concluso", "conclusa", "expired", "scaduto", "scaduta"}:
+        return "expired/closed"
+    deadline = parse_status_date(item.get("deadline"))
+    if deadline:
+        return "expired/closed" if deadline < datetime.now(ROME).date() else "open"
+    if raw in {"open", "aperto", "aperta", "active", "attivo", "attiva"}:
+        return "open"
+    return "unknown"
 
 
 def absolute_url(base, href):
@@ -343,6 +370,11 @@ def save_memory(memory):
 
 
 def process_items(memory, source, items, formatter):
+    classified = [(item, classify_item_status(item)) for item in items]
+    excluded = sum(1 for _, status in classified if status == "expired/closed")
+    if excluded:
+        print(f"Elementi esclusi per stato/scadenza verificata {source}: {excluded}")
+    items = [item for item, status in classified if status != "expired/closed"]
     src = memory["sources"][source]
     current_ids = {item["id"] for item in items if item.get("id")}
     seen_ids = set(src.get("seen", []))
@@ -565,8 +597,10 @@ def get_consip_positions():
         label=strip_tags(m.group('label'))
         title=label if label and label.lower() not in blacklist else slug.replace('-',' ').strip().title()
         if not title or title.lower() in blacklist: continue
+        # Avoid archive/navigation entries: keep the corporate-professional perimeter only.
+        if not matches_corporate_keywords(title): continue
         iid='consip:'+hashlib.sha256(full.encode()).hexdigest()[:24]
-        items[iid]={'id':iid,'title':title,'url':full}
+        items[iid]={'id':iid,'title':title,'url':full,'status':'open'}
     return list(items.values())
 
 
@@ -1229,14 +1263,13 @@ def get_formez_positions():
         return []
     items = {}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
-        title = strip_tags(m.group("label")); full = absolute_url(FORMEZ_AVVISI_URL, m.group("href")).rstrip("/")
-        if not title or len(title) < 8: continue
-        context = strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+800)])
-        low=(title+' '+context).lower()
+        title=strip_tags(m.group('label')); full=absolute_url(FORMEZ_AVVISI_URL,m.group('href')).rstrip('/')
+        if not title or len(title)<8: continue
+        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+800)]); low=(title+' '+context).lower()
         if not any(x in low for x in ('avviso','selezione','reclutamento','incarico','esperto','personale')): continue
         if any(x in low for x in ('chiuso','chiusa','archivio','graduatoria','esito')): continue
         if not matches_corporate_keywords(title+' '+context) and not any(x in low for x in ('assistenza tecnica','capacita istituzionale','capacità istituzionale','eventi di lavoro')): continue
-        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24]; items[iid]={'id':iid,'title':title,'url':full,'extra':'Avviso Formez PA'}
+        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24]; items[iid]={'id':iid,'title':title,'url':full,'extra':'Avviso Formez PA','status':'open'}
     return list(items.values())
 
 
@@ -1533,6 +1566,7 @@ def main():
                     {
                         "title": item.get("title", "Titolo non disponibile"),
                         "url": item.get("url", ""),
+                        "open_status": classify_item_status(item),
                     }
                     for item in items
                 ],
