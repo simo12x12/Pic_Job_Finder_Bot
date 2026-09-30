@@ -161,8 +161,6 @@ def build_summary_parts(data):
 
 HELP_TEXT = """PIC JOB FINDER
 
-Comandi disponibili:
-
 /riepilogo
 Mostra tutti gli annunci dell'ultimo controllo, dividendoli automaticamente in più messaggi se necessario.
 
