@@ -1,113 +1,29 @@
 {
-  "last_check": "30/09/2026 15:35",
+  "last_check": "30/09/2026 15:41",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "ELI - Bids & Proposals Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Bids---Proposals-Specialist_R0031541-1",
-          "location": "IT - Varese - Cascina Costa"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Pomezia/Sales-Manager_R0031864-1",
-          "location": "IT - Pomezia"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Caselle-Nord/Sales-Manager_R0033520",
-          "location": "IT - Torino - Caselle Nord"
-        },
-        {
-          "title": "Marketing & Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Marketing---Sales-Manager_R0026004",
-          "location": "IT - Roma - Via Tiburtina KM12,400"
-        },
-        {
-          "title": "BID MANAGER",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/BID-MANAGER_R0029495",
-          "location": "IT - Roma - Via Tiburtina KM12,400"
-        },
-        {
-          "title": "ELI-Stage Product Visual identity",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI-Stage-Product-Visual-identity_R0032686",
-          "location": "IT - Varese - Cascina Costa"
-        },
-        {
-          "title": "Addetto/a Commercial Processes and Funnel Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1",
-          "location": "2 Locations"
-        },
-        {
-          "title": "ELI - Product and services marketing-IC",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Vergiate/ELI---Product-and-services-marketing-IC_R0030685",
-          "location": "IT - Vergiate"
-        },
-        {
-          "title": "ELI - Sales Engineer Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Sales-Engineer-Specialist_R0030623-1",
-          "location": "IT - Varese - Cascina Costa"
-        },
-        {
-          "title": "CYS - ACCOUNT MANAGER - MK&S",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081",
-          "location": "3 Locations"
-        },
-        {
-          "title": "CYS - Proposal Engineer - SEU",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1",
-          "location": "2 Locations"
-        },
-        {
-          "title": "CYS - BID MANAGER - CIE",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430",
-          "location": "IT - Roma - Via Laurentina"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "inpa": {
       "label": "inPA",
-      "status": "ok",
-      "items": [
-        {
-          "title": "ADDETTO ALL'UFFICIO STAMPA",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=3a7d23a9fe0642e9a91c3828b5e46925",
-          "location": ""
-        },
-        {
-          "title": "Area dei Collaboratori, Settore della comunicazione e informazione",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=11b73d9d7a2d4b89b47f168610f630b9",
-          "location": ""
-        },
-        {
-          "title": "collaboratore amministrativo-addetto alle relazioni istituzionali",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=acc4a3048d834c6d8b24faa4e5cfa365",
-          "location": ""
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "eutalia": {
       "label": "Eutalia",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Avviso per la costituzione di una long list esperti (DPCE07_27.05.2025)",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-esperti-dpce07_27-05-2025/",
-          "location": ""
-        },
-        {
-          "title": "Avviso per la costituzione di una Long List di Professionisti in progettazione europea fondi diretti (CDC70–05.06.2026)",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-di-professionisti-in-progettazione-europea-fondi-diretti-cdc70-05-06-2026/",
-          "location": ""
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "consip": {
       "label": "Consip",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "sogei": {
       "label": "Sogei",
@@ -116,8 +32,9 @@
     },
     "agid": {
       "label": "AgID",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "The read operation timed out"
     },
     "invitalia": {
       "label": "Invitalia",
@@ -131,19 +48,15 @@
     },
     "pagopa": {
       "label": "PagoPA",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Junior Software Engineer NEW Data di apertura: 2026-09-25",
-          "url": "https://www.pagopa.it/it/lavora-con-noi/jobposition-121/",
-          "location": ""
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "rome_technopole": {
       "label": "Rome Technopole",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "ama_roma": {
       "label": "AMA Roma",
@@ -152,8 +65,9 @@
     },
     "bmti": {
       "label": "BMTI",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "sace": {
       "label": "SACE",
@@ -167,8 +81,9 @@
     },
     "terna": {
       "label": "Terna",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "acea": {
       "label": "Acea",
@@ -177,7 +92,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
@@ -187,29 +102,9 @@
     },
     "anci": {
       "label": "ANCI",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Avviso pubblico per la selezione di n. 1 “Esperto/a specialista in organizzazione e gestione servizi sociali” con esperienza ≥10 anni, n. 2 “Esperti/e senior in organizzazione e gestione servizi sociali” con esperienza ≥7 anni, n. 1 “Esperto/a middle in organizzazione e gestione servizi sociali” con esperienza ≥3 anni, cui conferire incarichi di lavoro autonomo ex art. 7, comma 6 del D.Lgs. n. 165/2001, per lo svolgimento di attività per il progetto dell’ANCI “POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) - CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/244/avviso-pubblico-per-la-selezione-di-n-1-esperto-a-specialista-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-10-anni-n-2-esperti-e-senior-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-7-anni-n-1-esperto-a-middle-in-organizzazione-e-gestione-servizi-sociali-con-esperienza-3-anni-cui-conferire-incarichi-di-lavoro-autonomo-ex-art-7-comma-6-del-d-lgs-n-165-2001-per-lo-svolgimento-di-attivita-per-il-progetto-dell-anci-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html",
-          "location": ""
-        },
-        {
-          "title": "Avviso pubblico per la selezione di n. 1 “Esperto/a specialista in organizzazione e gestione del personale degli Enti locali” con esperienza ≥10 anni, n. 1 “Esperto/a specialista in analisi e sviluppo organizzativo per la gestione associata dei servizi” con esperienza ≥10 anni, n. 1 “Esperto/a senior in analisi e sviluppo organizzativo per la gestione associata dei servizi” con esperienza ≥7 anni, n. 1 “Esperto/a middle in analisi e sviluppo organizzativo per la gestione associata dei servizi” con esperienza ≥3 anni, cui conferire incarichi di lavoro autonomo ex art. 7, comma 6 del D.Lgs. n. 165/2001, per lo svolgimento di attività per il Progetto dell’ANCI “POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/247/avviso-pubblico-per-la-selezione-di-n-1-esperto-a-specialista-in-organizzazione-e-gestione-del-personale-degli-enti-locali-con-esperienza-10-anni-n-1-esperto-a-specialista-in-analisi-e-sviluppo-organizzativo-per-la-gestione-associata-dei-servizi-con-esperienza-10-anni-n-1-esperto-a-senior-in-analisi-e-sviluppo-organizzativo-per-la-gestione-associata-dei-servizi-con-esperienza-7-anni-n-1-esperto-a-middle-in-analisi-e-sviluppo-organizzativo-per-la-gestione-associata-dei-servizi-con-esperienza-3-anni-cui-conferire-incarichi-di-lavoro-autonomo-ex-art-7-comma-6-del-d-lgs-n-165-2001-per-lo-svolgimento-di-attivita-per-il-progetto-dell-anci-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html",
-          "location": ""
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html",
-          "location": ""
-        },
-        {
-          "title": "AVVISO DI SELEZIONE Avviso pubblico per la selezione di n. 1 risorsa a tempo determinato da inserire all’interno dell’Ufficio di staff - Politiche per la coesione e Mezzogiorno, PNRR, Consulta delle Città Capoluogo dell’ANCI, Coordinamento dei Sindaci delle Città metropolitane",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/241/avviso-di-selezione-avviso-pubblico-per-la-selezione-di-n-1-risorsa-a-tempo-determinato-da-inserire-all-interno-dell-ufficio-di-staff-politiche-per-la-coesione-e-mezzogiorno-pnrr-consulta-delle-citta-capoluogo-dell-anci-coordinamento-dei-sindaci-delle-citta-metropolitane.html",
-          "location": ""
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "ifel": {
       "label": "IFEL",
@@ -223,24 +118,21 @@
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
-      "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO DI SELEZIONE AD EVIDENZA PUBBLICA PER IL REPERIMENTO DI UN PROFILO JUNIOR DI INTELLECTUAL PROPERTY DATA ANALYST DA ASSUMERE A TEMPO PIENO E DETERMINATO (Avviso n. 9 del 2026)",
-          "url": "https://tagliacarne.portaletrasparenza.net/dettagli/concorsi/50/avviso-di-selezione-ad-evidenza-pubblica-per-il-reperimento-di-un-profilo-junior-di-intellectual-property-data-analyst-da-assumere-a-tempo-pieno-e-determinato-avviso-n-9-del-2026.html",
-          "location": ""
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "enav": {
       "label": "ENAV",
@@ -249,8 +141,9 @@
     },
     "sport_salute": {
       "label": "Sport e Salute",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "fs": {
       "label": "Gruppo FS Italiane",
@@ -284,8 +177,9 @@
     },
     "unioncamere": {
       "label": "Unioncamere",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "agenas": {
       "label": "AGENAS",
@@ -294,8 +188,9 @@
     },
     "ice": {
       "label": "Agenzia ICE",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     },
     "inapp": {
       "label": "INAPP",
@@ -304,8 +199,9 @@
     },
     "cdp": {
       "label": "CDP",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "name 'classify_item_status' is not defined"
     }
   }
 }
