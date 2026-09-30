@@ -50,7 +50,7 @@ def load_current_jobs():
 def build_status(data):
     # Intentionally unchanged from the previous version.
     lines = [
-        "PIC JOB FINDER - STATO", "",
+        "PIC JOB FINDER - STATUS",
         f"{data.get('last_check', 'Non disponibile')}", "",
     ]
     total = 0
@@ -159,7 +159,7 @@ def build_summary_parts(data):
     return parts or [footer]
 
 
-HELP_TEXT = """PIC JOB FINDER
+HELP_TEXT = """PIC JOB FINDER - HELP
 
 /riepilogo
 Mostra tutti gli annunci dell'ultimo controllo, dividendoli automaticamente in più messaggi se necessario.
