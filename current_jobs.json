@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 14:31",
+  "last_check": "30/09/2026 14:38",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -92,48 +92,8 @@
       "status": "ok",
       "items": [
         {
-          "title": "Leggi di più",
+          "title": "Process And Organization Specialist",
           "url": "https://www.consip.it/posizioni/process-and-organization-specialist"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/administrative-specialist"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/ai-consultant"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/ai-product-manager"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/ai-nlp-engineer"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/ai-security-specialist"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/ai-data-scientist"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/ai-prompt-engineer"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/ai-data-engineer"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/giuslavorista"
-        },
-        {
-          "title": "Leggi di più",
-          "url": "https://www.consip.it/posizioni/supply-legal-0"
         }
       ]
     },
@@ -201,7 +161,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -368,7 +337,7 @@
     },
     "formez": {
       "label": "Formez PA",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "sviluppo_lavoro": {
