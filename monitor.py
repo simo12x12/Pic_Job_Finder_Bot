@@ -39,7 +39,6 @@ IPZS_URL="https://www.ipzs.it/chi-siamo/lavora-con-noi/"
 PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
 ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
 AMA_ROMA_URL="https://www.amaroma.it/lavora-con-noi"
-AMA_ROMA_TRANSPARENCY_URL="https://www.amaroma.it/societa-trasparente/selezione-del-personale/6702-avvisi-criteri-esiti-delle-selezioni"
 BMTI_URL="https://www.bmti.it/lavora-con-noi/"
 SACE_URL="https://sace.wd103.myworkdayjobs.com/it-IT/Sace001"
 GSE_URL="https://gse.taleo.net/careersection/ex/joblist.ftl?lang=it"
@@ -807,76 +806,11 @@ def get_rome_technopole_positions():
 
 
 def get_ama_roma_positions():
-    # Prefer the normal "Lavora con noi" page because it explicitly separates open
-    # and closed procedures. If GitHub Actions is blocked with HTTP 403, use the
-    # official transparency page only as a diagnostic fallback: that page mixes
-    # current and historical procedures, so it must not create unverified alerts.
-    try:
-        page = fetch_html(AMA_ROMA_URL, 20, 2)
-    except urllib.error.HTTPError as exc:
-        if exc.code != 403:
-            raise
-        try:
-            transparency = fetch_html(AMA_ROMA_TRANSPARENCY_URL, 25, 2)
-        except Exception:
-            raise exc
-
-        text = strip_tags(transparency)
-        relevant = [
-            normalize_space(x)
-            for x in re.findall(
-                r'(Avviso di selezione[^.]{0,260}(?:comunicazione|communication|relazioni istituzionali|rapporti istituzionali|public affairs|media|marketing)[^.]{0,260})',
-                text,
-                re.I,
-            )
-        ]
-        if relevant:
-            print(f"AMA Roma - pagina trasparenza raggiungibile; {len(relevant)} procedure professionali presenti ma stato/scadenza non verificabili dal runner.")
-        # Do not turn a reachable archive into false 'open' vacancies.
-        raise RuntimeError("AMA Roma: pagina Lavora con noi bloccata HTTP 403; pagina Trasparenza raggiungibile ma non distingue in modo affidabile candidature ancora aperte")
-
-    items = {}
-    low = page.lower()
-    a = low.find('procedure selettive aperte')
-    b = low.find('procedure selettive chiuse')
-    if a < 0:
-        raise RuntimeError("AMA Roma: sezione 'Procedure selettive aperte' non trovata")
-    sec = page[a:b if b > a else len(page)]
-
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.amaroma\.it)?/lavora-con-noi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', sec, re.I | re.S):
-        full = absolute_url(AMA_ROMA_URL, m.group('href')).rstrip('/')
-        label = strip_tags(m.group('label'))
-        before = strip_tags(sec[max(0, m.start() - 900):m.start()])
-        candidates = re.findall(r'((?:Avviso di |Selezione per |Avviso di manifestazione )[\s\S]{15,300}?)(?=Consulta gli aggiornamenti|$)', before, re.I)
-        title = normalize_space(candidates[-1] if candidates else label)
-        title = re.sub(r'^Consulta gli aggiornamenti(?: sulla selezione)?\s*', '', title, flags=re.I).strip()
-        if not title or not matches_corporate_keywords(title):
-            continue
-
-        # Verify the individual detail page when possible. An item remaining in the
-        # site's "open" list is not enough evidence that the application deadline
-        # has not already elapsed.
-        try:
-            detail = fetch_html(full, 15, 1)
-            detail_text = strip_tags(detail)
-            dates = re.findall(r'\b(\d{1,2})/(\d{1,2})/(\d{4})\b', detail_text)
-            date_values = []
-            for dd, mm, yyyy in dates:
-                try:
-                    date_values.append(datetime(int(yyyy), int(mm), int(dd)).date())
-                except ValueError:
-                    pass
-            deadline = max(date_values) if date_values else None
-            if deadline and deadline < datetime.now(ROME).date():
-                print(f"AMA Roma - esclusa per scadenza trascorsa: {title} ({deadline.strftime('%d/%m/%Y')})")
-                continue
-        except Exception as detail_exc:
-            print(f"AMA Roma - dettaglio non verificabile per '{title}': {detail_exc}")
-            continue
-
-        iid = 'ama:' + hashlib.sha256(full.encode()).hexdigest()[:24]
-        items[iid] = {'id': iid, 'title': title, 'url': full, 'extra': 'Procedura aperta verificata'}
-
+    page=fetch_html(AMA_ROMA_URL,15,1);items={};a=page.lower().find('procedure selettive aperte');b=page.lower().find('procedure selettive chiuse');sec=page[a:b if b>a else len(page)] if a>=0 else page
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.amaroma\.it)?/lavora-con-noi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',sec,re.I|re.S):
+        full=absolute_url(AMA_ROMA_URL,m.group('href')).rstrip('/');label=strip_tags(m.group('label'));context=strip_tags(sec[max(0,m.start()-700):m.end()])
+        if not matches_corporate_keywords(label+' '+context):continue
+        title=re.split(r'Consulta gli aggiornamenti',context,maxsplit=1,flags=re.I)[0].strip() or label;iid='ama:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Procedura aperta'}
     return list(items.values())
 
 
@@ -1635,7 +1569,7 @@ def main():
             }
 
         except Exception as exc:
-            if source in {"italo", "fincantieri", "formez", "ama_roma"}:
+            if source in {"italo", "fincantieri", "formez"}:
                 print(f"{SOURCE_LABELS[source]}: controllo non disponibile in questo run. Dettaglio: {exc}")
                 snapshot["sources"][source] = {
                     "label": SOURCE_LABELS[source],
