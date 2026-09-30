@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 13:52",
+  "last_check": "30/09/2026 14:00",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -92,47 +92,47 @@
       "status": "ok",
       "items": [
         {
-          "title": "Process And Organization Specialist",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/process-and-organization-specialist"
         },
         {
-          "title": "Administrative Specialist",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/administrative-specialist"
         },
         {
-          "title": "Ai Consultant",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-consultant"
         },
         {
-          "title": "Ai Product Manager",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-product-manager"
         },
         {
-          "title": "Ai Nlp Engineer",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-nlp-engineer"
         },
         {
-          "title": "Ai Security Specialist",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-security-specialist"
         },
         {
-          "title": "Ai Data Scientist",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-data-scientist"
         },
         {
-          "title": "Ai Prompt Engineer",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-prompt-engineer"
         },
         {
-          "title": "Ai Data Engineer",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-data-engineer"
         },
         {
-          "title": "Giuslavorista",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/giuslavorista"
         },
         {
-          "title": "Supply Legal 0",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/supply-legal-0"
         }
       ]
@@ -263,7 +263,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
