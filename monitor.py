@@ -585,6 +585,7 @@ def get_consip_positions():
         label=strip_tags(m.group('label'))
         title=label if label and label.lower() not in blacklist else slug.replace('-',' ').strip().title()
         if not title or title.lower() in blacklist: continue
+        if not matches_strict_role_title(title): continue
         iid='consip:'+hashlib.sha256(full.encode()).hexdigest()[:24]
         items[iid]={'id':iid,'title':title,'url':full}
     return list(items.values())
@@ -780,9 +781,9 @@ STRICT_ROLE_PATTERNS = [
     r"\bexternal\s+relations\b", r"\binstitutional\s+relations\b",
     r"\brelazioni\s+(?:istituzionali|esterne)\b", r"\brapporti\s+istituzionali\b",
     r"\bmedia\s+relations?\b", r"\bufficio\s+stampa\b", r"\bsocial\s+media\b",
-    r"\bstakeholder\w*\b", r"\bbrand\b", r"\bcontent\b",
-    r"\bsponsorship\w*\b", r"\bsponsorizzazion\w*\b", r"\beventi?\b",
-    r"\bevents?\b", r"\bpress\b", r"\bcampagn\w*\s+informativ\w*\b",
+    r"\bstakeholder\w*\b", r"\bbrand\b", r"\bcontent\b", r"\bpress\b",
+    r"\bsponsorship\w*\b", r"\bsponsorizzazion\w*\b", r"\beventi?\b", r"\bevents?\b",
+    r"\bcampagn\w*\s+informativ\w*\b",
 ]
 
 def matches_strict_role_title(text):
@@ -807,6 +808,7 @@ def get_pagopa_positions():
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.pagopa\.it)?/it/lavora-con-noi/jobposition-[^"\']+/)["\'][^>]*>(?P<label>.*?)</a>',sec,re.I|re.S):
         full=absolute_url(PAGOPA_URL,m.group('href'));title=strip_tags(m.group('label'));context=strip_tags(sec[max(0,m.start()-400):min(len(sec),m.end()+400)])
         if not matches_corporate_keywords(title+' '+context):continue
+        if not matches_strict_role_title(title): continue
         iid='pagopa:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
     return list(items.values())
 
@@ -822,6 +824,7 @@ def get_rome_technopole_positions():
             role=re.search(r'(Avviso pubblico per l.individuazione[^.]{20,260}|n\.\s*1\s+[^.]{10,220})',text,re.I)
             title=role.group(1).strip() if role else text[:220].strip()
         title=re.sub(r'\s+È indetta.*$','',title,flags=re.I).strip()
+        if not matches_strict_role_title(title): continue
         hrefs=[h for h in re.findall(r'href=["\']([^"\']+)["\']',seg,re.I) if not h.lower().startswith('mailto:')]
         url=absolute_url(ROME_TECHNOPOLE_URL,hrefs[0]) if hrefs else ROME_TECHNOPOLE_URL
         iid=f'rome-technopole:2026-{m.group(1)}';items[iid]={'id':iid,'title':title,'url':url,'extra':f'Avviso {m.group(1)}/2026'}
@@ -917,6 +920,7 @@ def get_terna_positions():
         if not title: title=strip_tags(m.group('label'))
         context=strip_tags(page[max(0,m.start()-900):min(len(page),m.end()+900)])
         if not matches_corporate_keywords(title+' '+context): continue
+        if not matches_strict_role_title(title): continue
         iid='terna:'+hashlib.sha256(full.split('?',1)[0].encode()).hexdigest()[:24]
         items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
     return list(items.values())
@@ -1264,20 +1268,13 @@ def get_formez_positions():
         return []
     items = {}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
-        title = strip_tags(m.group('label'))
-        full = absolute_url(FORMEZ_AVVISI_URL, m.group('href')).rstrip('/')
-        if not title or len(title) < 8:
-            continue
-        context = strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+800)])
-        low = (title + ' ' + context).lower()
-        if not any(x in low for x in ('avviso','selezione','reclutamento','incarico','esperto','personale')):
-            continue
-        if any(x in low for x in ('chiuso','chiusa','archivio','graduatoria','esito')):
-            continue
-        if not matches_corporate_keywords(title + ' ' + context) and not any(x in low for x in ('assistenza tecnica','capacita istituzionale','capacità istituzionale','eventi di lavoro')):
-            continue
-        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24]
-        items[iid]={'id':iid,'title':title,'url':full,'extra':'Avviso Formez PA'}
+        title=strip_tags(m.group('label')); full=absolute_url(FORMEZ_AVVISI_URL,m.group('href')).rstrip('/')
+        if not title or len(title)<8: continue
+        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+800)]); low=(title+' '+context).lower()
+        if not any(x in low for x in ('avviso','selezione','reclutamento','incarico','esperto','personale')): continue
+        if any(x in low for x in ('chiuso','chiusa','archivio','graduatoria','esito')): continue
+        if not matches_corporate_keywords(title+' '+context) and not any(x in low for x in ('assistenza tecnica','capacita istituzionale','capacità istituzionale','eventi di lavoro')): continue
+        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24]; items[iid]={'id':iid,'title':title,'url':full,'extra':'Avviso Formez PA'}
     return list(items.values())
 
 
@@ -1356,6 +1353,7 @@ def get_ice_positions():
         if any(x in low for x in ('elenco candidature','commissione','graduatoria','candidati ammessi','calendario','esito','verbale','scorrimento')):continue
         if any(x in context for x in ('(concluso)','(conclusa)','scaduto','scaduta')):continue
         if not any(x in low for x in ('avviso','selezione','concorso','incarico','mobilità','mobilita')):continue
+        if not matches_strict_role_title(title): continue
         iid='ice:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'PA / Corporate keywords'}
     return list(items.values())
 
@@ -1407,22 +1405,14 @@ def get_inapp_positions():
 def get_cdp_positions():
     items = {}
     for term in CDP_SEARCH_TERMS:
-        query = urllib.parse.urlencode({"createNewAlert": "false", "q": term, "locationsearch": ""})
-        url = f"{CDP_JOBS_URL.rstrip('/')}/search/?{query}"
-        page = fetch_html(url, 45, 2)
-        raw_found = {}
-        for match in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
-            full = absolute_url(url, match.group('href')).rstrip('/')
-            title = strip_tags(match.group('label'))
-            if not title:
-                continue
-            item_id = 'cdp:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
-            raw_found[item_id] = {'id':item_id,'title':title,'url':full,'extra':'Comunicazione / Marketing'}
-        print(f"CDP - ricerca '{term}': {len(raw_found)}")
-        items.update(raw_found)
-
-    # Search is intentionally broad; notifications/database require relevance in the actual role title.
-    filtered = {iid:item for iid,item in items.items() if matches_strict_role_title(item.get('title',''))}
+        query=urllib.parse.urlencode({"createNewAlert":"false","q":term,"locationsearch":""})
+        url=f"{CDP_JOBS_URL.rstrip('/')}/search/?{query}"; page=fetch_html(url,45,2); found={}
+        for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+            full=absolute_url(url,m.group('href')).rstrip('/'); title=strip_tags(m.group('label'))
+            if not title: continue
+            iid='cdp:'+hashlib.sha256(full.encode()).hexdigest()[:24]; found[iid]={'id':iid,'title':title,'url':full,'extra':'Comunicazione / Marketing'}
+        print(f"CDP - ricerca '{term}': {len(found)}"); items.update(found)
+    filtered={iid:item for iid,item in items.items() if matches_strict_role_title(item.get('title',''))}
     print(f"CDP - posizioni uniche raccolte: {len(items)}")
     print(f"CDP - posizioni pertinenti: {len(filtered)}")
     return list(filtered.values())
