@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 17:05",
+  "last_check": "30/09/2026 17:06",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -88,48 +88,8 @@
       "status": "ok",
       "items": [
         {
-          "title": "Process And Organization Specialist",
-          "url": "https://www.consip.it/posizioni/process-and-organization-specialist"
-        },
-        {
-          "title": "Administrative Specialist",
-          "url": "https://www.consip.it/posizioni/administrative-specialist"
-        },
-        {
-          "title": "Ai Consultant",
-          "url": "https://www.consip.it/posizioni/ai-consultant"
-        },
-        {
-          "title": "Ai Product Manager",
-          "url": "https://www.consip.it/posizioni/ai-product-manager"
-        },
-        {
-          "title": "Ai Nlp Engineer",
-          "url": "https://www.consip.it/posizioni/ai-nlp-engineer"
-        },
-        {
-          "title": "Ai Security Specialist",
-          "url": "https://www.consip.it/posizioni/ai-security-specialist"
-        },
-        {
-          "title": "Ai Data Scientist",
-          "url": "https://www.consip.it/posizioni/ai-data-scientist"
-        },
-        {
-          "title": "Ai Prompt Engineer",
-          "url": "https://www.consip.it/posizioni/ai-prompt-engineer"
-        },
-        {
-          "title": "Ai Data Engineer",
-          "url": "https://www.consip.it/posizioni/ai-data-engineer"
-        },
-        {
           "title": "Giuslavorista",
           "url": "https://www.consip.it/posizioni/giuslavorista"
-        },
-        {
-          "title": "Supply Legal 0",
-          "url": "https://www.consip.it/posizioni/supply-legal-0"
         }
       ]
     },
@@ -197,7 +157,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -425,7 +394,7 @@
           "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20AUTISTI%20-%20MOBILITA%27%20%283%29.pdf"
         },
         {
-          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 16 unità dell’Area Funzionari, ex terza area – CCNL Comparto Funzioni Centrali 2019-2021, da adibire agli Uffici dell’ICE – Agenzia di cui 5 da assegnare alla famiglia",
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 16 unità dell’Area Funzionari, ex terza area – CCNL Comparto Funzioni Centrali 2019-2021, da adibire agli Uffici dell’ICE – Agenzia di cui 5",
           "url": "https://www.ice.it/it/sites/default/files/inline-files/ICE-Agenzia%20-%20Avviso%20Procedura%20Mobilit%C3%A0%20Funzionari%20Passaggio%20Diretto%20tra%20PA_0.pdf"
         }
       ]
