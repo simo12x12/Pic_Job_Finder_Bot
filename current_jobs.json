@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 05:03",
+  "last_check": "30/09/2026 05:20",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -325,8 +325,9 @@
     },
     "bmti": {
       "label": "BMTI",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "sace": {
       "label": "SACE",
