@@ -151,7 +151,7 @@ def build_summary_parts(data):
             current += block
         current += "\n"
 
-    footer = f"📊 <b>Totale: {total} annunci</b>\n\n🤖 Pic_Job_Finder_Bot"
+    footer = f"<b>Totale: {total} annunci</b>\n\n🤖 Pic_Job_Finder_Bot"
     if current and len(current) + len(footer) > SAFE_PART_LIMIT:
         flush()
     current += footer
