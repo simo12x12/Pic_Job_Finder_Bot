@@ -37,7 +37,17 @@
     "consip": {
       "initialized": true,
       "seen": [
-        "consip:aff148d0f7147b68f66ff47c"
+        "consip:19c518ed47dd30c989498753",
+        "consip:4f6962d9f28a21ddddfa33e3",
+        "consip:7fcd5c88af99b6b529a8991d",
+        "consip:87e2905453208f78dad6dad9",
+        "consip:aff148d0f7147b68f66ff47c",
+        "consip:bddcd0dba7b2f9def536b2e6",
+        "consip:be46ef8c4488fce39e4019e6",
+        "consip:c660d786ffd5ce0430e46cae",
+        "consip:d2934fe4fe468cd3dc942355",
+        "consip:e67d2dde39410f7e7930594a",
+        "consip:ff8d775f5de5fb368ec38004"
       ]
     },
     "presidenza": {
@@ -231,6 +241,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-09-30T11:43:40.997503+00:00",
+  "last_update": "2026-09-30T11:52:17.641953+00:00",
   "schema_version": 23
 }
