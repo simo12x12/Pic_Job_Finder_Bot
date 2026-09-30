@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 12:51",
+  "last_check": "30/09/2026 13:00",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -362,8 +362,9 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "autostrade": {
       "label": "Autostrade per l Italia",
