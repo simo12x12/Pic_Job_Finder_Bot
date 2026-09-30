@@ -158,6 +158,37 @@ def normalize_space(text):
 def strip_tags(text):
     return normalize_space(re.sub(r"<[^>]+>", " ", text or ""))
 
+def parse_status_date(value):
+    if not value:
+        return None
+    text = normalize_space(str(value))
+    for fmt in ("%d/%m/%Y %H:%M", "%d/%m/%Y"):
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            pass
+    try:
+        return datetime.fromisoformat(text.replace("Z", "+00:00")).astimezone(ROME).date()
+    except Exception:
+        return None
+
+
+def classify_item_status(item):
+    raw = normalize_space(str(item.get("status", ""))).lower()
+    if raw in {"closed", "chiuso", "chiusa", "concluso", "conclusa", "expired", "scaduto", "scaduta"}:
+        return "expired/closed"
+    deadline = parse_status_date(item.get("deadline"))
+    if deadline:
+        return "expired/closed" if deadline < datetime.now(ROME).date() else "open"
+    if raw in {"open", "aperto", "aperta", "active", "attivo", "attiva"}:
+        return "open"
+    return "unknown"
+
+
+def snapshot_location(item):
+    location = item.get("location") or item.get("locationsText") or ""
+    return normalize_space(str(location))
+
 
 def absolute_url(base, href):
     return urllib.parse.urljoin(base, html.unescape(href)).split("#", 1)[0]
@@ -437,6 +468,7 @@ def get_leonardo_jobs():
             "posted": job.get("postedOn", ""),
             "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite"
             + job.get("externalPath", ""),
+            "status": "open",
         }
         for job in jobs
     ]
@@ -523,6 +555,7 @@ def get_inpa_items():
                 "deadline": format_inpa_date(job.get("dataScadenza")),
                 "extra": ", ".join(job.get("entiRiferimento") or []),
                 "url": f"https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id={job_id}",
+                "status": "open",
             }
         )
     return items
@@ -560,7 +593,7 @@ def get_eutalia_open_notices():
             if headings
             else full.rsplit("/", 1)[-1].replace("-", " ").title()
         )
-        notices[full] = {"id": full, "title": title, "url": full + "/"}
+        notices[full] = {"id": full, "title": title, "url": full + "/", "status": "open"}
 
     return list(notices.values())
 
@@ -569,7 +602,7 @@ def get_eutalia_open_notices():
 def get_consip_positions():
     page = fetch_html(CONSIP_URL, 45, 2)
     items = {}
-    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci','leggi di più','leggi di piu'}
+    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci'}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I|re.S):
         full=absolute_url('https://www.consip.it',m.group('href')).rstrip('/')
         slug=urllib.parse.unquote(full.rsplit('/',1)[-1])
@@ -784,7 +817,7 @@ def get_pagopa_positions():
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.pagopa\.it)?/it/lavora-con-noi/jobposition-[^"\']+/)["\'][^>]*>(?P<label>.*?)</a>',sec,re.I|re.S):
         full=absolute_url(PAGOPA_URL,m.group('href'));title=strip_tags(m.group('label'));context=strip_tags(sec[max(0,m.start()-400):min(len(sec),m.end()+400)])
         if not matches_corporate_keywords(title+' '+context):continue
-        iid='pagopa:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+        iid='pagopa:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords','status':'open'}
     return list(items.values())
 
 
@@ -1082,7 +1115,7 @@ def get_ifel_positions():
         if not any(x in low for x in ('avviso', 'selezione', 'concorso', 'assunzione')):
             continue
         iid = 'ifel:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
-        items[iid] = {'id': iid, 'title': title, 'url': full, 'deadline': dates[-1]}
+        items[iid] = {'id': iid, 'title': title, 'url': full, 'deadline': dates[-1], 'status': 'open'}
 
     return list(items.values())
 
@@ -1128,7 +1161,7 @@ def get_tagliacarne_positions():
         title = strip_tags(detail.group('title'))
         full = absolute_url(TAGLIACARNE_OPEN_URL, detail.group('href')).rstrip('/')
         iid = 'tagliacarne:' + hashlib.sha256(full.encode('utf-8')).hexdigest()[:24]
-        items[iid] = {'id': iid, 'title': title, 'url': full, 'deadline': dates[-1]}
+        items[iid] = {'id': iid, 'title': title, 'url': full, 'deadline': dates[-1], 'status': 'open'}
     return list(items.values())
 
 
@@ -1539,8 +1572,10 @@ def main():
                     {
                         "title": item.get("title", "Titolo non disponibile"),
                         "url": item.get("url", ""),
+                        "location": snapshot_location(item),
                     }
                     for item in items
+                    if classify_item_status(item) == "open"
                 ],
             }
 
