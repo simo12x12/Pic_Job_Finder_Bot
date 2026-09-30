@@ -144,7 +144,7 @@ SOURCE_LABELS = {
     "ice": "Agenzia ICE",
     "inapp": "INAPP",
 }
-MEMORY_SCHEMA_VERSION = 22
+MEMORY_SCHEMA_VERSION = 23
 
 
 def now_rome():
@@ -318,6 +318,10 @@ def load_memory():
 
     if data.get("schema_version", 1) < 22:
         data["sources"]["inapp"] = empty_source()
+
+    if data.get("schema_version", 1) < 23:
+        for name in ("inpa", "consip", "invitalia", "rome_technopole", "terna", "sport_salute", "infocamere"):
+            data["sources"][name] = empty_source()
 
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
@@ -506,12 +510,15 @@ def get_inpa_items():
     items = []
     for job in by_id.values():
         job_id = str(job.get("id", ""))
+        title = job.get("figuraRicercata") or job.get("titolo") or "Titolo non disponibile"
+        title_low = normalize_space(title).lower()
+        relevant_terms = ("comunic", "ufficio stampa", "relazioni istituzionali", "rapporti istituzionali", "public affairs", "corporate affairs", "media relation", "marketing", "stakeholder")
+        if not any(term in title_low for term in relevant_terms):
+            continue
         items.append(
             {
                 "id": job_id,
-                "title": job.get("figuraRicercata")
-                or job.get("titolo")
-                or "Titolo non disponibile",
+                "title": title,
                 "published": format_inpa_date(job.get("dataPubblicazione")),
                 "deadline": format_inpa_date(job.get("dataScadenza")),
                 "extra": ", ".join(job.get("entiRiferimento") or []),
@@ -562,19 +569,16 @@ def get_eutalia_open_notices():
 def get_consip_positions():
     page = fetch_html(CONSIP_URL, 45, 2)
     items = {}
-
-    cards = re.findall(
-        r'<h3[^>]*>(?P<title>.*?)</h3>.*?<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>.*?</a>',
-        page,
-        re.I | re.S,
-    )
-
-    for title_html, href in cards:
-        full = absolute_url("https://www.consip.it", href).rstrip("/")
-        title = strip_tags(title_html)
-        if title:
-            items[full] = {"id": full, "title": title, "url": full}
-
+    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci'}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I|re.S):
+        full=absolute_url('https://www.consip.it',m.group('href')).rstrip('/')
+        slug=urllib.parse.unquote(full.rsplit('/',1)[-1])
+        if slug in {'category','posizioni'}: continue
+        label=strip_tags(m.group('label'))
+        title=label if label and label.lower() not in blacklist else slug.replace('-',' ').strip().title()
+        if not title or title.lower() in blacklist: continue
+        iid='consip:'+hashlib.sha256(full.encode()).hexdigest()[:24]
+        items[iid]={'id':iid,'title':title,'url':full}
     return list(items.values())
 
 
@@ -721,10 +725,9 @@ def get_invitalia_consulting():
 
         if "ingate.invitalia.it" not in full.lower():
             continue
-        if not any(
-            word in low
-            for word in ("consulenza", "esperti", "specialisti", "profession")
-        ):
+        if label.lower().startswith("consulta anche gli avvisi"):
+            continue
+        if not any(word in low for word in ("consulenza", "esperti", "specialisti", "profession")):
             continue
         if any(word in low for word in ("gara", "fornitura", "lavori", "appalto")):
             continue
@@ -789,8 +792,16 @@ def get_rome_technopole_positions():
     page=fetch_html(ROME_TECHNOPOLE_URL,45,2);items={};ms=list(re.finditer(r'AVVISO\s+PUBBLICO\s+N\.\s*(\d+)/2026',page,re.I))
     for i,m in enumerate(ms):
         seg=page[m.start():(ms[i+1].start() if i+1<len(ms) else min(len(page),m.end()+5000))];text=strip_tags(seg)
-        if not matches_corporate_keywords(text):continue
-        heads=re.findall(r'<h[2-6][^>]*>(.*?)</h[2-6]>',seg,re.I|re.S);title=next((strip_tags(h) for h in heads if 'avviso pubblico n.' not in strip_tags(h).lower()),text[:400]);hrefs=re.findall(r'href=["\']([^"\']+)["\']',seg,re.I);url=absolute_url(ROME_TECHNOPOLE_URL,hrefs[0]) if hrefs else ROME_TECHNOPOLE_URL;iid=f'rome-technopole:2026-{m.group(1)}';items[iid]={'id':iid,'title':title,'url':url,'extra':f'Avviso {m.group(1)}/2026'}
+        if not matches_corporate_keywords(text): continue
+        heads=[strip_tags(h) for h in re.findall(r'<h[2-6][^>]*>(.*?)</h[2-6]>',seg,re.I|re.S)]
+        title=next((h for h in heads if h and 'avviso pubblico n.' not in h.lower()),'')
+        if not title:
+            role=re.search(r'(Avviso pubblico per l.individuazione[^.]{20,260}|n\.\s*1\s+[^.]{10,220})',text,re.I)
+            title=role.group(1).strip() if role else text[:220].strip()
+        title=re.sub(r'\s+È indetta.*$','',title,flags=re.I).strip()
+        hrefs=[h for h in re.findall(r'href=["\']([^"\']+)["\']',seg,re.I) if not h.lower().startswith('mailto:')]
+        url=absolute_url(ROME_TECHNOPOLE_URL,hrefs[0]) if hrefs else ROME_TECHNOPOLE_URL
+        iid=f'rome-technopole:2026-{m.group(1)}';items[iid]={'id':iid,'title':title,'url':url,'extra':f'Avviso {m.group(1)}/2026'}
     return list(items.values())
 
 
@@ -872,14 +883,19 @@ def get_gse_positions():
 
 def get_terna_positions():
     page=fetch_html(TERNA_URL,45,2);items={}
-    # Capture explicit recruiting job links from the official Terna page.
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>https?://jobs\.terna\.it/job/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        full=m.group('href').rstrip('/');title=strip_tags(m.group('label'))
-        if not title: continue
-        # Use title first; surrounding text only if it belongs to this vacancy block.
+        full=m.group('href').rstrip('/')
+        parsed=urllib.parse.urlparse(full)
+        parts=[urllib.parse.unquote(x) for x in parsed.path.split('/') if x]
+        title=''
+        if 'job' in parts:
+            idx=parts.index('job')
+            if idx+1<len(parts): title=parts[idx+1].replace('-',' ').replace('&amp;','&').strip()
+        if not title: title=strip_tags(m.group('label'))
         context=strip_tags(page[max(0,m.start()-900):min(len(page),m.end()+900)])
         if not matches_corporate_keywords(title+' '+context): continue
-        iid='terna:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
+        iid='terna:'+hashlib.sha256(full.split('?',1)[0].encode()).hexdigest()[:24]
+        items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
     return list(items.values())
 
 
@@ -1178,8 +1194,9 @@ def get_enav_positions():
 def get_sport_salute_positions():
     page=fetch_html(SPORT_SALUTE_URL,30,1);items={}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+/posizione/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(SPORT_SALUTE_URL,m.group('href')).rstrip('/')
-        if not title or not matches_corporate_keywords(title):continue
+        raw=strip_tags(m.group('label')).lstrip(': ').strip();full=absolute_url(SPORT_SALUTE_URL,m.group('href')).rstrip('/')
+        title=re.sub(r'^(?:Sport e Salute S\.p\.A\.|Comitato Italiano Paralimpico)\s*-\s*','',raw,flags=re.I).strip()
+        if not title or not matches_corporate_keywords(title): continue
         iid='sport-salute:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
     return list(items.values())
 
@@ -1205,10 +1222,14 @@ def get_autostrade_positions():
 
 def get_infocamere_positions():
     page=fetch_html(INFOCAMERE_OPEN_URL,30,1);items={}
+    blacklist=('ufficio stampa','social media policy','privacy','cookie','posizioni chiuse','candidatura spontanea')
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(INFOCAMERE_OPEN_URL,m.group('href')).rstrip('/')
-        if not title or len(title)>180 or not matches_corporate_keywords(title):continue
-        if full.rstrip('/')==INFOCAMERE_OPEN_URL.rstrip('/'):continue
+        title=strip_tags(m.group('label'));full=absolute_url(INFOCAMERE_OPEN_URL,m.group('href')).rstrip('/');low=(title+' '+full).lower()
+        if not title or any(x in low for x in blacklist): continue
+        if full.lower().endswith('.pdf'): continue
+        if not matches_corporate_keywords(title): continue
+        # Require a recruitment-shaped destination, not normal site navigation.
+        if not any(x in full.lower() for x in ('posizion','lavora-con-noi','career','job')): continue
         iid='infocamere:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Corporate keywords'}
     return list(items.values())
 
