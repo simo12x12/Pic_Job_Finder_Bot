@@ -25,15 +25,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install certificate bundle
-        run: |
-          python -m pip install --upgrade certifi
-          echo "SSL_CERT_FILE=$(python -m certifi)" >> $GITHUB_ENV
-
       - name: Monitor job offers
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: python -u monitor.py     
+        run: python -u monitor.py
 
       - name: Process Telegram commands
         env:
@@ -65,21 +60,4 @@ jobs:
 
           git commit -m "Update Pic Job Finder state"
           git push origin main
-
-      - name: Notify Telegram on failure
-        if: ${{ failure() }}
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: |
-          curl --fail --silent --show-error \
-            --request POST \
-            "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-            --data-urlencode "chat_id=2020881944" \
-            --data-urlencode "text=⚠️ PIC JOB FINDER - ERRORE
-
-          Una sorgente del monitor non ha funzionato correttamente.
-
-          🔧 Controlla:
-          https://github.com/${{ github.repository }}/actions
-
-          🤖 Pic_Job_Finder_Bot"
+          
