@@ -35,6 +35,22 @@ AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
 INVITALIA_JOBS_URL = "https://www.invitalia.it/lavora-con-noi/le-posizioni-aperte"
 CDP_JOBS_URL = "https://www.opportunitadilavoro.cdp.it/"
 CORPORATE_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social", "public affairs", "corporate affairs", "external relations", "relazioni esterne", "relazioni istituzionali", "rapporti istituzionali", "stakeholder", "brand", "content", "press", "ufficio stampa", "digital communication", "media relations", "institutional relations", "event", "events", "eventi", "partnership", "sponsorship", "sponsorizzazioni", "editorial", "editoriale", "reputation", "corporate communication", "campagne informative"]
+
+CDP_SEARCH_TERMS = [
+    "comunicazione",
+    "marketing",
+    "public affairs",
+    "corporate affairs",
+    "external relations",
+    "relazioni esterne",
+    "relazioni istituzionali",
+    "rapporti istituzionali",
+    "stakeholder",
+    "digital communication",
+    "media relations",
+    "institutional relations",
+    "corporate communication",
+]
 IPZS_URL="https://www.ipzs.it/chi-siamo/lavora-con-noi/"
 PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
 ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
@@ -1372,7 +1388,9 @@ def get_inapp_positions():
 def get_cdp_positions():
     items = {}
 
-    for term in CORPORATE_KEYWORDS:
+    # Use only terms that have produced CDP matches in recent runs.
+    # The global CORPORATE_KEYWORDS list remains unchanged for all other sources.
+    for term in CDP_SEARCH_TERMS:
         query = urllib.parse.urlencode(
             {"createNewAlert": "false", "q": term, "locationsearch": ""}
         )
