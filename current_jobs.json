@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 06:52",
+  "last_check": "30/09/2026 07:00",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -326,7 +326,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -496,12 +505,7 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": [
-        {
-          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
-          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
-        }
-      ]
+      "items": []
     },
     "agenas": {
       "label": "AGENAS",
