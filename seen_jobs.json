@@ -36,7 +36,9 @@
     },
     "consip": {
       "initialized": true,
-      "seen": []
+      "seen": [
+        "consip:aff148d0f7147b68f66ff47c"
+      ]
     },
     "presidenza": {
       "initialized": false,
@@ -229,6 +231,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-09-30T11:40:52.788016+00:00",
-  "schema_version": 24
+  "last_update": "2026-09-30T11:43:40.997503+00:00",
+  "schema_version": 23
 }
