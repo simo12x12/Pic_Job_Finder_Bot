@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 01:56",
+  "last_check": "30/09/2026 02:06",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -388,7 +388,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
