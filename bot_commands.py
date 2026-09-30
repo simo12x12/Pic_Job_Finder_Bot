@@ -62,7 +62,7 @@ def build_status(data):
         if source.get("status") == "ok":
             count = len(items)
             total += count
-            lines.append(f"✅ {label.upper()}: {count}")
+            lines.append(f"✅ {label.upper()} - {count}")
         else:
             lines.append(f"⚠️ {label.upper()}")
     lines.extend(["", f"Totale: {total} annunci"])
@@ -160,10 +160,13 @@ def build_summary_parts(data):
 
 
 HELP_TEXT = """PIC JOB FINDER - HELP
+
 /riepilogo
 Mostra tutti gli annunci dell'ultimo controllo, dividendoli automaticamente in più messaggi se necessario.
+
 /status
 Mostra stato e conteggi delle fonti.
+
 /help
 Mostra questo messaggio."""
 
