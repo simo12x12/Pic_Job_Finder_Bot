@@ -62,9 +62,9 @@ def build_status(data):
         if source.get("status") == "ok":
             count = len(items)
             total += count
-            lines.append(f"✅ {label} — {count}")
+            lines.append(f"✅ {label.upper()}: {count}")
         else:
-            lines.append(f"⚠️ {label} — non disponibile")
+            lines.append(f"⚠️ {label.upper()}")
     lines.extend(["", f"Totale: {total} annunci"])
     return "\n".join(lines)
 
