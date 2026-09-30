@@ -28,7 +28,7 @@ ROME = ZoneInfo("Europe/Rome")
 LEONARDO_ENDPOINT = "https://leonardocompany.wd3.myworkdayjobs.com/wday/cxs/leonardocompany/LeonardoCareerSite/jobs"
 INPA_ENDPOINT = "https://portale.inpa.gov.it/concorsi-smart/api/concorso-public-area/search-better"
 EUTALIA_URL = "https://www.eutalia.eu/selezione-personale-ed-esperti/"
-CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni"
+CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page=0"
 SOGEI_TRANSPARENCY_URL = "https://www.sogei.it/it/sogei-homepage/societa-trasparente/selezione-del-personale/reclutamento-del-personale/avvisi-di-selezione0.html"
 AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
 AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
@@ -569,7 +569,7 @@ def get_eutalia_open_notices():
 def get_consip_positions():
     page = fetch_html(CONSIP_URL, 45, 2)
     items = {}
-    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci'}
+    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci','leggi di più','leggi di piu'}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I|re.S):
         full=absolute_url('https://www.consip.it',m.group('href')).rstrip('/')
         slug=urllib.parse.unquote(full.rsplit('/',1)[-1])
