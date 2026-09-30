@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 11:56",
+  "last_check": "30/09/2026 12:06",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -62,10 +62,6 @@
         {
           "title": "ADDETTO ALL'UFFICIO STAMPA",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=3a7d23a9fe0642e9a91c3828b5e46925"
-        },
-        {
-          "title": "RESPONSABILE UFFICIO GABINETTO, SEGRETERIA DEL PRESIDENTE, RELAZIONI ISTITUZIONALI",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=ad2e22e303aa4535a6a976349b02e1d6"
         },
         {
           "title": "Area dei Collaboratori, Settore della comunicazione e informazione",
@@ -267,7 +263,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
