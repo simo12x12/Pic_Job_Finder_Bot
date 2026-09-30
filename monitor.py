@@ -28,7 +28,7 @@ ROME = ZoneInfo("Europe/Rome")
 LEONARDO_ENDPOINT = "https://leonardocompany.wd3.myworkdayjobs.com/wday/cxs/leonardocompany/LeonardoCareerSite/jobs"
 INPA_ENDPOINT = "https://portale.inpa.gov.it/concorsi-smart/api/concorso-public-area/search-better"
 EUTALIA_URL = "https://www.eutalia.eu/selezione-personale-ed-esperti/"
-CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page=0"
+CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni"
 SOGEI_TRANSPARENCY_URL = "https://www.sogei.it/it/sogei-homepage/societa-trasparente/selezione-del-personale/reclutamento-del-personale/avvisi-di-selezione0.html"
 AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
 AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
@@ -144,7 +144,7 @@ SOURCE_LABELS = {
     "ice": "Agenzia ICE",
     "inapp": "INAPP",
 }
-MEMORY_SCHEMA_VERSION = 24
+MEMORY_SCHEMA_VERSION = 23
 
 
 def now_rome():
@@ -153,24 +153,6 @@ def now_rome():
 
 def normalize_space(text):
     return re.sub(r"\s+", " ", html.unescape(text or "")).strip()
-
-def normalize_title(text):
-    """Conservative display-title cleanup; never used to build an ID."""
-    title = normalize_space(text)
-    title = re.sub(r"^(?:consulta gli aggiornamenti(?: sulla selezione)?|scopri|approfondisci|candidati)\s*[:\-–—]*\s*", "", title, flags=re.I)
-    title = re.sub(r"\s+(?:scopri|approfondisci|candidati)\s*$", "", title, flags=re.I)
-    title = re.sub(r"\s+[-–—|]\s+(?:lavora con noi|posizioni aperte)\s*$", "", title, flags=re.I)
-    return normalize_space(title).strip(" -–—|:;")
-
-def item_is_open(item):
-    """Reject only vacancies that can be proven closed/expired."""
-    status = normalize_space(str(item.get("status", ""))).lower()
-    if status in {"closed", "chiuso", "chiusa", "concluso", "conclusa", "expired", "scaduto", "scaduta"}:
-        return False
-    deadline = item.get("deadline_date")
-    if deadline and deadline < datetime.now(ROME).date():
-        return False
-    return True
 
 
 def strip_tags(text):
@@ -341,11 +323,6 @@ def load_memory():
         for name in ("inpa", "consip", "invitalia", "rome_technopole", "terna", "sport_salute", "infocamere"):
             data["sources"][name] = empty_source()
 
-    if data.get("schema_version", 1) < 24:
-        # Parser/status refinements: establish a clean baseline without generating old alerts.
-        for name in ("consip", "sogei", "ama_roma", "fincantieri", "formez"):
-            data["sources"][name] = empty_source()
-
     data["schema_version"] = MEMORY_SCHEMA_VERSION
 
     for name in SOURCE_NAMES:
@@ -364,9 +341,6 @@ def save_memory(memory):
 
 
 def process_items(memory, source, items, formatter):
-    # "Present on page" is not automatically "open". Only proven closed/expired
-    # entries are excluded; unknown status remains monitorable instead of being guessed.
-    items = [item for item in items if item_is_open(item)]
     src = memory["sources"][source]
     current_ids = {item["id"] for item in items if item.get("id")}
     seen_ids = set(src.get("seen", []))
@@ -595,45 +569,59 @@ def get_eutalia_open_notices():
 def get_consip_positions():
     page = fetch_html(CONSIP_URL, 45, 2)
     items = {}
-
-    # The Consip page mixes the current vacancies with archive/navigation links.
-    # Search only the part introduced as current searches and reject generic nodes.
-    low_page = page.lower()
-    marker = low_page.find("ricerche di posizioni lavorative attualmente in corso")
-    section = page[marker:] if marker >= 0 else page
-    blacklist = {"chi siamo", "category", "lavora con noi", "scopri", "approfondisci", "posizioni aperte", "esiti selezioni"}
-
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>(?P<label>.*?)</a>', section, re.I | re.S):
-        full = absolute_url("https://www.consip.it", m.group("href")).rstrip("/")
-        slug = urllib.parse.unquote(full.rsplit("/", 1)[-1])
-        label = normalize_title(strip_tags(m.group("label")))
-        title = label if label and label.lower() not in blacklist else normalize_title(slug.replace("-", " "))
-        low = title.lower()
-        if not title or low in blacklist or len(title) < 5:
-            continue
-        # Consip is monitored for the same corporate-professional perimeter.
-        if not matches_corporate_keywords(title):
-            continue
-        if any(x in low for x in ("graduatoria", "esito", "archivio", "privacy", "cookie")):
-            continue
-        iid = "consip:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-        items[iid] = {"id": iid, "title": title, "url": full, "status": "open"}
+    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci'}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I|re.S):
+        full=absolute_url('https://www.consip.it',m.group('href')).rstrip('/')
+        slug=urllib.parse.unquote(full.rsplit('/',1)[-1])
+        if slug in {'category','posizioni'}: continue
+        label=strip_tags(m.group('label'))
+        title=label if label and label.lower() not in blacklist else slug.replace('-',' ').strip().title()
+        if not title or title.lower() in blacklist: continue
+        iid='consip:'+hashlib.sha256(full.encode()).hexdigest()[:24]
+        items[iid]={'id':iid,'title':title,'url':full}
     return list(items.values())
 
 
 # ---------- Sogei ----------
 def get_sogei_positions():
-    page = fetch_html(SOGEI_TRANSPARENCY_URL, 30, 2)
-    plain = strip_tags(page)
-    start_match = re.search(r"Avvisi\s+di\s+selezione\s+in\s+corso", plain, re.I)
-    end_match = re.search(r"Avvisi\s+di\s+selezione\s+conclusi", plain, re.I)
+    page = fetch_html(SOGEI_TRANSPARENCY_URL, 15, 1)
+
+    start_match = re.search(r"Avvisi\s+di\s+selezione\s+in\s+corso", page, re.I)
+    end_match = re.search(r"Avvisi\s+di\s+selezione\s+conclusi", page, re.I)
+
     if not start_match:
-        raise RuntimeError("Sogei: sezione 'Avvisi di selezione in corso' non trovata")
-    current_text = plain[start_match.end() : end_match.start() if end_match else len(plain)]
-    if "al momento non esistono posizioni disponibili" in current_text.lower():
+        raise RuntimeError("Sezione Sogei non trovata")
+
+    end_pos = (
+        end_match.start()
+        if end_match and end_match.start() > start_match.end()
+        else len(page)
+    )
+    section = page[start_match.end() : end_pos]
+
+    if "al momento non esistono posizioni disponibili" in strip_tags(section).lower():
         return []
-    # Do not parse the following 'conclusi/processo in corso' table as open vacancies.
-    raise RuntimeError("Sogei: la sezione corrente non dichiara il vuoto ma non e estraibile in modo affidabile")
+
+    items = {}
+    for href, label_html in re.findall(
+        r'<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
+        section,
+        re.I | re.S,
+    ):
+        label = strip_tags(label_html)
+        if not label:
+            continue
+
+        full = absolute_url(SOGEI_TRANSPARENCY_URL, href)
+        code_match = re.search(r"\((20\d{2}/\d+[A-Z]?)\)", label, re.I)
+        item_id = (
+            "sogei:" + code_match.group(1).upper()
+            if code_match
+            else "sogei:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
+        )
+        items[item_id] = {"id": item_id, "title": label, "url": full}
+
+    return list(items.values())
 
 
 # ---------- AgID ----------
@@ -818,25 +806,11 @@ def get_rome_technopole_positions():
 
 
 def get_ama_roma_positions():
-    page = fetch_html(AMA_ROMA_URL, 30, 2)
-    items = {}
-    low = page.lower()
-    a = low.find("procedure selettive aperte")
-    b = low.find("procedure selettive chiuse")
-    if a < 0:
-        raise RuntimeError("AMA Roma: sezione 'Procedure selettive aperte' non trovata")
-    sec = page[a:b if b > a else len(page)]
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.amaroma\.it)?/lavora-con-noi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', sec, re.I | re.S):
-        full = absolute_url(AMA_ROMA_URL, m.group("href")).rstrip("/")
-        label = normalize_title(strip_tags(m.group("label")))
-        before = sec[max(0, m.start() - 900):m.start()]
-        before_text = strip_tags(before)
-        candidates = re.findall(r'((?:Avviso di |Selezione per |Avviso di manifestazione )[\s\S]{15,260}?)(?=Consulta gli aggiornamenti|$)', before_text, re.I)
-        title = normalize_title(candidates[-1] if candidates else label)
-        if not title or not matches_corporate_keywords(title):
-            continue
-        iid = "ama:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-        items[iid] = {"id": iid, "title": title, "url": full, "extra": "Procedura aperta", "status": "open"}
+    page=fetch_html(AMA_ROMA_URL,15,1);items={};a=page.lower().find('procedure selettive aperte');b=page.lower().find('procedure selettive chiuse');sec=page[a:b if b>a else len(page)] if a>=0 else page
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>(?:https?://www\.amaroma\.it)?/lavora-con-noi/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',sec,re.I|re.S):
+        full=absolute_url(AMA_ROMA_URL,m.group('href')).rstrip('/');label=strip_tags(m.group('label'));context=strip_tags(sec[max(0,m.start()-700):m.end()])
+        if not matches_corporate_keywords(label+' '+context):continue
+        title=re.split(r'Consulta gli aggiornamenti',context,maxsplit=1,flags=re.I)[0].strip() or label;iid='ama:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Procedura aperta'}
     return list(items.values())
 
 
@@ -1029,7 +1003,7 @@ def get_fincantieri_positions():
     # The official page may be client-rendered. A zero here is not proof of no openings,
     # so signal non-availability instead of polluting current_jobs with false results.
     if not items:
-        raise RuntimeError("Fincantieri: la pagina ufficiale e raggiungibile ma nell HTML non espone link/titoli delle vacancy; probabile caricamento client-side")
+        raise RuntimeError("Fincantieri: pagina ufficiale raggiungibile ma vacancy non estraibili in modo affidabile")
 
     return list(items.values())
 
@@ -1261,27 +1235,14 @@ def get_infocamere_positions():
 
 
 def get_formez_positions():
-    page = fetch_html(FORMEZ_BANDI_URL, 30, 2)
-    items = {}
-    current_year = datetime.now(ROME).year
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/lavora-con-noi/bandi/d/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
-        title = normalize_title(strip_tags(m.group("label")))
-        full = absolute_url(FORMEZ_BANDI_URL, m.group("href")).rstrip("/")
-        if not title:
-            continue
-        context = strip_tags(page[max(0, m.start() - 700):min(len(page), m.end() + 2200)])
-        dates = re.findall(r'\b(\d{1,2})\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+(20\d{2})\b', context, re.I)
-        years = [int(y) for _, _, y in dates]
-        # The listing contains a long archive. Never report old listings merely because they are present.
-        if years and max(years) < current_year:
-            continue
-        relevant = matches_corporate_keywords(title + " " + context) or any(x in context.lower() for x in ("assistenza tecnica", "capacita istituzionale", "capacità istituzionale", "eventi di lavoro"))
-        if not relevant:
-            continue
-        if any(x in title.lower() for x in ("graduator", "comunicazioni selezioni interne", "esito")):
-            continue
-        iid = "formez:" + hashlib.sha256(full.encode("utf-8")).hexdigest()[:24]
-        items[iid] = {"id": iid, "title": title, "url": full, "extra": "Bando Formez PA", "status": "unknown"}
+    page=fetch_html(FORMEZ_BANDI_URL,30,1);items={}
+    # Direct Formez employment notices only; avoid inPA duplicate links and PDFs.
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/lavora-con-noi/bandi/d/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
+        title=strip_tags(m.group('label'));full=absolute_url(FORMEZ_BANDI_URL,m.group('href')).rstrip('/')
+        if not title:continue
+        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+1000)])
+        if not matches_corporate_keywords(title+' '+context) and not any(x in context.lower() for x in ('assistenza tecnica','capacita istituzionale','eventi di lavoro')):continue
+        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Bando Formez PA'}
     return list(items.values())
 
 
@@ -1576,9 +1537,8 @@ def main():
                 "status": "ok",
                 "items": [
                     {
-                        "title": normalize_title(item.get("title", "Titolo non disponibile")),
+                        "title": item.get("title", "Titolo non disponibile"),
                         "url": item.get("url", ""),
-                        "open_status": item.get("status", "unknown"),
                     }
                     for item in items
                 ],
