@@ -35,22 +35,6 @@ AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
 INVITALIA_JOBS_URL = "https://www.invitalia.it/lavora-con-noi/le-posizioni-aperte"
 CDP_JOBS_URL = "https://www.opportunitadilavoro.cdp.it/"
 CORPORATE_KEYWORDS = ["comunicazione", "communication", "marketing", "media", "social", "public affairs", "corporate affairs", "external relations", "relazioni esterne", "relazioni istituzionali", "rapporti istituzionali", "stakeholder", "brand", "content", "press", "ufficio stampa", "digital communication", "media relations", "institutional relations", "event", "events", "eventi", "partnership", "sponsorship", "sponsorizzazioni", "editorial", "editoriale", "reputation", "corporate communication", "campagne informative"]
-
-CDP_SEARCH_TERMS = [
-    "comunicazione",
-    "marketing",
-    "public affairs",
-    "corporate affairs",
-    "external relations",
-    "relazioni esterne",
-    "relazioni istituzionali",
-    "rapporti istituzionali",
-    "stakeholder",
-    "digital communication",
-    "media relations",
-    "institutional relations",
-    "corporate communication",
-]
 IPZS_URL="https://www.ipzs.it/chi-siamo/lavora-con-noi/"
 PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
 ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
@@ -76,6 +60,7 @@ FS_JOBS_URL="https://fscareers.gruppofs.it/jobs.php"
 AUTOSTRADE_CAREER_URL="https://career55.sapsf.eu/career?company=autostrade"
 INFOCAMERE_OPEN_URL="https://infocamere.it/posizioni-aperte/"
 FORMEZ_BANDI_URL="https://www.formez.it/lavora-con-noi/bandi"
+FORMEZ_AVVISI_URL="https://avvisi.formez.it/"
 SVILUPPO_LAVORO_URL="https://lavoraconnoi.sviluppolavoroitalia.it/hr/core/StartInteraction.action?id_interaction=ST.HR.LSTAVVISI_PUBBLICATI"
 CAPCOE_URL="https://capcoe.it/opportunita/avvisi/"
 UNIONCAMERE_URL="https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso"
@@ -169,6 +154,22 @@ def now_rome():
 
 def normalize_space(text):
     return re.sub(r"\s+", " ", html.unescape(text or "")).strip()
+
+def normalize_job_title(text):
+    """Clean administrative boilerplate without changing the actual role."""
+    title = normalize_space(text)
+    patterns = [
+        r"^avviso\s+(?:pubblico\s+)?di\s+selezione\s+per\s+(?:la\s+)?ricerca\s+di\s+",
+        r"^avviso\s+di\s+selezione\s+per\s+l['’]individuazione\s+di\s+",
+        r"^selezione\s+per\s+(?:la\s+)?ricerca\s+di\s+",
+        r"^avviso\s+per\s+il\s+reclutamento\s+di\s+",
+    ]
+    for pattern in patterns:
+        title = re.sub(pattern, "", title, flags=re.I).strip()
+    title = re.sub(r"^n\.\s*(\d+)\s+", r"\1 ", title, flags=re.I)
+    title = re.sub(r"\s+(?:da\s+inserire|da\s+assegnare)\s+all['’]?interno\s+.*$", "", title, flags=re.I)
+    title = re.sub(r"\s+all['’]?interno\s+della\s+funzione\s+.*$", "", title, flags=re.I)
+    return normalize_space(title).strip(" -–—:;.")
 
 
 def strip_tags(text):
@@ -389,7 +390,7 @@ def standard_job_message(source, title, url, published=None, deadline=None, extr
     lines = [
         f"🚨 NUOVA OPPORTUNITÀ - {source.upper()}",
         "",
-        f"💼 {title}",
+        f"💼 {normalize_job_title(title)}",
         f"🏢 Fonte: {source}",
     ]
     if published:
@@ -1251,14 +1252,19 @@ def get_infocamere_positions():
 
 
 def get_formez_positions():
-    page=fetch_html(FORMEZ_BANDI_URL,30,1);items={}
-    # Direct Formez employment notices only; avoid inPA duplicate links and PDFs.
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/lavora-con-noi/bandi/d/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(FORMEZ_BANDI_URL,m.group('href')).rstrip('/')
-        if not title:continue
-        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+1000)])
-        if not matches_corporate_keywords(title+' '+context) and not any(x in context.lower() for x in ('assistenza tecnica','capacita istituzionale','eventi di lavoro')):continue
-        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Bando Formez PA'}
+    page = fetch_html(FORMEZ_AVVISI_URL, 30, 2)
+    plain = strip_tags(page)
+    if re.search(r"Attualmente\s+non\s+ci\s+sono\s+avvisi", plain, re.I):
+        return []
+    items = {}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
+        title=strip_tags(m.group('label')); full=absolute_url(FORMEZ_AVVISI_URL,m.group('href')).rstrip('/')
+        if not title or len(title)<8: continue
+        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+800)]); low=(title+' '+context).lower()
+        if not any(x in low for x in ('avviso','selezione','reclutamento','incarico','esperto','personale')): continue
+        if any(x in low for x in ('chiuso','chiusa','archivio','graduatoria','esito')): continue
+        if not matches_corporate_keywords(title+' '+context) and not any(x in low for x in ('assistenza tecnica','capacita istituzionale','capacità istituzionale','eventi di lavoro')): continue
+        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24]; items[iid]={'id':iid,'title':normalize_job_title(title),'url':full,'extra':'Avviso Formez PA'}
     return list(items.values())
 
 
@@ -1388,9 +1394,7 @@ def get_inapp_positions():
 def get_cdp_positions():
     items = {}
 
-    # Use only terms that have produced CDP matches in recent runs.
-    # The global CORPORATE_KEYWORDS list remains unchanged for all other sources.
-    for term in CDP_SEARCH_TERMS:
+    for term in CORPORATE_KEYWORDS:
         query = urllib.parse.urlencode(
             {"createNewAlert": "false", "q": term, "locationsearch": ""}
         )
@@ -1555,7 +1559,7 @@ def main():
                 "status": "ok",
                 "items": [
                     {
-                        "title": item.get("title", "Titolo non disponibile"),
+                        "title": normalize_job_title(item.get("title", "Titolo non disponibile")),
                         "url": item.get("url", ""),
                     }
                     for item in items
