@@ -371,26 +371,12 @@ def process_items(memory, source, items, formatter):
 
 def standard_job_message(source, title, url, published=None, deadline=None, extra=None):
     lines = [
-        f"🚨 NUOVA OPPORTUNITÀ - {source.upper()}",
+        f"🚨 {source.upper()}",
         "",
-        f"💼 {title}",
-        f"🏢 Fonte: {source}",
+        normalize_space(title).upper(),
+        "",
+        url,
     ]
-    if published:
-        lines.append(f"📅 Pubblicata: {published}")
-    if deadline:
-        lines.append(f"⏳ Scadenza: {deadline}")
-    if extra:
-        lines.append(f"🏷 {extra}")
-    lines.extend(
-        [
-            f"🔔 Rilevata: {now_rome()}",
-            "",
-            f"🔗 {url}",
-            "",
-            "🤖 Pic_Job_Finder_Bot",
-        ]
-    )
     return "\n".join(lines)
 
 
@@ -569,7 +555,7 @@ def get_eutalia_open_notices():
 def get_consip_positions():
     page = fetch_html(CONSIP_URL, 45, 2)
     items = {}
-    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci','leggi di più','leggi di piu'}
+    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci'}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I|re.S):
         full=absolute_url('https://www.consip.it',m.group('href')).rstrip('/')
         slug=urllib.parse.unquote(full.rsplit('/',1)[-1])
