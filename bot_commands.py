@@ -50,8 +50,8 @@ def load_current_jobs():
 def build_status(data):
     # Intentionally unchanged from the previous version.
     lines = [
-        "🤖 PIC JOB FINDER - STATO", "",
-        f"🕐 Ultimo controllo: {data.get('last_check', 'Non disponibile')}", "",
+        "PIC JOB FINDER - STATO", "",
+        f"{data.get('last_check', 'Non disponibile')}", "",
     ]
     total = 0
     sources = data.get("sources", {})
@@ -65,7 +65,7 @@ def build_status(data):
             lines.append(f"✅ {label} — {count}")
         else:
             lines.append(f"⚠️ {label} — non disponibile")
-    lines.extend(["", f"📊 Totale annunci: {total}"])
+    lines.extend(["", f"Totale: {total} annunci"])
     return "\n".join(lines)
 
 
@@ -84,14 +84,14 @@ def make_job_block(item):
     url = str(item.get("url", "")).strip()
     if url:
         safe_url = html.escape(url, quote=True)
-        return f"• <b>{title}</b>\n  🔗 <a href=\"{safe_url}\">Link</a>\n"
+        return f"• <b>{title}</b>\n  <a href=\"{safe_url}\">Link</a>\n"
     return f"• <b>{title}</b>\n"
 
 
 def source_header(label, status, count=0):
     safe = html.escape(str(label).upper())
     if status != "ok":
-        return f"🟡 <b>{safe}</b>\n⚠️ Controllo non disponibile\n\n"
+        return f"🟡 <b>{safe}</b>\n"
     dot = "⚪" if count == 0 else "🔵"
     return f"{dot} <b>{safe}</b> · {count} annunci\n"
 
@@ -102,8 +102,8 @@ def build_summary_parts(data):
     sources = data.get("sources", {})
     parts = []
     current = (
-        "📋 <b>PIC JOB FINDER - RIEPILOGO</b>\n"
-        f"🕐 Ultimo controllo: {last_check}\n\n"
+        "<b>PIC JOB FINDER - RIEPILOGO</b>\n"
+        f"{last_check}\n\n"
     )
     total = 0
 
@@ -145,13 +145,13 @@ def build_summary_parts(data):
                 available = max(80, SAFE_PART_LIMIT - reserve)
                 title = html.escape(title[:available].rstrip() + "…")
                 if url:
-                    block = f"• <b>{title}</b>\n  🔗 <a href=\"{html.escape(url, quote=True)}\">Link</a>\n"
+                    block = f"• <b>{title}</b>\n  <a href=\"{html.escape(url, quote=True)}\">Link</a>\n"
                 else:
                     block = f"• <b>{title}</b>\n"
             current += block
         current += "\n"
 
-    footer = f"<b>Totale: {total} annunci</b>\n\n🤖 Pic_Job_Finder_Bot"
+    footer = f"<b>Totale: {total} annunci</b>"
     if current and len(current) + len(footer) > SAFE_PART_LIMIT:
         flush()
     current += footer
@@ -159,7 +159,7 @@ def build_summary_parts(data):
     return parts or [footer]
 
 
-HELP_TEXT = """🤖 PIC JOB FINDER
+HELP_TEXT = """PIC JOB FINDER
 
 Comandi disponibili:
 
