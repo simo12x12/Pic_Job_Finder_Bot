@@ -48,7 +48,7 @@ def build_database_text(args):
     sources = data.get("sources", {})
     args = normalize(args)
     if not args:
-        lines = ["DATABASE - POSIZIONI APERTE", ""]
+        lines = ["DATABASE - POSIZIONI ATTUALI", "", "Include posizioni aperte e con stato non verificabile.", ""]
         for _, src in sources.items():
             items = src.get("items", [])
             if items:
@@ -66,7 +66,7 @@ def build_database_text(args):
                 source, consumed = candidate, n
                 break
     if source is None:
-        return "Fonte non trovata. Usa /database oppure /database <fonte>."
+        return "Fonte non trovata. Usa /database, /database <fonte>, /database <fonte> localita <luogo> oppure /database <fonte> lavoro <parola>."
 
     source_key, src = source
     rest = tokens[consumed:]
@@ -85,7 +85,7 @@ def build_database_text(args):
         lines += [f"Filtro {field or 'ricerca'}: {query.upper()}"]
     lines.append("")
     if not items:
-        lines.append("Nessuna posizione aperta trovata.")
+        lines.append("Nessuna posizione trovata con questi filtri.")
         return "\n".join(lines)
     for item in items:
         lines.append(normalize(item.get("title")).upper())
@@ -117,6 +117,34 @@ def handle_database_command(message_text):
     text = normalize(message_text)
     args = re.sub(r"^/database(?:@\w+)?\s*", "", text, flags=re.I)
     return split_message(build_database_text(args))
+
+
+def build_help_text():
+    return "\n".join([
+        "PIC JOB FINDER - HELP",
+        "",
+        "/database",
+        "Mostra quante posizioni attuali sono presenti per ogni fonte. Include posizioni aperte e posizioni con stato non verificabile; esclude quelle risultate chiuse o scadute.",
+        "",
+        "/database <fonte>",
+        "Mostra tutte le posizioni attuali della fonte.",
+        "Esempio: /database cdp",
+        "",
+        "/database <fonte> localita <luogo>",
+        "Filtra la fonte per localita, quando la fonte fornisce questo dato.",
+        "Esempio: /database leonardo localita roma",
+        "",
+        "/database <fonte> lavoro <parola o frase>",
+        "Cerca nel titolo della posizione.",
+        "Esempio: /database cdp lavoro marketing",
+        "",
+        "E' supportata anche la ricerca libera dopo la fonte, che cerca contemporaneamente nel titolo e nella localita.",
+        "Esempio: /database leonardo roma",
+    ])
+
+
+def handle_help_command():
+    return split_message(build_help_text())
 
 
 # Integration hook for an existing Telegram command dispatcher:
