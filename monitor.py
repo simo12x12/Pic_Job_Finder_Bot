@@ -28,7 +28,7 @@ ROME = ZoneInfo("Europe/Rome")
 LEONARDO_ENDPOINT = "https://leonardocompany.wd3.myworkdayjobs.com/wday/cxs/leonardocompany/LeonardoCareerSite/jobs"
 INPA_ENDPOINT = "https://portale.inpa.gov.it/concorsi-smart/api/concorso-public-area/search-better"
 EUTALIA_URL = "https://www.eutalia.eu/selezione-personale-ed-esperti/"
-CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni?field_pos_stato_value=All&page=0"
+CONSIP_URL = "https://www.consip.it/lavora-con-noi/posizioni"
 SOGEI_TRANSPARENCY_URL = "https://www.sogei.it/it/sogei-homepage/societa-trasparente/selezione-del-personale/reclutamento-del-personale/avvisi-di-selezione0.html"
 AGID_ACTIVE_URL = "https://trasparenza.agid.gov.it/page/75/concorsi-attivi.html"
 AGID_NOTICES_URL = "https://trasparenza.agid.gov.it/page/77/avvisi.html"
@@ -39,6 +39,7 @@ IPZS_URL="https://www.ipzs.it/chi-siamo/lavora-con-noi/"
 PAGOPA_URL="https://www.pagopa.it/it/lavora-con-noi/"
 ROME_TECHNOPOLE_URL="https://www.rometechnopole.it/lavora-con-noi/"
 AMA_ROMA_URL="https://www.amaroma.it/lavora-con-noi"
+AMA_ROMA_TRANSPARENCY_URL="https://www.amaroma.it/societa-trasparente/selezione-del-personale/6702-avvisi-criteri-esiti-delle-selezioni"
 BMTI_URL="https://www.bmti.it/lavora-con-noi/"
 SACE_URL="https://sace.wd103.myworkdayjobs.com/it-IT/Sace001"
 GSE_URL="https://gse.taleo.net/careersection/ex/joblist.ftl?lang=it"
@@ -60,6 +61,7 @@ FS_JOBS_URL="https://fscareers.gruppofs.it/jobs.php"
 AUTOSTRADE_CAREER_URL="https://career55.sapsf.eu/career?company=autostrade"
 INFOCAMERE_OPEN_URL="https://infocamere.it/posizioni-aperte/"
 FORMEZ_BANDI_URL="https://www.formez.it/lavora-con-noi/bandi"
+FORMEZ_AVVISI_URL="https://avvisi.formez.it/"
 SVILUPPO_LAVORO_URL="https://lavoraconnoi.sviluppolavoroitalia.it/hr/core/StartInteraction.action?id_interaction=ST.HR.LSTAVVISI_PUBBLICATI"
 CAPCOE_URL="https://capcoe.it/opportunita/avvisi/"
 UNIONCAMERE_URL="https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso"
@@ -371,26 +373,12 @@ def process_items(memory, source, items, formatter):
 
 def standard_job_message(source, title, url, published=None, deadline=None, extra=None):
     lines = [
-        f"🚨 NUOVA OPPORTUNITÀ - {source.upper()}",
+        f"🚨 {source.upper()}",
         "",
-        f"💼 {title}",
-        f"🏢 Fonte: {source}",
+        normalize_space(title).upper(),
+        "",
+        url,
     ]
-    if published:
-        lines.append(f"📅 Pubblicata: {published}")
-    if deadline:
-        lines.append(f"⏳ Scadenza: {deadline}")
-    if extra:
-        lines.append(f"🏷 {extra}")
-    lines.extend(
-        [
-            f"🔔 Rilevata: {now_rome()}",
-            "",
-            f"🔗 {url}",
-            "",
-            "🤖 Pic_Job_Finder_Bot",
-        ]
-    )
     return "\n".join(lines)
 
 
@@ -569,7 +557,7 @@ def get_eutalia_open_notices():
 def get_consip_positions():
     page = fetch_html(CONSIP_URL, 45, 2)
     items = {}
-    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci'}
+    blacklist = {'chi siamo','category','lavora con noi','scopri','approfondisci','leggi di più','leggi di piu'}
     for m in re.finditer(r'<a[^>]+href=["\'](?P<href>/posizioni/[^"\'?/#]+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I|re.S):
         full=absolute_url('https://www.consip.it',m.group('href')).rstrip('/')
         slug=urllib.parse.unquote(full.rsplit('/',1)[-1])
@@ -1235,14 +1223,20 @@ def get_infocamere_positions():
 
 
 def get_formez_positions():
-    page=fetch_html(FORMEZ_BANDI_URL,30,1);items={}
-    # Direct Formez employment notices only; avoid inPA duplicate links and PDFs.
-    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']*/lavora-con-noi/bandi/d/[^"\']+)["\'][^>]*>(?P<label>.*?)</a>',page,re.I|re.S):
-        title=strip_tags(m.group('label'));full=absolute_url(FORMEZ_BANDI_URL,m.group('href')).rstrip('/')
-        if not title:continue
-        context=strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+1000)])
-        if not matches_corporate_keywords(title+' '+context) and not any(x in context.lower() for x in ('assistenza tecnica','capacita istituzionale','eventi di lavoro')):continue
-        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24];items[iid]={'id':iid,'title':title,'url':full,'extra':'Bando Formez PA'}
+    page = fetch_html(FORMEZ_AVVISI_URL, 30, 2)
+    plain = strip_tags(page)
+    if re.search(r"Attualmente\s+non\s+ci\s+sono\s+avvisi", plain, re.I):
+        return []
+    items = {}
+    for m in re.finditer(r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>(?P<label>.*?)</a>', page, re.I | re.S):
+        title = strip_tags(m.group("label")); full = absolute_url(FORMEZ_AVVISI_URL, m.group("href")).rstrip("/")
+        if not title or len(title) < 8: continue
+        context = strip_tags(page[max(0,m.start()-500):min(len(page),m.end()+800)])
+        low=(title+' '+context).lower()
+        if not any(x in low for x in ('avviso','selezione','reclutamento','incarico','esperto','personale')): continue
+        if any(x in low for x in ('chiuso','chiusa','archivio','graduatoria','esito')): continue
+        if not matches_corporate_keywords(title+' '+context) and not any(x in low for x in ('assistenza tecnica','capacita istituzionale','capacità istituzionale','eventi di lavoro')): continue
+        iid='formez:'+hashlib.sha256(full.encode()).hexdigest()[:24]; items[iid]={'id':iid,'title':title,'url':full,'extra':'Avviso Formez PA'}
     return list(items.values())
 
 
