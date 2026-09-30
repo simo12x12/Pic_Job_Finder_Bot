@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 16:54",
+  "last_check": "30/09/2026 16:57",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -184,7 +184,7 @@
           "url": "https://drive.google.com/file/d/1Y4efxpXhb0TZoF4RrtbxWoG2n4l9-J4P/view?usp=sharing"
         },
         {
-          "title": "n. 1 Tecnologo con le funzioni di “Manager Infrastrutture di Ricerca Rome Technopole”",
+          "title": "1 Tecnologo con le funzioni di “Manager Infrastrutture di Ricerca Rome Technopole”",
           "url": "https://drive.google.com/file/d/1vjSC1kYqLmRQ7UAD4j7mDD4Lo8vmfJzf/view?usp=sharing"
         }
       ]
@@ -197,7 +197,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -275,7 +284,7 @@
           "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
         },
         {
-          "title": "AVVISO DI SELEZIONE Avviso pubblico per la selezione di n. 1 risorsa a tempo determinato da inserire all’interno dell’Ufficio di staff - Politiche per la coesione e Mezzogiorno, PNRR, Consulta delle Città Capoluogo dell’ANCI, Coordinamento dei Sindaci delle Città metropolitane",
+          "title": "AVVISO DI SELEZIONE Avviso pubblico per la selezione di n. 1 risorsa a tempo determinato",
           "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/241/avviso-di-selezione-avviso-pubblico-per-la-selezione-di-n-1-risorsa-a-tempo-determinato-da-inserire-all-interno-dell-ufficio-di-staff-politiche-per-la-coesione-e-mezzogiorno-pnrr-consulta-delle-citta-capoluogo-dell-anci-coordinamento-dei-sindaci-delle-citta-metropolitane.html"
         }
       ]
@@ -364,7 +373,7 @@
     },
     "formez": {
       "label": "Formez PA",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "sviluppo_lavoro": {
@@ -401,23 +410,23 @@
           "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20PER%20DC%20SERVIZI.pdf"
         },
         {
-          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 2 unità di personale dell’Area Assistenti, appartenenti alle categorie protette di cui all’articolo 1 della Legge 12 marzo 1999, n. 68, da destinare agli Uffici dell’ICE-Agenzia.",
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 2 unità di personale dell’Area Assistenti, appartenenti alle categorie protette di cui all’articolo 1 della Legge 12 marzo 1999, n. 68, da destinare agli Uffici dell’ICE-Agenzia",
           "url": "https://ice.patisweb.it/download/1671334.html"
         },
         {
-          "title": "Avviso di procedura di selezione per il conferimento di incarico dirigenziale a tempo determinato per la direzione dell’ufficio Servizi integrati per l’internazionalizzazione e la digitalizzazione, presso la sede di ICE-Agenzia di Roma, ai sensi dell'articolo 19, comma 6, del decreto legislativo n. 165/2001 e ss.mm.ii.",
+          "title": "Avviso di procedura di selezione per il conferimento di incarico dirigenziale a tempo determinato per la direzione dell’ufficio Servizi integrati per l’internazionalizzazione e la digitalizzazione, presso la sede di ICE-Agenzia di Roma, ai sensi dell'articolo 19, comma 6, del decreto legislativo n. 165/2001 e ss.mm.ii",
           "url": "https://www.ice.it/it/sites/default/files/inline-files/Avviso%20di%20selezione%20Ufficio%20Servizi%20integrati%20per%20l%27int.%20e%20digitalizzazione_%20art.%2019%2C%20co%206%20dlgs%20165-2001.pdf"
         },
         {
-          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 12 unità dell’Area Funzionari, da adibire agli Uffici dell’ICE – Agenzia.",
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 12 unità dell’Area Funzionari, da adibire agli Uffici dell’ICE – Agenzia",
           "url": "https://www.ice.it/it/sites/default/files/inline-files/Avviso%20mobilit%C3%A0%20funzionari_2025.pdf"
         },
         {
-          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 19 unità dell’Area Assistenti, di cui 1 appartenente alle categorie protette, ai sensi dell’art. 18 comma 2 della legge 12 marzo 1999 n. 68, da adibire agli Uffici dell’ICE – Agenzia.",
+          "title": "Avviso pubblico di mobilità volontaria, ai sensi dell’articolo 30 del decreto legislativo 30 marzo 2001, n. 165, per l’acquisizione a tempo pieno e indeterminato, mediante passaggio diretto tra amministrazioni pubbliche, di n. 19 unità dell’Area Assistenti, di cui 1 appartenente alle categorie protette, ai sensi dell’art. 18 comma 2 della legge 12 marzo 1999 n. 68, da adibire agli Uffici dell’ICE – Agenzia",
           "url": "https://www.ice.it/it/sites/default/files/inline-files/Avviso%20mobilit%C3%A0%20assistenti_2025.pdf"
         },
         {
-          "title": "Avviso Pubblico di mobilità volontaria esterna per la copertura, mediante passaggio diretto tra pubbliche amministrazioni, ai sensi dell’art. 30 comma 1 del D.Lgs. n. 165/2001 e ss.mm.ii., di n. 1 posto, a tempo pieno e indeterminato con inquadramento giuridico ed economico nell’Area Assistenti con mansioni di “conducente di automezzi”.",
+          "title": "Avviso Pubblico di mobilità volontaria esterna per la copertura, mediante passaggio diretto tra pubbliche amministrazioni, ai sensi dell’art. 30 comma 1 del D.Lgs. n. 165/2001 e ss.mm.ii., di n. 1 posto, a tempo pieno e indeterminato con inquadramento giuridico ed economico nell’Area Assistenti con mansioni di “conducente di automezzi”",
           "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20assistente%20con%20mansioni%20conducente%20prot%20signed.pdf"
         },
         {
