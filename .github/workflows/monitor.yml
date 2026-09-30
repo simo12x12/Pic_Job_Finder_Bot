@@ -25,10 +25,15 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install certificate bundle
+        run: |
+          python -m pip install --upgrade certifi
+          echo "SSL_CERT_FILE=$(python -m certifi)" >> $GITHUB_ENV
+
       - name: Monitor job offers
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        run: python -u monitor.py
+        run: python -u monitor.py     
 
       - name: Process Telegram commands
         env:
