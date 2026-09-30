@@ -36,19 +36,7 @@
     },
     "consip": {
       "initialized": true,
-      "seen": [
-        "consip:19c518ed47dd30c989498753",
-        "consip:4f6962d9f28a21ddddfa33e3",
-        "consip:7fcd5c88af99b6b529a8991d",
-        "consip:87e2905453208f78dad6dad9",
-        "consip:aff148d0f7147b68f66ff47c",
-        "consip:bddcd0dba7b2f9def536b2e6",
-        "consip:be46ef8c4488fce39e4019e6",
-        "consip:c660d786ffd5ce0430e46cae",
-        "consip:d2934fe4fe468cd3dc942355",
-        "consip:e67d2dde39410f7e7930594a",
-        "consip:ff8d775f5de5fb368ec38004"
-      ]
+      "seen": []
     },
     "presidenza": {
       "initialized": false,
@@ -99,11 +87,8 @@
       ]
     },
     "ama_roma": {
-      "initialized": true,
-      "seen": [
-        "ama:2fc949e7861286a30356790c",
-        "ama:8b3c325b388b29b7cba8115f"
-      ]
+      "initialized": false,
+      "seen": []
     },
     "bmti": {
       "initialized": true,
@@ -141,11 +126,8 @@
       "seen": []
     },
     "fincantieri": {
-      "initialized": true,
-      "seen": [
-        "fincantieri:584fdae5c09775bf5c96a51b",
-        "fincantieri:99d91b17062c2ccd6a14c691"
-      ]
+      "initialized": false,
+      "seen": []
     },
     "anci": {
       "initialized": true,
@@ -247,6 +229,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-09-30T11:29:18.097740+00:00",
-  "schema_version": 23
+  "last_update": "2026-09-30T11:36:26.527304+00:00",
+  "schema_version": 24
 }
