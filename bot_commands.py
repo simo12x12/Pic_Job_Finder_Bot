@@ -135,8 +135,8 @@ def build_summary_parts(data):
         for item in items:
             block = make_job_block(item)
             if current and len(current) + len(block) > SAFE_PART_LIMIT:
+                # Continua la stessa fonte nel nuovo messaggio senza ripetere l'intestazione.
                 flush()
-                current = source_header(label, status, len(items))
             if len(current) + len(block) > SAFE_PART_LIMIT:
                 # Very long source titles: shorten display text only. URL remains intact.
                 title = clean_title(item.get("title"))
