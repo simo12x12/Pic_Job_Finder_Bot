@@ -1,5 +1,5 @@
 {
-  "last_check": "30/09/2026 09:12",
+  "last_check": "30/09/2026 09:24",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -60,132 +60,20 @@
       "status": "ok",
       "items": [
         {
-          "title": "Funzionario Contabile Amministrativo",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0efc9309f7fe46348cc16fa231a7b633"
-        },
-        {
-          "title": "Agente di polizia municipale, ufficio SUAPE e ufficio tecnico",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=379ef84b52f44d7bbcb26eccbab71423"
-        },
-        {
           "title": "ADDETTO ALL'UFFICIO STAMPA",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=3a7d23a9fe0642e9a91c3828b5e46925"
-        },
-        {
-          "title": "dirigente amministrativo",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=44f7ac8830124e35a5f190f914402e71"
-        },
-        {
-          "title": "Collaboratore tecnico TD",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=da5347da00654030b50c7987ecc76806"
-        },
-        {
-          "title": "ISTRUTTORE DIRETTIVO TECNICO",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=6f9664434b4445c4ae62eb5df60f9abc"
-        },
-        {
-          "title": "FUNZIONARIO CONTABILE",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=ea46e0eaf0b446508d0b60b6ca3d6a15"
-        },
-        {
-          "title": "Istruttore contabile",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=35c52e00dded439cac96253cedfc7353"
         },
         {
           "title": "RESPONSABILE UFFICIO GABINETTO, SEGRETERIA DEL PRESIDENTE, RELAZIONI ISTITUZIONALI",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=ad2e22e303aa4535a6a976349b02e1d6"
         },
         {
-          "title": "coordinatore",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=03fa692af1a4430bbdc01c1a6bf99435"
-        },
-        {
-          "title": "Membro commissione esaminatrice",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4d30931a0f3e422cb9a360d22c7ed3ba"
-        },
-        {
-          "title": "FUNZIONARIO DI VIGILANZA",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=f3b7b8f2d35d40a289d67a5db83f97d1"
-        },
-        {
-          "title": "Operaio - Area degli Operatori Esperti",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=40d8eac86b2b41abbb28189ec45577a8"
-        },
-        {
-          "title": "DIRETTORE S.C. CHIRURGIA GENERALE SONDRIO",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0b3580b3c2ee4efd91d9734c4aaefa89"
-        },
-        {
-          "title": "Funzionario Amministrativo",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=a133530c5a4d49c288c958c9dee440a6"
-        },
-        {
           "title": "Area dei Collaboratori, Settore della comunicazione e informazione",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=11b73d9d7a2d4b89b47f168610f630b9"
         },
         {
-          "title": "Dirigente PoliS-Lombardia",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=780cd9738b154ae4a940a345882eddcb"
-        },
-        {
-          "title": "DIRIGENTE AMMINISTRATIVO CONTABILE ENTI LOCALI",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5cfa8eb6effa44e69a27e99497f9a26a"
-        },
-        {
-          "title": "Istruttore Amministrativo",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=d36610e37b814dfaba2a79888835c362"
-        },
-        {
-          "title": "Agente di Polizia Locale - Area degli Istruttori",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0f349f9d5698400cbddc780ec262c101"
-        },
-        {
-          "title": "Area dei funzionari",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=db88cb5be2b84c4a9655102fa6d5e446"
-        },
-        {
-          "title": "ASSISTENTE SOCIALE",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=fbdc5687b2b8409aaa9bf8b42aed6944"
-        },
-        {
-          "title": "Dirigente",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=ff1ce4122697495390e7941d5b8d3df7"
-        },
-        {
-          "title": "istruttore amministrativo contabile",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=daae606484a14930a37a84a68261a2b7"
-        },
-        {
-          "title": "DIRIGENTE DI POLIZIA LOCALE",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=576fe79c32194f5187729140870d6971"
-        },
-        {
-          "title": "ISTRUTTORE TECNICO",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=cf9235d992a44ccdac32884685ed7f3f"
-        },
-        {
-          "title": "Funzionario",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=61893b1176fe482791b8b82726825052"
-        },
-        {
-          "title": "ASSISTENTE SOCIALE",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=8848601f43ab4c239102c55fbf70683c"
-        },
-        {
-          "title": "Funzionario Amministrativo",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=836f760452cd407989b88889fa052516"
-        },
-        {
           "title": "collaboratore amministrativo-addetto alle relazioni istituzionali",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=acc4a3048d834c6d8b24faa4e5cfa365"
-        },
-        {
-          "title": "FUNZIONARIO AMMINISTRATIVO CONTABILE",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=f27e66dc00784f74a7b032ad8dd3248f"
-        },
-        {
-          "title": "Istruttore direttivo Tecnico (area dei funzionari e dell'elevata qualificazione)",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=c763dc6d286a4e198a9aaf69a5ac8a58"
         }
       ]
     },
@@ -208,52 +96,48 @@
       "status": "ok",
       "items": [
         {
-          "title": "Chi siamo",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/process-and-organization-specialist"
         },
         {
-          "title": "Administrative Specialist",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/administrative-specialist"
         },
         {
-          "title": "AI Consultant",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-consultant"
         },
         {
-          "title": "AI Product Manager",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-product-manager"
         },
         {
-          "title": "AI NLP Engineer",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-nlp-engineer"
         },
         {
-          "title": "AI Security Specialist",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-security-specialist"
         },
         {
-          "title": "AI Data Scientist",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-data-scientist"
         },
         {
-          "title": "AI Prompt Engineer",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-prompt-engineer"
         },
         {
-          "title": "AI Data Engineer",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/ai-data-engineer"
         },
         {
-          "title": "Giuslavorista",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/giuslavorista"
         },
         {
-          "title": "Supply Legal",
+          "title": "Leggi di più",
           "url": "https://www.consip.it/posizioni/supply-legal-0"
-        },
-        {
-          "title": "Category",
-          "url": "https://www.consip.it/posizioni/category"
         }
       ]
     },
@@ -270,12 +154,7 @@
     "invitalia": {
       "label": "Invitalia",
       "status": "ok",
-      "items": [
-        {
-          "title": "Consulta anche gli avvisi per i contratti di consulenza per esperti e specialisti sulla piattaforma InGate",
-          "url": "https://ingate.invitalia.it/esop/guest/go/opportunity/detail?opportunityId=17813  "
-        }
-      ]
+      "items": []
     },
     "ipzs": {
       "label": "IPZS",
@@ -298,23 +177,23 @@
       "items": [
         {
           "title": "Avviso pubblico per l’individuazione di n. 1 Unità di Consulenza Specialistica Middle per Web & Social Media Specialist",
-          "url": "mailto:rometechnopole@pec.it"
+          "url": "https://drive.google.com/file/d/1FULEPlHKpi-C2KTBoJpACo0GxhLNBDxG/view?usp=sharing"
         },
         {
           "title": "Avviso pubblico per l’individuazione di n. 1 Tecnologo con funzioni di “EU Programmes & Strategic Networking Officer”",
-          "url": "mailto:rometechnopole@pec.it"
+          "url": "https://drive.google.com/file/d/1WfowtprAO4IACfBu7r4ulz6qOJ-FSTVs/view?usp=sharing"
         },
         {
           "title": "Avviso pubblico per l’individuazione del Responsabile tecnico-scientifico della Fondazione Rome Technopole",
-          "url": "mailto:rometechnopole@pec.it"
+          "url": "https://drive.google.com/file/d/1Xl1W14p1oEMZia9dJH8PTgnxUmemlbxw/view?usp=sharing"
         },
         {
           "title": "Avviso pubblico per l’individuazione di n. 1 unità a supporto della Direzione Generale e del Responsabile Amministrativo",
-          "url": "mailto:rometechnopole@pec.it"
+          "url": "https://drive.google.com/file/d/1Y4efxpXhb0TZoF4RrtbxWoG2n4l9-J4P/view?usp=sharing"
         },
         {
-          "title": "AVVISO PUBBLICO N. 2/2026 del 21 aprile 2026 Avviso Pubblico per l’individuazione di n. 1 Tecnologo con le funzioni di “Manager Infrastrutture di Ricerca Rome Technopole” È indetta una procedura di selezione per titoli e colloquio, per l’individuazione di n. 1 Tecnologo con le funzioni di “Manager Infrastrutture di Ricerca Rome Technopole”. L’Avviso ha ad oggetto, nello specifico, l’affidamento di",
-          "url": "mailto:rometechnopole@pec.it"
+          "title": "n. 1 Tecnologo con le funzioni di “Manager Infrastrutture di Ricerca Rome Technopole”",
+          "url": "https://drive.google.com/file/d/1vjSC1kYqLmRQ7UAD4j7mDD4Lo8vmfJzf/view?usp=sharing"
         }
       ]
     },
@@ -326,16 +205,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -352,31 +222,31 @@
       "status": "ok",
       "items": [
         {
-          "title": "Candidati ora >",
+          "title": "Project Engineer",
           "url": "https://jobs.terna.it/job/Project-Engineer/29812-it_IT/?st=82B53F4291CD7693946D80B675BCAEB8D0440F0D"
         },
         {
-          "title": "Candidati ora >",
+          "title": "Project Leader",
           "url": "https://jobs.terna.it/job/Project-Leader/29816-it_IT/?st=7C3B01203C2F9DFF0CF274A479037FCF9F24E0E1"
         },
         {
-          "title": "Candidati ora >",
+          "title": "Supporto Tecnico al CNC Gestione Emergenze",
           "url": "https://jobs.terna.it/job/Supporto-Tecnico-al-CNC-Gestione-Emergenze/29818-it_IT/?st=18189B5F17A2DA3290802DB958EE38F923C2A185"
         },
         {
-          "title": "Candidati ora >",
+          "title": "Specialista Connessioni RTN",
           "url": "https://jobs.terna.it/job/Specialista-Connessioni-RTN/29819-it_IT/?st=FF5C70068DFCB0D6C692881FAB2626E8A4F295D0"
         },
         {
-          "title": "Candidati ora >",
+          "title": "Project & Program Manager",
           "url": "https://jobs.terna.it/job/Project-&amp;-Program-Manager/29822-it_IT/?st=5B5B952B2D34F8ED9822B841DCE7AADBE87564FE"
         },
         {
-          "title": "Candidati ora >",
+          "title": "Tecnico Operation & Maintenance",
           "url": "https://jobs.terna.it/job/Tecnico-Operation-&amp;-Maintenance/29823-it_IT/?st=5E2BC5CBE96EC98D6656BDEB915BD0291BB29931"
         },
         {
-          "title": "Candidati ora >",
+          "title": "Specialista Digital Construction & BIM",
           "url": "https://jobs.terna.it/job/Specialista-Digital-Construction-&amp;-BIM/29827-it_IT/?st=8083C2D659BDC913913B63A4DEF41124F8C5B356"
         }
       ]
@@ -472,15 +342,15 @@
       "status": "ok",
       "items": [
         {
-          "title": ": Comitato Italiano Paralimpico - Impiegato/a Amministrativo/a presso sede territoriale Basilicata",
+          "title": "Impiegato/a Amministrativo/a presso sede territoriale Basilicata",
           "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/232-comitato-italiano-paralimpico-impiegato/a-amministrativo/a-presso-sede-territoriale-basilicata.html"
         },
         {
-          "title": ": Sport e Salute S.p.A. - Senior Marketing Manager",
+          "title": "Senior Marketing Manager",
           "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/220-sport-e-salute-spa-senior-marketing-manager.html"
         },
         {
-          "title": ": Sport e Salute S.p.A. - Junior Marketing Specialist",
+          "title": "Junior Marketing Specialist",
           "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/218-sport-e-salute-spa-junior-marketing-specialist.html"
         }
       ]
@@ -498,16 +368,7 @@
     "infocamere": {
       "label": "InfoCamere",
       "status": "ok",
-      "items": [
-        {
-          "title": "Ufficio Stampa",
-          "url": "https://infocamere.it/ufficio-stampa"
-        },
-        {
-          "title": "Social Media Policy",
-          "url": "https://infocamere.it/dam/jcr:163d71fd-df98-4877-91af-a59bbb7d08c4/09-2025-IC-social-media-policy.2025-09-25-16-37-04.pdf"
-        }
-      ]
+      "items": []
     },
     "formez": {
       "label": "Formez PA",

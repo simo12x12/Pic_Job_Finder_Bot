@@ -21,39 +21,10 @@
     "inpa": {
       "initialized": true,
       "seen": [
-        "03fa692af1a4430bbdc01c1a6bf99435",
-        "0b3580b3c2ee4efd91d9734c4aaefa89",
-        "0efc9309f7fe46348cc16fa231a7b633",
-        "0f349f9d5698400cbddc780ec262c101",
         "11b73d9d7a2d4b89b47f168610f630b9",
-        "35c52e00dded439cac96253cedfc7353",
-        "379ef84b52f44d7bbcb26eccbab71423",
         "3a7d23a9fe0642e9a91c3828b5e46925",
-        "40d8eac86b2b41abbb28189ec45577a8",
-        "44f7ac8830124e35a5f190f914402e71",
-        "4d30931a0f3e422cb9a360d22c7ed3ba",
-        "576fe79c32194f5187729140870d6971",
-        "5cfa8eb6effa44e69a27e99497f9a26a",
-        "61893b1176fe482791b8b82726825052",
-        "6f9664434b4445c4ae62eb5df60f9abc",
-        "780cd9738b154ae4a940a345882eddcb",
-        "836f760452cd407989b88889fa052516",
-        "8848601f43ab4c239102c55fbf70683c",
-        "a133530c5a4d49c288c958c9dee440a6",
         "acc4a3048d834c6d8b24faa4e5cfa365",
-        "ad2e22e303aa4535a6a976349b02e1d6",
-        "c763dc6d286a4e198a9aaf69a5ac8a58",
-        "cf9235d992a44ccdac32884685ed7f3f",
-        "d36610e37b814dfaba2a79888835c362",
-        "da5347da00654030b50c7987ecc76806",
-        "daae606484a14930a37a84a68261a2b7",
-        "db88cb5be2b84c4a9655102fa6d5e446",
-        "ea46e0eaf0b446508d0b60b6ca3d6a15",
-        "f27e66dc00784f74a7b032ad8dd3248f",
-        "f3b7b8f2d35d40a289d67a5db83f97d1",
-        "f9c101cbc8e34e739fc9677413caf6d4",
-        "fbdc5687b2b8409aaa9bf8b42aed6944",
-        "ff1ce4122697495390e7941d5b8d3df7"
+        "ad2e22e303aa4535a6a976349b02e1d6"
       ]
     },
     "eutalia": {
@@ -66,19 +37,17 @@
     "consip": {
       "initialized": true,
       "seen": [
-        "https://www.consip.it/posizioni/administrative-specialist",
-        "https://www.consip.it/posizioni/ai-consultant",
-        "https://www.consip.it/posizioni/ai-data-engineer",
-        "https://www.consip.it/posizioni/ai-data-scientist",
-        "https://www.consip.it/posizioni/ai-engineer",
-        "https://www.consip.it/posizioni/ai-nlp-engineer",
-        "https://www.consip.it/posizioni/ai-product-manager",
-        "https://www.consip.it/posizioni/ai-prompt-engineer",
-        "https://www.consip.it/posizioni/ai-security-specialist",
-        "https://www.consip.it/posizioni/category",
-        "https://www.consip.it/posizioni/giuslavorista",
-        "https://www.consip.it/posizioni/process-and-organization-specialist",
-        "https://www.consip.it/posizioni/supply-legal-0"
+        "consip:19c518ed47dd30c989498753",
+        "consip:4f6962d9f28a21ddddfa33e3",
+        "consip:7fcd5c88af99b6b529a8991d",
+        "consip:87e2905453208f78dad6dad9",
+        "consip:aff148d0f7147b68f66ff47c",
+        "consip:bddcd0dba7b2f9def536b2e6",
+        "consip:be46ef8c4488fce39e4019e6",
+        "consip:c660d786ffd5ce0430e46cae",
+        "consip:d2934fe4fe468cd3dc942355",
+        "consip:e67d2dde39410f7e7930594a",
+        "consip:ff8d775f5de5fb368ec38004"
       ]
     },
     "presidenza": {
@@ -107,9 +76,7 @@
     },
     "invitalia": {
       "initialized": true,
-      "seen": [
-        "invitalia-consulting:17813  "
-      ]
+      "seen": []
     },
     "ipzs": {
       "initialized": true,
@@ -156,13 +123,13 @@
     "terna": {
       "initialized": true,
       "seen": [
-        "terna:2b006dca8006ce991b5dd9c6",
-        "terna:4fd65c151644d089294ecf06",
-        "terna:6d94f95de4b8193f4f2fece8",
-        "terna:a02f1b84b5631dc7c8e3bfff",
-        "terna:ab5d5e158d9b4fd45441a653",
-        "terna:b912e33095eed9465914844d",
-        "terna:ea2b38d74a9d2f0af8596974"
+        "terna:096d46afc2ba7dcb28afb302",
+        "terna:1ad5f72fbb95298e7a72310a",
+        "terna:55bba7a8d9d380ddd057b5c9",
+        "terna:640d5d285bd4b20a924f11e2",
+        "terna:8666f95386f009faf7a5cd8b",
+        "terna:a39e9ab18c8306ff1d26b237",
+        "terna:fe36a7d66f3387620ae8f282"
       ]
     },
     "acea": {
@@ -238,10 +205,7 @@
     },
     "infocamere": {
       "initialized": true,
-      "seen": [
-        "infocamere:96f713774f575b2b18850bb1",
-        "infocamere:f7b48b8f8c80ca747f52e406"
-      ]
+      "seen": []
     },
     "formez": {
       "initialized": false,
@@ -283,6 +247,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-09-30T07:14:25.522777+00:00",
-  "schema_version": 22
+  "last_update": "2026-09-30T07:25:49.249361+00:00",
+  "schema_version": 23
 }
