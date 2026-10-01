@@ -1,5 +1,5 @@
 {
-  "last_check": "01/10/2026 22:04",
+  "last_check": "01/10/2026 22:21",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -160,7 +160,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
@@ -219,9 +219,21 @@
     },
     "sport_salute": {
       "label": "Sport e Salute",
-      "status": "error",
-      "items": [],
-      "error": "The read operation timed out"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Impiegato/a Amministrativo/a presso sede territoriale Basilicata",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/232-comitato-italiano-paralimpico-impiegato/a-amministrativo/a-presso-sede-territoriale-basilicata.html"
+        },
+        {
+          "title": "Senior Marketing Manager",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/220-sport-e-salute-spa-senior-marketing-manager.html"
+        },
+        {
+          "title": "Junior Marketing Specialist",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/218-sport-e-salute-spa-junior-marketing-specialist.html"
+        }
+      ]
     },
     "fs": {
       "label": "Gruppo FS Italiane",
