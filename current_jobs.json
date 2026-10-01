@@ -1,5 +1,5 @@
 {
-  "last_check": "01/10/2026 06:50",
+  "last_check": "01/10/2026 07:00",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -155,7 +155,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
@@ -263,12 +263,7 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": [
-        {
-          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
-          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
-        }
-      ]
+      "items": []
     },
     "agenas": {
       "label": "AGENAS",
