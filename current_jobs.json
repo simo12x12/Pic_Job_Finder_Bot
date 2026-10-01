@@ -1,5 +1,5 @@
 {
-  "last_check": "01/10/2026 20:58",
+  "last_check": "01/10/2026 21:10",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -259,9 +259,8 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+      "status": "ok",
+      "items": []
     },
     "autostrade": {
       "label": "Autostrade per l Italia",
