@@ -1,5 +1,5 @@
 {
-  "last_check": "01/10/2026 20:29",
+  "last_check": "01/10/2026 20:46",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -155,8 +155,9 @@
     },
     "acea": {
       "label": "Acea",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "italo": {
       "label": "Italo",
@@ -197,8 +198,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -212,9 +214,17 @@
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 403: Forbidden"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
+          "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
+        },
+        {
+          "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
+          "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
+        }
+      ]
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
@@ -266,7 +276,7 @@
     },
     "formez": {
       "label": "Formez PA",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "sviluppo_lavoro": {
@@ -296,13 +306,9 @@
     },
     "ice": {
       "label": "Agenzia ICE",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Avviso di selezione per la raccolta di manifestazioni di interesse al conferimento di n. 1 incarico dirigenziale di livello generale per la Direzione Centrale \"Servizi alle Imprese, Marketing e Innovazione\"",
-          "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20PER%20DC%20SERVIZI.pdf"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "inapp": {
       "label": "INAPP",
