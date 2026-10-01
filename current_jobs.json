@@ -1,5 +1,5 @@
 {
-  "last_check": "02/10/2026 00:21",
+  "last_check": "02/10/2026 00:33",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -53,9 +53,21 @@
     },
     "inpa": {
       "label": "inPA",
-      "status": "error",
-      "items": [],
-      "error": "Expecting value: line 1 column 1 (char 0)"
+      "status": "ok",
+      "items": [
+        {
+          "title": "ADDETTO ALL'UFFICIO STAMPA",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=3a7d23a9fe0642e9a91c3828b5e46925"
+        },
+        {
+          "title": "Area dei Collaboratori, Settore della comunicazione e informazione",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=11b73d9d7a2d4b89b47f168610f630b9"
+        },
+        {
+          "title": "collaboratore amministrativo-addetto alle relazioni istituzionali",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=acc4a3048d834c6d8b24faa4e5cfa365"
+        }
+      ]
     },
     "eutalia": {
       "label": "Eutalia",
@@ -115,16 +127,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -225,8 +228,9 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "autostrade": {
       "label": "Autostrade per l Italia",
