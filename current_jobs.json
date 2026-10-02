@@ -1,5 +1,5 @@
 {
-  "last_check": "02/10/2026 13:24",
+  "last_check": "02/10/2026 13:37",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -127,16 +127,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -212,9 +203,17 @@
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 403: Forbidden"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
+          "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
+        },
+        {
+          "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
+          "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
+        }
+      ]
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
