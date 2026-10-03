@@ -1,55 +1,11 @@
 {
-  "last_check": "03/10/2026 07:56",
+  "last_check": "03/10/2026 08:10",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "ELI - Bids & Proposals Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Bids---Proposals-Specialist_R0031541-1"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Pomezia/Sales-Manager_R0031864-1"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Caselle-Nord/Sales-Manager_R0033520"
-        },
-        {
-          "title": "Marketing & Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Marketing---Sales-Manager_R0026004"
-        },
-        {
-          "title": "BID MANAGER",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/BID-MANAGER_R0029495"
-        },
-        {
-          "title": "ELI-Stage Product Visual identity",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI-Stage-Product-Visual-identity_R0032686"
-        },
-        {
-          "title": "Addetto/a Commercial Processes and Funnel Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1"
-        },
-        {
-          "title": "ELI - Product and services marketing-IC",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Vergiate/ELI---Product-and-services-marketing-IC_R0030685"
-        },
-        {
-          "title": "CYS - ACCOUNT MANAGER - MK&S",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081"
-        },
-        {
-          "title": "CYS - Proposal Engineer - SEU",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1"
-        },
-        {
-          "title": "CYS - BID MANAGER - CIE",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "Expecting value: line 1 column 1 (char 0)"
     },
     "inpa": {
       "label": "inPA",
@@ -122,7 +78,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
