@@ -1,5 +1,5 @@
 {
-  "last_check": "05/10/2026 00:38",
+  "last_check": "05/10/2026 00:49",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -141,8 +141,9 @@
     },
     "acea": {
       "label": "Acea",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "italo": {
       "label": "Italo",
