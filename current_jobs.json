@@ -1,5 +1,5 @@
 {
-  "last_check": "05/10/2026 01:30",
+  "last_check": "05/10/2026 01:43",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -116,8 +116,17 @@
     },
     "ama_roma": {
       "label": "AMA Roma",
-      "status": "unavailable",
-      "items": []
+      "status": "ok",
+      "items": [
+        {
+          "title": "iornamenti sulla selezione Professional Pianificazione Finanziaria e Finanza Agevolata Avviso di selezione per la ricerca di n. 1 Junior Communication Specialist",
+          "url": "https://www.amaroma.it/lavora-con-noi/6984-avviso-di-selezione-per-la-ricerca-di-n-1-junior-communication-specialist"
+        },
+        {
+          "title": "a gli aggiornamenti sulla selezione Junior Communication Specialist Avviso di selezione per la ricerca di un PEF & Regulatory Financial Modeling Specialist.",
+          "url": "https://www.amaroma.it/lavora-con-noi/6978-avviso-di-selezione-per-la-ricerca-di-n1-pef-regulatory-financial-modeling-specialist-da-inserire-allinterno-dellazienda-ama-spa"
+        }
+      ]
     },
     "bmti": {
       "label": "BMTI",
@@ -263,7 +272,12 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
+          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
+        }
+      ]
     },
     "agenas": {
       "label": "AGENAS",
