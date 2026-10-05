@@ -1,5 +1,5 @@
 {
-  "last_check": "05/10/2026 02:13",
+  "last_check": "05/10/2026 02:38",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -155,7 +155,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
@@ -232,8 +232,9 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "autostrade": {
       "label": "Autostrade per l Italia",
@@ -252,9 +253,8 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
