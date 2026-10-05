@@ -371,29 +371,14 @@ def process_items(memory, source, items, formatter):
     src["seen"] = sorted(seen_ids | current_ids)
     return len(new_items)
 
-
 def standard_job_message(source, title, url, published=None, deadline=None, extra=None):
     lines = [
-        f"🚨 NUOVA OPPORTUNITÀ - {source.upper()}",
+        f"🚨 {source.upper()}",
         "",
-        f"💼 {title}",
-        f"🏢 Fonte: {source}",
+        normalize_space(title).upper(),
+        "",
+        url,
     ]
-    if published:
-        lines.append(f"📅 Pubblicata: {published}")
-    if deadline:
-        lines.append(f"⏳ Scadenza: {deadline}")
-    if extra:
-        lines.append(f"🏷 {extra}")
-    lines.extend(
-        [
-            f"🔔 Rilevata: {now_rome()}",
-            "",
-            f"🔗 {url}",
-            "",
-            "🤖 Pic_Job_Finder_Bot",
-        ]
-    )
     return "\n".join(lines)
 
 
