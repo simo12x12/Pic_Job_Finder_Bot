@@ -1,5 +1,5 @@
 {
-  "last_check": "05/10/2026 15:02",
+  "last_check": "05/10/2026 15:24",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -243,6 +243,10 @@
       "status": "ok",
       "items": [
         {
+          "title": "Senior Professional Marketing ed Eventi",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/234-comitato-italiano-paralimpico-senior-professional-marketing-ed-eventi.html"
+        },
+        {
           "title": "Impiegato/a Amministrativo/a presso sede territoriale Basilicata",
           "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/232-comitato-italiano-paralimpico-impiegato/a-amministrativo/a-presso-sede-territoriale-basilicata.html"
         },
@@ -258,9 +262,8 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "autostrade": {
       "label": "Autostrade per l Italia",

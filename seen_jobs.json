@@ -192,6 +192,7 @@
     "sport_salute": {
       "initialized": true,
       "seen": [
+        "sport-salute:1ccde6172d372ff5c6b7fcd8",
         "sport-salute:43f9944455808c9e16549c53",
         "sport-salute:5811ea1887c4ca0635006a22",
         "sport-salute:d145b39f371d60f03047d348"
@@ -249,6 +250,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-10-05T13:04:38.644767+00:00",
+  "last_update": "2026-10-05T13:25:27.319519+00:00",
   "schema_version": 23
 }
