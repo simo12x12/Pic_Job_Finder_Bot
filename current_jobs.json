@@ -1,5 +1,5 @@
 {
-  "last_check": "05/10/2026 05:23",
+  "last_check": "05/10/2026 05:39",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -122,16 +122,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
