@@ -1,5 +1,5 @@
 {
-  "last_check": "05/10/2026 19:44",
+  "last_check": "05/10/2026 19:57",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -149,9 +149,8 @@
     },
     "terna": {
       "label": "Terna",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 500: Internal Server Error"
+      "status": "ok",
+      "items": []
     },
     "acea": {
       "label": "Acea",
