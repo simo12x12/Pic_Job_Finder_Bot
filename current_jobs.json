@@ -1,5 +1,5 @@
 {
-  "last_check": "06/10/2026 13:59",
+  "last_check": "06/10/2026 14:14",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -59,6 +59,10 @@
       "label": "inPA",
       "status": "ok",
       "items": [
+        {
+          "title": "Profilo Amministrativo; Profilo Comunicazione",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=c7e1fa5cade341f78cef5250b0996a85"
+        },
         {
           "title": "ADDETTO ALL'UFFICIO STAMPA",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=3a7d23a9fe0642e9a91c3828b5e46925"
