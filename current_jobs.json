@@ -1,5 +1,5 @@
 {
-  "last_check": "06/10/2026 16:51",
+  "last_check": "06/10/2026 17:03",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -84,7 +84,16 @@
     "eutalia": {
       "label": "Eutalia",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Avviso per la selezione di 4 professionisti per il supporto al Dip. della funzione pubblica – progetto “Metodi e strumenti per la gestione del ciclo formativo nella PA” [DFP001_06.10.2026]",
+          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-4-professionisti-per-il-supporto-al-dip-della-funzione-pubblica-progetto-metodi-e-strumenti-per-la-gestione-del-ciclo-formativo-nella-pa-dfp001_06-10-2/"
+        },
+        {
+          "title": "Avviso per la selezione di 1 professionista per il supporto al Dipartimento per le politiche di coesione – PCM – progetto “Rafforzamento del Sistema Conti Pubblici Territoriali” [DPCE08_CPT_06.10.2026]",
+          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-1-professionista-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-rafforzamento-del-sistema-conti-pubblici-territoriali/"
+        }
+      ]
     },
     "consip": {
       "label": "Consip",

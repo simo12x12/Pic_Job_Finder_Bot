@@ -33,7 +33,9 @@
     "eutalia": {
       "seen": [
         "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-di-professionisti-in-progettazione-europea-fondi-diretti-cdc70-05-06-2026",
-        "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-esperti-dpce07_27-05-2025"
+        "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-esperti-dpce07_27-05-2025",
+        "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-1-professionista-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-rafforzamento-del-sistema-conti-pubblici-territoriali",
+        "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-4-professionisti-per-il-supporto-al-dip-della-funzione-pubblica-progetto-metodi-e-strumenti-per-la-gestione-del-ciclo-formativo-nella-pa-dfp001_06-10-2"
       ],
       "initialized": true
     },
@@ -254,6 +256,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-10-06T14:52:50.644232+00:00",
+  "last_update": "2026-10-06T15:04:45.379948+00:00",
   "schema_version": 23
 }
