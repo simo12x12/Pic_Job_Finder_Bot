@@ -1,5 +1,5 @@
 {
-  "last_check": "06/10/2026 22:00",
+  "last_check": "06/10/2026 22:14",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -277,9 +277,8 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
