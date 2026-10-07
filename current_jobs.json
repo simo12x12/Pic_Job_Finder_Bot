@@ -1,5 +1,5 @@
 {
-  "last_check": "07/10/2026 16:33",
+  "last_check": "07/10/2026 16:49",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -12,6 +12,10 @@
         {
           "title": "ELI - Bids & Proposals Specialist",
           "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Bids---Proposals-Specialist_R0031541-1"
+        },
+        {
+          "title": "Sales Manager",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Sales-Manager_R0033552"
         },
         {
           "title": "Sales Manager",
@@ -143,16 +147,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
