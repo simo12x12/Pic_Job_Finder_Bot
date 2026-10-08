@@ -23,9 +23,11 @@
     "inpa": {
       "initialized": true,
       "seen": [
+        "0c0b3241852144c9bdd93a5aa92bd72c",
         "11b73d9d7a2d4b89b47f168610f630b9",
         "39013c59a1e4435f9f9341734c795343",
         "3a7d23a9fe0642e9a91c3828b5e46925",
+        "99fdb54822064c8cad7de47eaa79d680",
         "acc4a3048d834c6d8b24faa4e5cfa365",
         "ad2e22e303aa4535a6a976349b02e1d6",
         "c7e1fa5cade341f78cef5250b0996a85"
@@ -219,7 +221,31 @@
     },
     "formez": {
       "initialized": true,
-      "seen": []
+      "seen": [
+        "formez:0046ec5580dc6202d85c174d",
+        "formez:1176207d98e85407f58946a1",
+        "formez:16b2091671453fcc667ba158",
+        "formez:180bdded464904a8020a41b1",
+        "formez:2222d5bc719ce4f8779b2fa4",
+        "formez:2557e4f520fe2830b19765af",
+        "formez:386076e34c8a9024ef7099da",
+        "formez:4ae29608be65b28cf5d20dd1",
+        "formez:5d644819ad00fb2e60020ae5",
+        "formez:7115dd58d7735d6bcc5d511b",
+        "formez:7b8da7b20695fe2a2c85358a",
+        "formez:817eae767ee9a2eea1625b2b",
+        "formez:850bdbb8f9872c52d4d7460b",
+        "formez:87aec2e3516a02ba945daa06",
+        "formez:9fea06a166e2bbf9d2087a5d",
+        "formez:abfb7f3672e28c1d631e1e3e",
+        "formez:c0e729cde0285f3e6dc8aa24",
+        "formez:c3c580db100809d2cbe5759b",
+        "formez:ccd92969a44d0444e09160a9",
+        "formez:d9424f37c6f87996fe9d1644",
+        "formez:ec07794545b7d51237615086",
+        "formez:efab1da1a4ccace672f0d6c7",
+        "formez:f429c51766cd1d714b9100e0"
+      ]
     },
     "sviluppo_lavoro": {
       "initialized": true,
@@ -257,6 +283,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-10-08T21:51:37.408152+00:00",
+  "last_update": "2026-10-08T22:02:28.185879+00:00",
   "schema_version": 23
 }

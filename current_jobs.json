@@ -1,5 +1,5 @@
 {
-  "last_check": "08/10/2026 23:50",
+  "last_check": "09/10/2026 00:00",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -70,6 +70,14 @@
         {
           "title": "ADDETTO ALL'UFFICIO STAMPA",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=3a7d23a9fe0642e9a91c3828b5e46925"
+        },
+        {
+          "title": "Esperto in attività di Comunicazione Istituzionale e Marketing con esperienza minima di 10 anni.",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=99fdb54822064c8cad7de47eaa79d680"
+        },
+        {
+          "title": "Esperto in comunicazione istituzionale con esperienza minima di 5 anni fino a 10 anni.",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=0c0b3241852144c9bdd93a5aa92bd72c"
         },
         {
           "title": "Area dei Funzionari - settore della comunicazione e informazione",
@@ -147,7 +155,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -268,7 +285,100 @@
     "formez": {
       "label": "Formez PA",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "0597/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3fa5d0548df047fcac4d5f6834d409ca"
+        },
+        {
+          "title": "0598/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=dd52dcf2ab98472c91126e2d69e2d56d"
+        },
+        {
+          "title": "0599/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=4ca27ed823494da38be629ad6d5c32be"
+        },
+        {
+          "title": "0618/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=a1c58192059542cd9c9f2b657baa662c"
+        },
+        {
+          "title": "0619/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=feb8f85c3f134105836a4567532cd655"
+        },
+        {
+          "title": "0630/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=571b6012eaff4001bd7c691d24266111"
+        },
+        {
+          "title": "0704/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=d81b96d0c7b14e54b893ef71b2406ea0"
+        },
+        {
+          "title": "0707/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=99fdb54822064c8cad7de47eaa79d680"
+        },
+        {
+          "title": "0708/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=bb862104c793484cb4451c54c8b90e13"
+        },
+        {
+          "title": "0709/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=78ebe737dd704cf0b1435a1171a8bed6"
+        },
+        {
+          "title": "0721/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=25f7d507752f4a65ad37761dafb0f17b"
+        },
+        {
+          "title": "0737/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=91a4a4c036f5471583ce8bd76c6ec0d3"
+        },
+        {
+          "title": "0740/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=5e545ff7b1bf4fd2973733d04d042f93"
+        },
+        {
+          "title": "0741/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=cb04ad27704a4d04828cbf7fc15e17b8"
+        },
+        {
+          "title": "0742/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=0d9c712d51414e60bdf65b3a874b5b12"
+        },
+        {
+          "title": "0743/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=48323f39f0b9415787fd5e3aeda0681b"
+        },
+        {
+          "title": "0750/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=21601b354dea4f8e83275b69f1d4b7c0"
+        },
+        {
+          "title": "0751/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=5fb7d3d046114be495c3eb57101f2c2d"
+        },
+        {
+          "title": "0752/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=0c0b3241852144c9bdd93a5aa92bd72c"
+        },
+        {
+          "title": "0753/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=f264846750454bd3afdbcca29f8ae5d9"
+        },
+        {
+          "title": "0754/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=d02d9d19ca3541dbb4601e250d9d9efe"
+        },
+        {
+          "title": "0755/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3e796af1adfe45fdadc09ab0edfcf7df"
+        },
+        {
+          "title": "Privacy",
+          "url": "https://www.formez.it/privacypolicy"
+        }
+      ]
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
