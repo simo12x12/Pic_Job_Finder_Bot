@@ -1,5 +1,5 @@
 {
-  "last_check": "09/10/2026 12:38",
+  "last_check": "09/10/2026 12:53",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -149,31 +149,13 @@
     },
     "ama_roma": {
       "label": "AMA Roma",
-      "status": "ok",
-      "items": [
-        {
-          "title": "iornamenti sulla selezione Professional Pianificazione Finanziaria e Finanza Agevolata Avviso di selezione per la ricerca di n. 1 Junior Communication Specialist",
-          "url": "https://www.amaroma.it/lavora-con-noi/6984-avviso-di-selezione-per-la-ricerca-di-n-1-junior-communication-specialist"
-        },
-        {
-          "title": "a gli aggiornamenti sulla selezione Junior Communication Specialist Avviso di selezione per la ricerca di un PEF & Regulatory Financial Modeling Specialist.",
-          "url": "https://www.amaroma.it/lavora-con-noi/6978-avviso-di-selezione-per-la-ricerca-di-n1-pef-regulatory-financial-modeling-specialist-da-inserire-allinterno-dellazienda-ama-spa"
-        }
-      ]
+      "status": "unavailable",
+      "items": []
     },
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
