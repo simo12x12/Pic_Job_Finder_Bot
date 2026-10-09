@@ -1,5 +1,5 @@
 {
-  "last_check": "09/10/2026 10:21",
+  "last_check": "09/10/2026 10:39",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -32,10 +32,6 @@
         {
           "title": "Marketing & Sales Manager",
           "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Marketing---Sales-Manager_R0026004"
-        },
-        {
-          "title": "BID MANAGER",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/BID-MANAGER_R0029495"
         },
         {
           "title": "ELI-Stage Product Visual identity",
@@ -404,9 +400,8 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
