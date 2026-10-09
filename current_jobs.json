@@ -1,5 +1,5 @@
 {
-  "last_check": "09/10/2026 12:21",
+  "last_check": "09/10/2026 12:38",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -149,8 +149,17 @@
     },
     "ama_roma": {
       "label": "AMA Roma",
-      "status": "unavailable",
-      "items": []
+      "status": "ok",
+      "items": [
+        {
+          "title": "iornamenti sulla selezione Professional Pianificazione Finanziaria e Finanza Agevolata Avviso di selezione per la ricerca di n. 1 Junior Communication Specialist",
+          "url": "https://www.amaroma.it/lavora-con-noi/6984-avviso-di-selezione-per-la-ricerca-di-n-1-junior-communication-specialist"
+        },
+        {
+          "title": "a gli aggiornamenti sulla selezione Junior Communication Specialist Avviso di selezione per la ricerca di un PEF & Regulatory Financial Modeling Specialist.",
+          "url": "https://www.amaroma.it/lavora-con-noi/6978-avviso-di-selezione-per-la-ricerca-di-n1-pef-regulatory-financial-modeling-specialist-da-inserire-allinterno-dellazienda-ama-spa"
+        }
+      ]
     },
     "bmti": {
       "label": "BMTI",
