@@ -1,5 +1,5 @@
 {
-  "last_check": "10/10/2026 23:57",
+  "last_check": "11/10/2026 00:06",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -84,10 +84,6 @@
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=39013c59a1e4435f9f9341734c795343"
         },
         {
-          "title": "Area dei Collaboratori, Settore della comunicazione e informazione",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=11b73d9d7a2d4b89b47f168610f630b9"
-        },
-        {
           "title": "collaboratore amministrativo-addetto alle relazioni istituzionali",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=acc4a3048d834c6d8b24faa4e5cfa365"
         }
@@ -155,7 +151,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
