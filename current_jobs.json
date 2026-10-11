@@ -1,63 +1,11 @@
 {
-  "last_check": "11/10/2026 22:59",
+  "last_check": "11/10/2026 23:10",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "ELI - Pricing Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Pricing-Specialist_R0032358-1"
-        },
-        {
-          "title": "ELI - Bids & Proposals Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Bids---Proposals-Specialist_R0031541-1"
-        },
-        {
-          "title": "VEL - addetto/a Communication Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/VEL---addetto-a-Communication-Management_R0033261"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Sales-Manager_R0033552"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Pomezia/Sales-Manager_R0031864-1"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Caselle-Nord/Sales-Manager_R0033520"
-        },
-        {
-          "title": "Marketing & Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Marketing---Sales-Manager_R0026004"
-        },
-        {
-          "title": "ELI-Stage Product Visual identity",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI-Stage-Product-Visual-identity_R0032686"
-        },
-        {
-          "title": "Addetto/a Commercial Processes and Funnel Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1"
-        },
-        {
-          "title": "ELI - Product and services marketing-IC",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Vergiate/ELI---Product-and-services-marketing-IC_R0030685"
-        },
-        {
-          "title": "CYS - ACCOUNT MANAGER - MK&S",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081"
-        },
-        {
-          "title": "CYS - Proposal Engineer - SEU",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1"
-        },
-        {
-          "title": "CYS - BID MANAGER - CIE",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 504: Gateway Timeout"
     },
     "inpa": {
       "label": "inPA",
@@ -175,7 +123,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
@@ -205,9 +153,17 @@
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 403: Forbidden"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
+          "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
+        },
+        {
+          "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
+          "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
+        }
+      ]
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
