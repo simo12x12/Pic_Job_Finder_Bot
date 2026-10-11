@@ -1,5 +1,5 @@
 {
-  "last_check": "11/10/2026 22:07",
+  "last_check": "11/10/2026 22:21",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -91,17 +91,9 @@
     },
     "eutalia": {
       "label": "Eutalia",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Avviso per la selezione di 4 professionisti per il supporto al Dip. della funzione pubblica – progetto “Metodi e strumenti per la gestione del ciclo formativo nella PA” [DFP001_06.10.2026]",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-4-professionisti-per-il-supporto-al-dip-della-funzione-pubblica-progetto-metodi-e-strumenti-per-la-gestione-del-ciclo-formativo-nella-pa-dfp001_06-10-2/"
-        },
-        {
-          "title": "Avviso per la selezione di 1 professionista per il supporto al Dipartimento per le politiche di coesione – PCM – progetto “Rafforzamento del Sistema Conti Pubblici Territoriali” [DPCE08_CPT_06.10.2026]",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-1-professionista-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-rafforzamento-del-sistema-conti-pubblici-territoriali/"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "consip": {
       "label": "Consip",
@@ -151,7 +143,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -175,7 +176,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
@@ -205,17 +206,9 @@
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
-          "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
-        },
-        {
-          "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
-          "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
@@ -380,12 +373,7 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": [
-        {
-          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
-          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
-        }
-      ]
+      "items": []
     },
     "agenas": {
       "label": "AGENAS",
