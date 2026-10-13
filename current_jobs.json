@@ -1,5 +1,5 @@
 {
-  "last_check": "13/10/2026 18:00",
+  "last_check": "13/10/2026 18:15",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -184,7 +184,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
@@ -452,9 +452,13 @@
     },
     "ice": {
       "label": "Agenzia ICE",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 503: Service Unavailable"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Avviso di selezione per la raccolta di manifestazioni di interesse al conferimento di n. 1 incarico dirigenziale di livello generale per la Direzione Centrale \"Servizi alle Imprese, Marketing e Innovazione\"",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20PER%20DC%20SERVIZI.pdf"
+        }
+      ]
     },
     "inapp": {
       "label": "INAPP",
