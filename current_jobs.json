@@ -1,5 +1,5 @@
 {
-  "last_check": "14/10/2026 00:01",
+  "last_check": "14/10/2026 00:23",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -151,7 +151,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 22/PC SPS 17",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
+        },
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -234,9 +243,25 @@
     },
     "sport_salute": {
       "label": "Sport e Salute",
-      "status": "error",
-      "items": [],
-      "error": "The read operation timed out"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Senior Professional Marketing ed Eventi",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/234-comitato-italiano-paralimpico-senior-professional-marketing-ed-eventi.html"
+        },
+        {
+          "title": "Impiegato/a Amministrativo/a presso sede territoriale Basilicata",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/232-comitato-italiano-paralimpico-impiegato/a-amministrativo/a-presso-sede-territoriale-basilicata.html"
+        },
+        {
+          "title": "Senior Marketing Manager",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/220-sport-e-salute-spa-senior-marketing-manager.html"
+        },
+        {
+          "title": "Junior Marketing Specialist",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/218-sport-e-salute-spa-junior-marketing-specialist.html"
+        }
+      ]
     },
     "fs": {
       "label": "Gruppo FS Italiane",
