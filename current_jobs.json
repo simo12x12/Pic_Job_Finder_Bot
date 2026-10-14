@@ -1,5 +1,5 @@
 {
-  "last_check": "14/10/2026 13:44",
+  "last_check": "14/10/2026 14:10",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -66,10 +66,6 @@
         {
           "title": "Profilo Amministrativo; Profilo Comunicazione",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=c7e1fa5cade341f78cef5250b0996a85"
-        },
-        {
-          "title": "ADDETTO ALL'UFFICIO STAMPA",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=3a7d23a9fe0642e9a91c3828b5e46925"
         },
         {
           "title": "Esperto in attività di Comunicazione Istituzionale e Marketing con esperienza minima di 10 anni.",
@@ -184,7 +180,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
