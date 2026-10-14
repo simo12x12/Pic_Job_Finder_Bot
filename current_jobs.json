@@ -1,5 +1,5 @@
 {
-  "last_check": "15/10/2026 00:00",
+  "last_check": "15/10/2026 00:23",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -163,7 +163,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "unavailable",
+      "status": "ok",
       "items": []
     },
     "fincantieri": {
@@ -248,8 +248,9 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "autostrade": {
       "label": "Autostrade per l Italia",
@@ -442,12 +443,7 @@
     "cdp": {
       "label": "CDP",
       "status": "ok",
-      "items": [
-        {
-          "title": "(CDP)_Public & Regulatory Affairs Senior Specialist_Tempo Determinato",
-          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28CDP%29_Public-&-Regulatory-Affairs-Senior-Specialist_Tempo-Determinato/1373598557"
-        }
-      ]
+      "items": []
     }
   }
 }
