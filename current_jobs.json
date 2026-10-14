@@ -1,5 +1,5 @@
 {
-  "last_check": "14/10/2026 15:18",
+  "last_check": "14/10/2026 15:53",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -24,10 +24,6 @@
         {
           "title": "Sales Manager",
           "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Pomezia/Sales-Manager_R0031864-1"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Caselle-Nord/Sales-Manager_R0033520"
         },
         {
           "title": "Marketing & Sales Manager",
@@ -127,16 +123,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 22/PC SPS 17",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/05/Avviso-proc_22PC_SPS_17.pdf"
-        },
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -230,6 +217,10 @@
       "label": "Sport e Salute",
       "status": "ok",
       "items": [
+        {
+          "title": "Event Production Senior Manager",
+          "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/237-event-production-senior-manager.html"
+        },
         {
           "title": "Senior Professional Marketing ed Eventi",
           "url": "https://areariservata.sportesalute.eu/elenco-posizioni-lavorative/posizione/234-comitato-italiano-paralimpico-senior-professional-marketing-ed-eventi.html"
