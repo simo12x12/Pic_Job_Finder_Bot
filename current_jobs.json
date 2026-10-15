@@ -1,5 +1,5 @@
 {
-  "last_check": "15/10/2026 17:38",
+  "last_check": "15/10/2026 18:08",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -98,8 +98,9 @@
     },
     "sogei": {
       "label": "Sogei",
-      "status": "unavailable",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
     },
     "agid": {
       "label": "AgID",
@@ -168,7 +169,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
