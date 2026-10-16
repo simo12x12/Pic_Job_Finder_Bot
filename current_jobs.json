@@ -1,5 +1,5 @@
 {
-  "last_check": "17/10/2026 00:58",
+  "last_check": "17/10/2026 01:15",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -76,14 +76,6 @@
         {
           "title": "Avviso per la selezione di 5 professionisti per il supporto al Dipartimento per le politiche di coesione- PCM – Progetto Opencoesione 3.0 e coesioneitalia 2021-2027. [ACT301 _16.10.2026]",
           "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-5-professionisti-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-opencoesione-3-0-e-coesioneitalia-2021-2027-act301-_16-10-2026/"
-        },
-        {
-          "title": "Avviso per la selezione di 4 professionisti per il supporto al Dip. della funzione pubblica – progetto “Metodi e strumenti per la gestione del ciclo formativo nella PA” [DFP001_06.10.2026]",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-4-professionisti-per-il-supporto-al-dip-della-funzione-pubblica-progetto-metodi-e-strumenti-per-la-gestione-del-ciclo-formativo-nella-pa-dfp001_06-10-2/"
-        },
-        {
-          "title": "Avviso per la selezione di 1 professionista per il supporto al Dipartimento per le politiche di coesione – PCM – progetto “Rafforzamento del Sistema Conti Pubblici Territoriali” [DPCE08_CPT_06.10.2026]",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-1-professionista-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-rafforzamento-del-sistema-conti-pubblici-territoriali/"
         }
       ]
     },
@@ -135,12 +127,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
