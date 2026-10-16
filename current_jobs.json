@@ -1,5 +1,5 @@
 {
-  "last_check": "16/10/2026 16:50",
+  "last_check": "16/10/2026 17:14",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -98,9 +98,8 @@
     },
     "sogei": {
       "label": "Sogei",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error _ssl.c:993: The handshake operation timed out>"
+      "status": "unavailable",
+      "items": []
     },
     "agid": {
       "label": "AgID",
