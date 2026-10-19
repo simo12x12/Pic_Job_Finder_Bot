@@ -1,5 +1,5 @@
 {
-  "last_check": "19/10/2026 23:36",
+  "last_check": "20/10/2026 00:04",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -127,16 +127,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        },
-        {
-          "title": "Proc. 28/PC RI 01 - Presidio attività di raccordo del Sistema Camerale",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-28_PC_RI_01.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -259,46 +250,6 @@
       "status": "ok",
       "items": [
         {
-          "title": "0695/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3542dd1f83394e7cb236ced89610bf6c"
-        },
-        {
-          "title": "0696/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=66294e2e47ea451485e8edd5c483b8fc"
-        },
-        {
-          "title": "0697/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=ad5a94338e0749ed9d3c87fea8b43dae"
-        },
-        {
-          "title": "0698/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=41b34de03dde4bc3be9eabba8aa69d9e"
-        },
-        {
-          "title": "0699/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=75dc12f1e322476da6b7b188d03c4640"
-        },
-        {
-          "title": "0700/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=2e5c69dd4e28457e9551122d42523f7c"
-        },
-        {
-          "title": "0727/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=f7020c96385344e8864beae9884f094f"
-        },
-        {
-          "title": "0730/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=24a6427b3dcc4b3e8c61180e02c87983"
-        },
-        {
-          "title": "0733/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=130c268d77cb4b07b05391c5c197385e"
-        },
-        {
-          "title": "0735/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=8aa3846478714c2dabe3ac973d28e328"
-        },
-        {
           "title": "0597/2026",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3fa5d0548df047fcac4d5f6834d409ca"
         },
@@ -355,6 +306,22 @@
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=61f1810e442d4755b61f1208ea005ecb"
         },
         {
+          "title": "0722/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3b97f52b781143bd974e2002ff26725f"
+        },
+        {
+          "title": "0729/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=bf22a5963bea4f2cb0be076454c1b694"
+        },
+        {
+          "title": "0731/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=fab381fbe1ff42dca498516fb54092e7"
+        },
+        {
+          "title": "0732/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=45aba34fe8974e2d958049ffe93d5643"
+        },
+        {
           "title": "Privacy",
           "url": "https://www.formez.it/privacypolicy"
         }
@@ -362,9 +329,8 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
