@@ -111,6 +111,7 @@
       "seen": [
         "rome-technopole:2026-10",
         "rome-technopole:2026-11",
+        "rome-technopole:2026-12",
         "rome-technopole:2026-2",
         "rome-technopole:2026-3",
         "rome-technopole:2026-4"
@@ -128,6 +129,7 @@
       "seen": [
         "bmti:9f7ccd0aaf5ca91008fb8111",
         "bmti:ab04dcbc71fcc7191307e33d",
+        "bmti:ba7c8446ed7dde2a6d5b11be",
         "bmti:d809465de077bf1c0c31601f"
       ]
     },
@@ -314,6 +316,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-10-21T09:39:05.563008+00:00",
+  "last_update": "2026-10-21T10:10:28.803937+00:00",
   "schema_version": 23
 }
