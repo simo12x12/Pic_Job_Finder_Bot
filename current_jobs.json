@@ -1,5 +1,5 @@
 {
-  "last_check": "22/10/2026 10:42",
+  "last_check": "22/10/2026 11:15",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -408,7 +408,12 @@
     "cdp": {
       "label": "CDP",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "(Simest)_Stage Pubblicità, Eventi e Ingaggio",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28Simest%29_Stage-Pubblicit%C3%A0%2C-Eventi-e-Ingaggio/1375562957"
+        }
+      ]
     }
   }
 }
