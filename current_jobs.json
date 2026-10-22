@@ -1,5 +1,5 @@
 {
-  "last_check": "22/10/2026 05:12",
+  "last_check": "22/10/2026 05:41",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -131,7 +131,20 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        },
+        {
+          "title": "Proc. 28/PC RI 01 - Presidio attività di raccordo del Sistema Camerale",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-28_PC_RI_01.pdf"
+        },
+        {
+          "title": "Proc. 29/PC SPS 21 - Supporto attività UO Informazione Economica",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-29_PC_SPS_21.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
