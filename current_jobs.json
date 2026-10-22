@@ -1,5 +1,5 @@
 {
-  "last_check": "22/10/2026 22:40",
+  "last_check": "22/10/2026 23:09",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -75,9 +75,13 @@
     },
     "eutalia": {
       "label": "Eutalia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Avviso per la selezione di 5 professionisti per il supporto al Dipartimento per le politiche di coesione- PCM – Progetto Opencoesione 3.0 e coesioneitalia 2021-2027. [ACT301 _16.10.2026]",
+          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-5-professionisti-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-opencoesione-3-0-e-coesioneitalia-2021-2027-act301-_16-10-2026/"
+        }
+      ]
     },
     "consip": {
       "label": "Consip",
@@ -198,9 +202,17 @@
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
+          "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
+        },
+        {
+          "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
+          "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
+        }
+      ]
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
