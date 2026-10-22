@@ -1,5 +1,5 @@
 {
-  "last_check": "22/10/2026 23:35",
+  "last_check": "23/10/2026 00:04",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -58,10 +58,6 @@
         {
           "title": "ADDETTO UFFICIO STAMPA",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=60d0a0ecf6f347649859e58293e2fa7c"
-        },
-        {
-          "title": "Esperto in comunicazione istituzionale con esperienza minima di 3 anni fino a 7 anni.",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=9c571867026946b1b80d715a6c870f68"
         },
         {
           "title": "Area dei Funzionari - settore della comunicazione e informazione",
@@ -131,7 +127,24 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        },
+        {
+          "title": "Proc. 28/PC RI 01 - Presidio attività di raccordo del Sistema Camerale",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-28_PC_RI_01.pdf"
+        },
+        {
+          "title": "Proc. 29/PC SPS 21 - Supporto attività UO Informazione Economica",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-29_PC_SPS_21.pdf"
+        },
+        {
+          "title": "Proc. 30/PC_DO_03 - Supporto attività Piano di Comunicazione",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-30_PC_DO_03.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -253,62 +266,6 @@
       "label": "Formez PA",
       "status": "ok",
       "items": [
-        {
-          "title": "0597/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3fa5d0548df047fcac4d5f6834d409ca"
-        },
-        {
-          "title": "0598/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=dd52dcf2ab98472c91126e2d69e2d56d"
-        },
-        {
-          "title": "0599/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=4ca27ed823494da38be629ad6d5c32be"
-        },
-        {
-          "title": "0618/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=a1c58192059542cd9c9f2b657baa662c"
-        },
-        {
-          "title": "0619/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=feb8f85c3f134105836a4567532cd655"
-        },
-        {
-          "title": "0630/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=571b6012eaff4001bd7c691d24266111"
-        },
-        {
-          "title": "0643/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=54466bde645145de9af902b10d56dbbb"
-        },
-        {
-          "title": "0644/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=534f398c6f414669b246e71f057e56c5"
-        },
-        {
-          "title": "0645/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=9c571867026946b1b80d715a6c870f68"
-        },
-        {
-          "title": "0692/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=09235b20c2004398ac1220381f6dcc3d"
-        },
-        {
-          "title": "0694/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=cda6584fb0f64af6afcdee5629bfde70"
-        },
-        {
-          "title": "0745/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=e270e887089d408391ce00e2f7f2fd1b"
-        },
-        {
-          "title": "0749/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=261728196c6440d294b6ed6fc8c14212"
-        },
-        {
-          "title": "0759/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=61f1810e442d4755b61f1208ea005ecb"
-        },
         {
           "title": "0730/2026",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=24a6427b3dcc4b3e8c61180e02c87983"
