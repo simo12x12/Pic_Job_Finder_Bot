@@ -1,5 +1,5 @@
 {
-  "last_check": "23/10/2026 10:03",
+  "last_check": "23/10/2026 10:33",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -207,17 +207,9 @@
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Esperto/a finanziario/a - Programma Interreg NEXT MED 2021-2027",
-          "url": "https://www.fondazionebrodolini.it/vacancy/financial-expert-programma-interreg-next-med-2021-2027"
-        },
-        {
-          "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
-          "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 403: Forbidden"
     },
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
@@ -322,12 +314,7 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": [
-        {
-          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
-          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
-        }
-      ]
+      "items": []
     },
     "agenas": {
       "label": "AGENAS",
