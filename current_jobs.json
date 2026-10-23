@@ -1,5 +1,5 @@
 {
-  "last_check": "23/10/2026 19:08",
+  "last_check": "23/10/2026 19:34",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -362,9 +362,8 @@
     },
     "inapp": {
       "label": "INAPP",
-      "status": "error",
-      "items": [],
-      "error": "The read operation timed out"
+      "status": "ok",
+      "items": []
     },
     "cdp": {
       "label": "CDP",
