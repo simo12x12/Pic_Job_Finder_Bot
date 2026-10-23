@@ -4,6 +4,8 @@
       "seen": [
         "/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1",
         "/job/IT---Pomezia/Sales-Manager_R0031864-1",
+        "/job/IT---Roma---Monte-Grappa/Addetto-Relazioni-istituzionali_R0034460",
+        "/job/IT---Roma---Monte-Grappa/Referente-relazioni-con-le-Istituzioni-centrali_R0034443",
         "/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081",
         "/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430",
         "/job/IT---Roma---Via-Laurentina/CYS-Cyber-Proposal-Engineer-GCSC_R0023732",
@@ -32,6 +34,7 @@
         "3a7d23a9fe0642e9a91c3828b5e46925",
         "60d0a0ecf6f347649859e58293e2fa7c",
         "7ddaac05d0c04f168fdd48f1e01b399c",
+        "8972a8de33584753aef3cb04b324191c",
         "99fdb54822064c8cad7de47eaa79d680",
         "9c571867026946b1b80d715a6c870f68",
         "acc4a3048d834c6d8b24faa4e5cfa365",
@@ -319,6 +322,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-10-23T12:34:19.568708+00:00",
+  "last_update": "2026-10-23T13:16:27.682778+00:00",
   "schema_version": 23
 }
