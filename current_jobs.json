@@ -1,67 +1,11 @@
 {
-  "last_check": "24/10/2026 07:56",
+  "last_check": "24/10/2026 08:16",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "ELI - Sales Engineering Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Sales-Engineering-Specialist_R0034131-1"
-        },
-        {
-          "title": "ELI - Pricing Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Pricing-Specialist_R0032358-1"
-        },
-        {
-          "title": "ELI - Bids & Proposals Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Bids---Proposals-Specialist_R0031541-1"
-        },
-        {
-          "title": "Promotion Marketing Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Promotion-Marketing-Specialist_R0034072"
-        },
-        {
-          "title": "Addetto Relazioni istituzionali",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Monte-Grappa/Addetto-Relazioni-istituzionali_R0034460"
-        },
-        {
-          "title": "Referente relazioni con le Istituzioni centrali",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Monte-Grappa/Referente-relazioni-con-le-Istituzioni-centrali_R0034443"
-        },
-        {
-          "title": "EDGEWING - GCAP - Processes & Governance Manager (UK - Reading)",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/GCAP---Processes---Governance-Manager--UK---Reading-_R0025101"
-        },
-        {
-          "title": "VEL - addetto/a Communication Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/VEL---addetto-a-Communication-Management_R0033261"
-        },
-        {
-          "title": "Sales Manager",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Tiburtina--KM12400/Sales-Manager_R0033552"
-        },
-        {
-          "title": "Addetto/a Commercial Processes and Funnel Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1"
-        },
-        {
-          "title": "ELI - Product and services marketing-IC",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Vergiate/ELI---Product-and-services-marketing-IC_R0030685"
-        },
-        {
-          "title": "CYS - ACCOUNT MANAGER - MK&S",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081"
-        },
-        {
-          "title": "CYS - Proposal Engineer - SEU",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1"
-        },
-        {
-          "title": "CYS - BID MANAGER - CIE",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "Expecting value: line 1 column 1 (char 0)"
     },
     "inpa": {
       "label": "inPA",
@@ -143,24 +87,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        },
-        {
-          "title": "Proc. 28/PC RI 01 - Presidio attività di raccordo del Sistema Camerale",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-28_PC_RI_01.pdf"
-        },
-        {
-          "title": "Proc. 29/PC SPS 21 - Supporto attività UO Informazione Economica",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-29_PC_SPS_21.pdf"
-        },
-        {
-          "title": "Proc. 30/PC_DO_03 - Supporto attività Piano di Comunicazione",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-30_PC_DO_03.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -184,7 +111,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
