@@ -1,5 +1,5 @@
 {
-  "last_check": "24/10/2026 23:14",
+  "last_check": "24/10/2026 23:40",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -179,9 +179,8 @@
     },
     "acea": {
       "label": "Acea",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "italo": {
       "label": "Italo",
@@ -205,9 +204,8 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -282,8 +280,41 @@
     },
     "formez": {
       "label": "Formez PA",
-      "status": "unavailable",
-      "items": []
+      "status": "ok",
+      "items": [
+        {
+          "title": "0730/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=24a6427b3dcc4b3e8c61180e02c87983"
+        },
+        {
+          "title": "0733/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=130c268d77cb4b07b05391c5c197385e"
+        },
+        {
+          "title": "0735/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=8aa3846478714c2dabe3ac973d28e328"
+        },
+        {
+          "title": "0731/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=fab381fbe1ff42dca498516fb54092e7"
+        },
+        {
+          "title": "0732/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=45aba34fe8974e2d958049ffe93d5643"
+        },
+        {
+          "title": "0722/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3b97f52b781143bd974e2002ff26725f"
+        },
+        {
+          "title": "0729/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=bf22a5963bea4f2cb0be076454c1b694"
+        },
+        {
+          "title": "Privacy",
+          "url": "https://www.formez.it/privacypolicy"
+        }
+      ]
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
@@ -312,9 +343,13 @@
     },
     "ice": {
       "label": "Agenzia ICE",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": [
+        {
+          "title": "Avviso di selezione per la raccolta di manifestazioni di interesse al conferimento di n. 1 incarico dirigenziale di livello generale per la Direzione Centrale \"Servizi alle Imprese, Marketing e Innovazione\"",
+          "url": "https://www.ice.it/it/sites/default/files/inline-files/AVVISO%20PER%20DC%20SERVIZI.pdf"
+        }
+      ]
     },
     "inapp": {
       "label": "INAPP",
