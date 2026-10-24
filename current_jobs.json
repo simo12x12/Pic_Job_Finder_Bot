@@ -1,5 +1,5 @@
 {
-  "last_check": "24/10/2026 03:59",
+  "last_check": "24/10/2026 04:20",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -143,7 +143,24 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        },
+        {
+          "title": "Proc. 28/PC RI 01 - Presidio attività di raccordo del Sistema Camerale",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-28_PC_RI_01.pdf"
+        },
+        {
+          "title": "Proc. 29/PC SPS 21 - Supporto attività UO Informazione Economica",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-29_PC_SPS_21.pdf"
+        },
+        {
+          "title": "Proc. 30/PC_DO_03 - Supporto attività Piano di Comunicazione",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-30_PC_DO_03.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -167,7 +184,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
