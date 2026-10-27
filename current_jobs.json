@@ -1,5 +1,5 @@
 {
-  "last_check": "26/10/2026 22:37",
+  "last_check": "27/10/2026 01:46",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -76,10 +76,6 @@
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=60d0a0ecf6f347649859e58293e2fa7c"
         },
         {
-          "title": "Area dei Funzionari - settore della comunicazione e informazione",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=39013c59a1e4435f9f9341734c795343"
-        },
-        {
           "title": "FUNZIONARIA/O COMUNICAZIONE E WEB",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=037e935cbea64388ac9c442fbcf122fd"
         },
@@ -147,20 +143,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        },
-        {
-          "title": "Proc. 29/PC SPS 21 - Supporto attività UO Informazione Economica",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-29_PC_SPS_21.pdf"
-        },
-        {
-          "title": "Proc. 30/PC_DO_03 - Supporto attività Piano di Comunicazione",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-30_PC_DO_03.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -281,40 +264,7 @@
     "formez": {
       "label": "Formez PA",
       "status": "ok",
-      "items": [
-        {
-          "title": "0730/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=24a6427b3dcc4b3e8c61180e02c87983"
-        },
-        {
-          "title": "0733/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=130c268d77cb4b07b05391c5c197385e"
-        },
-        {
-          "title": "0735/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=8aa3846478714c2dabe3ac973d28e328"
-        },
-        {
-          "title": "0731/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=fab381fbe1ff42dca498516fb54092e7"
-        },
-        {
-          "title": "0732/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=45aba34fe8974e2d958049ffe93d5643"
-        },
-        {
-          "title": "0722/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=3b97f52b781143bd974e2002ff26725f"
-        },
-        {
-          "title": "0729/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=bf22a5963bea4f2cb0be076454c1b694"
-        },
-        {
-          "title": "Privacy",
-          "url": "https://www.formez.it/privacypolicy"
-        }
-      ]
+      "items": []
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
