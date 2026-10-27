@@ -1,5 +1,5 @@
 {
-  "last_check": "27/10/2026 21:37",
+  "last_check": "28/10/2026 00:57",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -187,16 +187,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -266,9 +257,8 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "autostrade": {
       "label": "Autostrade per l Italia",
