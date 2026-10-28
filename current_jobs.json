@@ -1,5 +1,5 @@
 {
-  "last_check": "28/10/2026 17:26",
+  "last_check": "28/10/2026 22:12",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -84,12 +84,7 @@
     "eutalia": {
       "label": "Eutalia",
       "status": "ok",
-      "items": [
-        {
-          "title": "Prorogato – Avviso per la selezione di 5 professionisti per il supporto al Dipartimento per le politiche di coesione- PCM – Progetto Opencoesione 3.0 e coesioneitalia 2021-2027. [ACT301 _16.10.2026]",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-5-professionisti-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-opencoesione-3-0-e-coesioneitalia-2021-2027-act301-_16-10-2026/"
-        }
-      ]
+      "items": []
     },
     "consip": {
       "label": "Consip",
@@ -139,7 +134,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        },
+        {
+          "title": "Proc. 31/PC SPS 22 - Supporto attività di analisi statistiche dell'U.O. BIS",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-31_PC_SPS_22.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -174,16 +178,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -192,9 +187,8 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
