@@ -1,5 +1,5 @@
 {
-  "last_check": "28/10/2026 10:59",
+  "last_check": "28/10/2026 17:26",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -139,24 +139,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        },
-        {
-          "title": "Proc. 29/PC SPS 21 - Supporto attività UO Informazione Economica",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-29_PC_SPS_21.pdf"
-        },
-        {
-          "title": "Proc. 30/PC DO 03 - Supporto attività Piano di Comunicazione",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-30_PC_DO_03.pdf"
-        },
-        {
-          "title": "Proc. 31/PC SPS 22 - Supporto attività di analisi statistiche dell'U.O. BIS",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-31_PC_SPS_22.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -209,8 +192,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -310,9 +294,8 @@
     },
     "agenas": {
       "label": "AGENAS",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error [Errno -3] Temporary failure in name resolution>"
+      "status": "ok",
+      "items": []
     },
     "ice": {
       "label": "Agenzia ICE",
