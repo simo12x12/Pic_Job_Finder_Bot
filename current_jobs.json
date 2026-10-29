@@ -1,5 +1,5 @@
 {
-  "last_check": "29/10/2026 14:37",
+  "last_check": "29/10/2026 20:11",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -8,10 +8,6 @@
         {
           "title": "ELI - Sales Engineering Specialist",
           "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Sales-Engineering-Specialist_R0034131-1"
-        },
-        {
-          "title": "ELI - Pricing Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Varese---Cascina-Costa/ELI---Pricing-Specialist_R0032358-1"
         },
         {
           "title": "ELI - Bids & Proposals Specialist",
@@ -196,8 +192,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "IncompleteRead(306578 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -272,8 +269,9 @@
     },
     "formez": {
       "label": "Formez PA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 503: Service Unavailable"
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
