@@ -1,5 +1,5 @@
 {
-  "last_check": "30/10/2026 09:56",
+  "last_check": "30/10/2026 16:26",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -60,8 +60,8 @@
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=8972a8de33584753aef3cb04b324191c"
         },
         {
-          "title": "ADDETTO UFFICIO STAMPA",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=60d0a0ecf6f347649859e58293e2fa7c"
+          "title": "Esperto/a comunicazione",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4de2cc61453b4f168da349c14042b504"
         },
         {
           "title": "FUNZIONARIA/O COMUNICAZIONE E WEB",
@@ -126,7 +126,16 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        },
+        {
+          "title": "Proc. 31/PC SPS 22 - Supporto attività di analisi statistiche dell'U.O. BIS",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-31_PC_SPS_22.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -150,7 +159,7 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
+      "status": "unavailable",
       "items": []
     },
     "fincantieri": {
@@ -181,7 +190,7 @@
       "label": "SNA",
       "status": "error",
       "items": [],
-      "error": "IncompleteRead(321075 bytes read)"
+      "error": "IncompleteRead(316306 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -292,7 +301,7 @@
         },
         {
           "title": "0775/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=68bd8c18512a4962b32556f2ea054323"
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=be087f2432e94436abf9c6057bb54a27"
         },
         {
           "title": "Privacy",
@@ -302,9 +311,8 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
