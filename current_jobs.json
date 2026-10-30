@@ -1,5 +1,5 @@
 {
-  "last_check": "30/10/2026 03:37",
+  "last_check": "30/10/2026 09:56",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -126,16 +126,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        },
-        {
-          "title": "Proc. 31/PC SPS 22 - Supporto attività di analisi statistiche dell'U.O. BIS",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/10/Proc.-31_PC_SPS_22.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -170,7 +161,16 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
+          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
+        },
+        {
+          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
+          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
+        }
+      ]
     },
     "ifel": {
       "label": "IFEL",
@@ -181,7 +181,7 @@
       "label": "SNA",
       "status": "error",
       "items": [],
-      "error": "IncompleteRead(321466 bytes read)"
+      "error": "IncompleteRead(321075 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -302,8 +302,9 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
