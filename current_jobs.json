@@ -1,5 +1,5 @@
 {
-  "last_check": "02/11/2026 09:11",
+  "last_check": "02/11/2026 19:16",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -55,10 +55,6 @@
       "label": "inPA",
       "status": "ok",
       "items": [
-        {
-          "title": "ADDETTO DELLE RELAZIONI ESTERNE E COMUNICAZIONE",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=8972a8de33584753aef3cb04b324191c"
-        },
         {
           "title": "Esperto/a comunicazione",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4de2cc61453b4f168da349c14042b504"
@@ -188,9 +184,8 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "error",
-      "items": [],
-      "error": "IncompleteRead(301074 bytes read)"
+      "status": "ok",
+      "items": []
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
