@@ -1,5 +1,5 @@
 {
-  "last_check": "02/11/2026 19:16",
+  "last_check": "03/11/2026 01:59",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -72,7 +72,12 @@
     "eutalia": {
       "label": "Eutalia",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Avviso per la selezione di 4 professionisti per il supporto al Ministero dell’economia e delle finanze – Dipartimento dell’economia (DE) per la realizzazione di un’attività di supporto amministrativo e contabile nelle materie degli interventi finanziari nell’economia [DIE001_02.11.2026]",
+          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-4-professionisti-per-il-supporto-al-ministero-delleconomia-e-delle-finanze-dipartimento-delleconomia-de-per-la-realizzazione-di-unatti/"
+        }
+      ]
     },
     "consip": {
       "label": "Consip",
@@ -156,7 +161,16 @@
     "italo": {
       "label": "Italo",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Richiedi Carta di Credito Italo American Express",
+          "url": "https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
+        },
+        {
+          "title": "Segui Italo sui Social",
+          "url": "https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
+        }
+      ]
     },
     "fincantieri": {
       "label": "Fincantieri",
@@ -166,16 +180,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -297,6 +302,26 @@
         {
           "title": "0775/2026",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=be087f2432e94436abf9c6057bb54a27"
+        },
+        {
+          "title": "0776/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=f47270e0648b4a0aad924087dbafcc1b"
+        },
+        {
+          "title": "0777/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=8d38f7cf8f964071b8e2d97c55127e6b"
+        },
+        {
+          "title": "0778/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=a7bd2866c59343d8bfdc4ac9fa5d32de"
+        },
+        {
+          "title": "0779/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=68bd8c18512a4962b32556f2ea054323"
+        },
+        {
+          "title": "0772/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=8dc8ccac817d48da9006713c542d17e1"
         },
         {
           "title": "Privacy",

@@ -51,6 +51,7 @@
         "https://www.eutalia.eu/avvisi/avviso-per-la-costituzione-di-una-long-list-esperti-dpce07_27-05-2025",
         "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-1-professionista-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-rafforzamento-del-sistema-conti-pubblici-territoriali",
         "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-4-professionisti-per-il-supporto-al-dip-della-funzione-pubblica-progetto-metodi-e-strumenti-per-la-gestione-del-ciclo-formativo-nella-pa-dfp001_06-10-2",
+        "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-4-professionisti-per-il-supporto-al-ministero-delleconomia-e-delle-finanze-dipartimento-delleconomia-de-per-la-realizzazione-di-unatti",
         "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-5-professionisti-per-il-supporto-al-dipartimento-per-le-politiche-di-coesione-pcm-progetto-opencoesione-3-0-e-coesioneitalia-2021-2027-act301-_16-10-2026"
       ],
       "initialized": true
@@ -170,7 +171,8 @@
     "italo": {
       "initialized": true,
       "seen": [
-        "italo:2ff67512dad6cc609efe4093"
+        "italo:2ff67512dad6cc609efe4093",
+        "italo:6b21b96caf5fb73fdcc583a4"
       ]
     },
     "fincantieri": {
@@ -263,6 +265,7 @@
         "formez:5d644819ad00fb2e60020ae5",
         "formez:5e7dc927604535aae2fca0a1",
         "formez:679f06aa915bed93afef418b",
+        "formez:685724d74394ee350380d2d8",
         "formez:6aa21c23a8fd61fdc15a4321",
         "formez:700a05022d7f39100b322efc",
         "formez:705215cd2bcf4f64d52a7d2b",
@@ -283,8 +286,10 @@
         "formez:afcc472171c376449c136966",
         "formez:b0b84fc4bb6ef8adb6993694",
         "formez:b1d54d7c9a36a5fb297a12ff",
+        "formez:b34ad3b9ecc56748cfa25ad2",
         "formez:b3d55fad5f833e4d35044abb",
         "formez:b41f1afcae8f6b724bf06a12",
+        "formez:b62a6ddcfdcc721da035285f",
         "formez:c0c66c1e50311641dfe84344",
         "formez:c0e729cde0285f3e6dc8aa24",
         "formez:c2d58815fb719e3ca62651ca",
@@ -295,6 +300,7 @@
         "formez:d9424f37c6f87996fe9d1644",
         "formez:ec07794545b7d51237615086",
         "formez:ec47385178589d26cbbd926d",
+        "formez:eec222134d2cf9d652561c75",
         "formez:efab1da1a4ccace672f0d6c7",
         "formez:f429c51766cd1d714b9100e0",
         "formez:fe180c9a15ebf7c88013e3e7"
@@ -336,6 +342,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-11-02T18:17:02.362950+00:00",
+  "last_update": "2026-11-03T01:01:02.624840+00:00",
   "schema_version": 23
 }
