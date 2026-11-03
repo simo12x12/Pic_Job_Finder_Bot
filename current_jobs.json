@@ -1,5 +1,5 @@
 {
-  "last_check": "03/11/2026 01:59",
+  "last_check": "03/11/2026 08:36",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -160,17 +160,8 @@
     },
     "italo": {
       "label": "Italo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Richiedi Carta di Credito Italo American Express",
-          "url": "https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
-        },
-        {
-          "title": "Segui Italo sui Social",
-          "url": "https://italospa.italotreno.it/lavorare_in_italo/posizioni_aperte/index.html"
-        }
-      ]
+      "status": "unavailable",
+      "items": []
     },
     "fincantieri": {
       "label": "Fincantieri",
