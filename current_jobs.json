@@ -1,5 +1,5 @@
 {
-  "last_check": "04/11/2026 02:17",
+  "last_check": "04/11/2026 08:31",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -176,8 +176,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "IncompleteRead(303818 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
