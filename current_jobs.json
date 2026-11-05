@@ -1,5 +1,5 @@
 {
-  "last_check": "05/11/2026 17:38",
+  "last_check": "05/11/2026 23:15",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -159,16 +159,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -179,7 +170,7 @@
       "label": "SNA",
       "status": "error",
       "items": [],
-      "error": "IncompleteRead(323011 bytes read)"
+      "error": "IncompleteRead(322227 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -235,8 +226,9 @@
     },
     "fs": {
       "label": "Gruppo FS Italiane",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "autostrade": {
       "label": "Autostrade per l Italia",
@@ -316,8 +308,9 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
