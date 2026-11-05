@@ -1,5 +1,5 @@
 {
-  "last_check": "05/11/2026 09:28",
+  "last_check": "05/11/2026 17:38",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -119,7 +119,12 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -172,8 +177,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "IncompleteRead(323011 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
