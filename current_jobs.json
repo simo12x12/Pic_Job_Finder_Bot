@@ -1,5 +1,5 @@
 {
-  "last_check": "07/11/2026 19:39",
+  "last_check": "07/11/2026 23:15",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -172,8 +172,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "IncompleteRead(317122 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -326,13 +327,9 @@
     },
     "cdp": {
       "label": "CDP",
-      "status": "ok",
-      "items": [
-        {
-          "title": "(Simest)_Stage - Relazioni Esterne",
-          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28Simest%29_Stage-Relazioni-Esterne/1376668357"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 404: Not Found"
     }
   }
 }
