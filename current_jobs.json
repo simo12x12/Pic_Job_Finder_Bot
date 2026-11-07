@@ -1,43 +1,11 @@
 {
-  "last_check": "07/11/2026 02:18",
+  "last_check": "07/11/2026 08:16",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "Referente relazioni con le Istituzioni centrali",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Monte-Grappa/Referente-relazioni-con-le-Istituzioni-centrali_R0034443"
-        },
-        {
-          "title": "EDGEWING - GCAP - Processes & Governance Manager (UK - Reading)",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/GCAP---Processes---Governance-Manager--UK---Reading-_R0025101"
-        },
-        {
-          "title": "VEL - addetto/a Communication Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/VEL---addetto-a-Communication-Management_R0033261"
-        },
-        {
-          "title": "Addetto/a Commercial Processes and Funnel Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1"
-        },
-        {
-          "title": "ELI - Product and services marketing-IC",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Vergiate/ELI---Product-and-services-marketing-IC_R0030685"
-        },
-        {
-          "title": "CYS - ACCOUNT MANAGER - MK&S",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081"
-        },
-        {
-          "title": "CYS - Proposal Engineer - SEU",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1"
-        },
-        {
-          "title": "CYS - BID MANAGER - CIE",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "Expecting value: line 1 column 1 (char 0)"
     },
     "inpa": {
       "label": "inPA",
@@ -168,9 +136,8 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "error",
-      "items": [],
-      "error": "IncompleteRead(320442 bytes read)"
+      "status": "ok",
+      "items": []
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
