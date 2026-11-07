@@ -1,5 +1,5 @@
 {
-  "last_check": "07/11/2026 15:03",
+  "last_check": "07/11/2026 19:39",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -43,6 +43,10 @@
       "label": "inPA",
       "status": "ok",
       "items": [
+        {
+          "title": "FUNZIONARIO APPARTENENTE ALL'AREA DEI FUNZIONARI E DELLE E.Q., PROFILO PROFESSIONALE DI SPECIALISTA DELLA COMUNICAZIONE ISTITUZIONALE",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=aaf69d6b01034893aa1a703f792d3505"
+        },
         {
           "title": "Esperto/a comunicazione",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=4de2cc61453b4f168da349c14042b504"
@@ -119,7 +123,12 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
+          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
+        }
+      ]
     },
     "sace": {
       "label": "SACE",
@@ -277,9 +286,8 @@
     },
     "sviluppo_lavoro": {
       "label": "Sviluppo Lavoro Italia",
-      "status": "error",
-      "items": [],
-      "error": "<urlopen error timed out>"
+      "status": "ok",
+      "items": []
     },
     "capcoe": {
       "label": "PN Capacita per la Coesione",
