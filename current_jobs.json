@@ -1,5 +1,5 @@
 {
-  "last_check": "07/11/2026 23:15",
+  "last_check": "08/11/2026 02:27",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -54,10 +54,6 @@
         {
           "title": "FUNZIONARIA/O COMUNICAZIONE E WEB",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=037e935cbea64388ac9c442fbcf122fd"
-        },
-        {
-          "title": "Addetto all'ufficio stampa",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=7ddaac05d0c04f168fdd48f1e01b399c"
         }
       ]
     },
@@ -172,9 +168,8 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "error",
-      "items": [],
-      "error": "IncompleteRead(317122 bytes read)"
+      "status": "ok",
+      "items": []
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -327,9 +322,13 @@
     },
     "cdp": {
       "label": "CDP",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 404: Not Found"
+      "status": "ok",
+      "items": [
+        {
+          "title": "(Simest)_Stage - Relazioni Esterne",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28Simest%29_Stage-Relazioni-Esterne/1376668357"
+        }
+      ]
     }
   }
 }
