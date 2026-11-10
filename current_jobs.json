@@ -1,5 +1,5 @@
 {
-  "last_check": "09/11/2026 20:14",
+  "last_check": "10/11/2026 03:07",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -151,16 +151,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -244,36 +235,28 @@
       "status": "ok",
       "items": [
         {
-          "title": "0772/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=8dc8ccac817d48da9006713c542d17e1"
-        },
-        {
-          "title": "0776/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=f47270e0648b4a0aad924087dbafcc1b"
-        },
-        {
-          "title": "0777/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=8d38f7cf8f964071b8e2d97c55127e6b"
-        },
-        {
-          "title": "0778/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=a7bd2866c59343d8bfdc4ac9fa5d32de"
-        },
-        {
-          "title": "0779/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=68bd8c18512a4962b32556f2ea054323"
-        },
-        {
-          "title": "0773/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=ce615b7cf3e24a2cabc5cfaf54ce13ba"
-        },
-        {
           "title": "0766/2026",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=fb49967f75d546a7a905aca0c7788bc1"
         },
         {
           "title": "0771/2026",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=82a13b5e2dbb4c5cb8e2c8680fa1c415"
+        },
+        {
+          "title": "0773/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=ce615b7cf3e24a2cabc5cfaf54ce13ba"
+        },
+        {
+          "title": "0774/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=b7c7e8afbeaa484d98f695407bde6d1f"
+        },
+        {
+          "title": "0783/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=f94ffa6d528644fcbd54f4fcb7db369e"
+        },
+        {
+          "title": "0663/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=6e48e451f88044679460295aa397e8a0"
         },
         {
           "title": "Privacy",
