@@ -1,5 +1,5 @@
 {
-  "last_check": "11/11/2026 09:53",
+  "last_check": "11/11/2026 17:40",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -43,6 +43,10 @@
       "label": "inPA",
       "status": "ok",
       "items": [
+        {
+          "title": "FUNZIONARIO SPECIALISTA DELLA COMUNICAZIONE E DEI RAPPORTI CON I MEDIA",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5c266f284aea410dae9591a3a0a30d69"
+        },
         {
           "title": "FUNZIONARIO APPARTENENTE ALL'AREA DEI FUNZIONARI E DELLE E.Q., PROFILO PROFESSIONALE DI SPECIALISTA DELLA COMUNICAZIONE ISTITUZIONALE",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=aaf69d6b01034893aa1a703f792d3505"
@@ -115,12 +119,7 @@
     "bmti": {
       "label": "BMTI",
       "status": "ok",
-      "items": [
-        {
-          "title": "Proc. 25/PC SPS 18 - Collaboratore Analisi di Mercato",
-          "url": "https://www.bmti.it/wp-content/uploads/2026/09/Avviso_25_PC_SPS_18.pdf"
-        }
-      ]
+      "items": []
     },
     "sace": {
       "label": "SACE",
@@ -186,6 +185,10 @@
       "label": "Fondazione Giacomo Brodolini",
       "status": "ok",
       "items": [
+        {
+          "title": "Officer per Ufficio Gare e contratti",
+          "url": "https://www.fondazionebrodolini.it/vacancy/officer-ufficio-gare-contratti"
+        },
         {
           "title": "Open call for researchers and experts - Policy Evaluation & Human Capital",
           "url": "https://www.fondazionebrodolini.it/en/vacancy/open-call-researchers-experts-policy-evaluation-human-capital"
