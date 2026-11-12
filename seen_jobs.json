@@ -45,7 +45,8 @@
         "aaf69d6b01034893aa1a703f792d3505",
         "acc4a3048d834c6d8b24faa4e5cfa365",
         "ad2e22e303aa4535a6a976349b02e1d6",
-        "c7e1fa5cade341f78cef5250b0996a85"
+        "c7e1fa5cade341f78cef5250b0996a85",
+        "e8fdb2e482a1447fa917334ad959cb26"
       ]
     },
     "eutalia": {
@@ -354,6 +355,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-11-12T11:52:48.726919+00:00",
+  "last_update": "2026-11-12T19:12:45.492377+00:00",
   "schema_version": 23
 }
