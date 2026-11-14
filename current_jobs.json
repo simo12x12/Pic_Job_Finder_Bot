@@ -1,43 +1,11 @@
 {
-  "last_check": "14/11/2026 02:24",
+  "last_check": "14/11/2026 08:42",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "VEL - Bid & Proposal Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Caselle-Sud/VEL---Bid---Proposal-Specialist_R0035072"
-        },
-        {
-          "title": "Referente relazioni con le Istituzioni centrali",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Monte-Grappa/Referente-relazioni-con-le-Istituzioni-centrali_R0034443"
-        },
-        {
-          "title": "EDGEWING - GCAP - Processes & Governance Manager (UK - Reading)",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/GCAP---Processes---Governance-Manager--UK---Reading-_R0025101"
-        },
-        {
-          "title": "VEL - addetto/a Communication Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/VEL---addetto-a-Communication-Management_R0033261"
-        },
-        {
-          "title": "Addetto/a Commercial Processes and Funnel Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1"
-        },
-        {
-          "title": "CYS - ACCOUNT MANAGER - MK&S",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081"
-        },
-        {
-          "title": "CYS - Proposal Engineer - SEU",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1"
-        },
-        {
-          "title": "CYS - BID MANAGER - CIE",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "Expecting value: line 1 column 1 (char 0)"
     },
     "inpa": {
       "label": "inPA",
@@ -142,9 +110,8 @@
     },
     "acea": {
       "label": "Acea",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 404: Not Found"
+      "status": "ok",
+      "items": []
     },
     "italo": {
       "label": "Italo",
@@ -168,8 +135,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "<urlopen error timed out>"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -306,9 +274,13 @@
     },
     "cdp": {
       "label": "CDP",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 404: Not Found"
+      "status": "ok",
+      "items": [
+        {
+          "title": "(Simest)_Stage - Relazioni Esterne",
+          "url": "https://www.opportunitadilavoro.cdp.it/job/Roma-%28Simest%29_Stage-Relazioni-Esterne/1376668357"
+        }
+      ]
     }
   }
 }
