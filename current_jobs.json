@@ -1,5 +1,5 @@
 {
-  "last_check": "16/11/2026 08:45",
+  "last_check": "16/11/2026 18:28",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -12,12 +12,20 @@
       "status": "ok",
       "items": [
         {
+          "title": "profilo professionale addetto alla comunicazione ufficiale e ai rapporti con la stampa",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=d765fc87bf234722a4b3e20a6ff384fa"
+        },
+        {
           "title": "Funzionario settore della comunicazione e dell'informazione",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=e8fdb2e482a1447fa917334ad959cb26"
         },
         {
           "title": "FUNZIONARIO SPECIALISTA DELLA COMUNICAZIONE E DEI RAPPORTI CON I MEDIA",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5c266f284aea410dae9591a3a0a30d69"
+        },
+        {
+          "title": "Funzionario Specialista di Comunicazione Istituzionale - Area Funzionari ed EQ",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=fc037f71fc784036b523ffa936371231"
         },
         {
           "title": "FUNZIONARIO APPARTENENTE ALL'AREA DEI FUNZIONARI E DELLE E.Q., PROFILO PROFESSIONALE DI SPECIALISTA DELLA COMUNICAZIONE ISTITUZIONALE",
@@ -127,7 +135,16 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
+          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
+        },
+        {
+          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
+          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
+        }
+      ]
     },
     "ifel": {
       "label": "IFEL",
@@ -138,7 +155,7 @@
       "label": "SNA",
       "status": "error",
       "items": [],
-      "error": "IncompleteRead(321434 bytes read)"
+      "error": "<urlopen error timed out>"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -246,7 +263,12 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
+          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
+        }
+      ]
     },
     "agenas": {
       "label": "AGENAS",
