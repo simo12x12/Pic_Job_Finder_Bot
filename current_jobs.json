@@ -1,5 +1,5 @@
 {
-  "last_check": "16/11/2026 18:28",
+  "last_check": "17/11/2026 01:55",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -44,12 +44,7 @@
     "eutalia": {
       "label": "Eutalia",
       "status": "ok",
-      "items": [
-        {
-          "title": "Avviso per la selezione di 3 professionisti per il supporto alla PCM – Dip. per le Politiche Giovanili e il Servizio Civile Universale [DVG103 – DPG003_06.11.2026]",
-          "url": "https://www.eutalia.eu/avvisi/avviso-per-la-selezione-di-3-professionisti-per-il-supporto-alla-pcm-dip-per-le-politiche-giovanili-e-il-servizio-civile-universale-dvg103-dpg003_06-11-2026/"
-        }
-      ]
+      "items": []
     },
     "consip": {
       "label": "Consip",
@@ -135,16 +130,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -155,7 +141,7 @@
       "label": "SNA",
       "status": "error",
       "items": [],
-      "error": "<urlopen error timed out>"
+      "error": "IncompleteRead(319226 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -233,16 +219,16 @@
       "status": "ok",
       "items": [
         {
-          "title": "0663/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=6e48e451f88044679460295aa397e8a0"
+          "title": "0791/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=7d8ca55218f84f0cbe4ce0310e53501c"
         },
         {
-          "title": "0774/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=b7c7e8afbeaa484d98f695407bde6d1f"
+          "title": "0792/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=075f98a2248d4045ae1723b2db6960b5"
         },
         {
-          "title": "0783/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=f94ffa6d528644fcbd54f4fcb7db369e"
+          "title": "0793/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=dd05ba482c6040da84c504c8a9cb99bd"
         },
         {
           "title": "Privacy",

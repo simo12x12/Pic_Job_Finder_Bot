@@ -256,12 +256,14 @@
       "seen": [
         "formez:0018fb5ae6a58d40143960c3",
         "formez:0046ec5580dc6202d85c174d",
+        "formez:01510f9f228428c02cbc1f5a",
         "formez:089c3f134e88b9a368568e1a",
         "formez:1176207d98e85407f58946a1",
         "formez:120d343b223b893b669c04d3",
         "formez:16b2091671453fcc667ba158",
         "formez:180bdded464904a8020a41b1",
         "formez:18cf3f85e87f595bbeb787cb",
+        "formez:1dc6e998e96cfdec628d13d7",
         "formez:2222d5bc719ce4f8779b2fa4",
         "formez:249a9497d3a836a86f798b56",
         "formez:2557e4f520fe2830b19765af",
@@ -318,7 +320,8 @@
         "formez:eec222134d2cf9d652561c75",
         "formez:efab1da1a4ccace672f0d6c7",
         "formez:f429c51766cd1d714b9100e0",
-        "formez:fe180c9a15ebf7c88013e3e7"
+        "formez:fe180c9a15ebf7c88013e3e7",
+        "formez:ff2d5f9a7906cb07a8dce5ac"
       ]
     },
     "sviluppo_lavoro": {
@@ -357,6 +360,6 @@
       "seen": []
     }
   },
-  "last_update": "2026-11-16T17:31:14.467642+00:00",
+  "last_update": "2026-11-17T00:57:05.406059+00:00",
   "schema_version": 23
 }
