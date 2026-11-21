@@ -1,5 +1,5 @@
 {
-  "last_check": "21/11/2026 00:24",
+  "last_check": "21/11/2026 05:05",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -102,9 +102,8 @@
     },
     "sace": {
       "label": "SACE",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 429: Too Many Requests"
+      "status": "ok",
+      "items": []
     },
     "gse": {
       "label": "GSE",
@@ -133,13 +132,15 @@
     },
     "anci": {
       "label": "ANCI",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 429: Too Many Requests"
     },
     "ifel": {
       "label": "IFEL",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 429: Too Many Requests"
     },
     "sna": {
       "label": "SNA",
@@ -148,8 +149,9 @@
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 429: Too Many Requests"
     },
     "brodolini": {
       "label": "Fondazione Giacomo Brodolini",
