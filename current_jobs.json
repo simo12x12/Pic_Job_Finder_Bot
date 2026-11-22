@@ -1,5 +1,5 @@
 {
-  "last_check": "22/11/2026 04:43",
+  "last_check": "22/11/2026 12:59",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -102,8 +102,9 @@
     },
     "sace": {
       "label": "SACE",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 429: Too Many Requests"
     },
     "gse": {
       "label": "GSE",
@@ -142,9 +143,8 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "error",
-      "items": [],
-      "error": "IncompleteRead(319018 bytes read)"
+      "status": "ok",
+      "items": []
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
