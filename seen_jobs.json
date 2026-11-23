@@ -359,9 +359,12 @@
     },
     "inapp": {
       "initialized": true,
-      "seen": []
+      "seen": [
+        "inapp:8658c14627ad0aa6442d7390",
+        "inapp:c815c00b45a8451b2d5e5715"
+      ]
     }
   },
-  "last_update": "2026-11-22T19:06:55.444951+00:00",
+  "last_update": "2026-11-23T00:13:24.228082+00:00",
   "schema_version": 23
 }

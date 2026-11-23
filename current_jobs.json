@@ -1,5 +1,5 @@
 {
-  "last_check": "22/11/2026 20:05",
+  "last_check": "23/11/2026 01:12",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -281,7 +281,16 @@
     "inapp": {
       "label": "INAPP",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "WELFARE2026E3",
+          "url": "https://www.inapp.gov.it/amministrazione-trasparente/avviso-23-novembre-2026-welfare2026e3"
+        },
+        {
+          "title": "WELFARE2026E4",
+          "url": "https://www.inapp.gov.it/amministrazione-trasparente/amministrazione-trasparente/bandi-di-concorso/avvisi-incarico/avviso-23-novembre-2026-welfare2026e4"
+        }
+      ]
     },
     "cdp": {
       "label": "CDP",
