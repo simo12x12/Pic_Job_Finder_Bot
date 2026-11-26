@@ -1,11 +1,43 @@
 {
-  "last_check": "26/11/2026 09:03",
+  "last_check": "26/11/2026 19:20",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 429: Too Many Requests"
+      "status": "ok",
+      "items": [
+        {
+          "title": "VEL - Bid & Proposal Specialist",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Caselle-Sud/VEL---Bid---Proposal-Specialist_R0035072"
+        },
+        {
+          "title": "Referente relazioni con le Istituzioni centrali",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Monte-Grappa/Referente-relazioni-con-le-Istituzioni-centrali_R0034443"
+        },
+        {
+          "title": "EDGEWING - GCAP - Processes & Governance Manager (UK - Reading)",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/GCAP---Processes---Governance-Manager--UK---Reading-_R0025101"
+        },
+        {
+          "title": "VEL - addetto/a Communication Management",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/VEL---addetto-a-Communication-Management_R0033261"
+        },
+        {
+          "title": "Addetto/a Commercial Processes and Funnel Management",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1"
+        },
+        {
+          "title": "CYS - ACCOUNT MANAGER - MK&S",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081"
+        },
+        {
+          "title": "CYS - Proposal Engineer - SEU",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1"
+        },
+        {
+          "title": "CYS - BID MANAGER - CIE",
+          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430"
+        }
+      ]
     },
     "inpa": {
       "label": "inPA",
@@ -102,8 +134,9 @@
     },
     "sace": {
       "label": "SACE",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 429: Too Many Requests"
     },
     "gse": {
       "label": "GSE",
@@ -151,8 +184,9 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "IncompleteRead(321578 bytes read)"
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -252,12 +286,7 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": [
-        {
-          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
-          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
-        }
-      ]
+      "items": []
     },
     "agenas": {
       "label": "AGENAS",
