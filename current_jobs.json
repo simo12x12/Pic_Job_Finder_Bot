@@ -1,59 +1,19 @@
 {
-  "last_check": "26/11/2026 19:20",
+  "last_check": "27/11/2026 02:47",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
-      "status": "ok",
-      "items": [
-        {
-          "title": "VEL - Bid & Proposal Specialist",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Caselle-Sud/VEL---Bid---Proposal-Specialist_R0035072"
-        },
-        {
-          "title": "Referente relazioni con le Istituzioni centrali",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Monte-Grappa/Referente-relazioni-con-le-Istituzioni-centrali_R0034443"
-        },
-        {
-          "title": "EDGEWING - GCAP - Processes & Governance Manager (UK - Reading)",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/GCAP---Processes---Governance-Manager--UK---Reading-_R0025101"
-        },
-        {
-          "title": "VEL - addetto/a Communication Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/VEL---addetto-a-Communication-Management_R0033261"
-        },
-        {
-          "title": "Addetto/a Commercial Processes and Funnel Management",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Torino---Cso-Francia/Addetto-a-Commercial-Processes-and-Funnel-Management_R0027441-1"
-        },
-        {
-          "title": "CYS - ACCOUNT MANAGER - MK&S",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---ACCOUNT-MANAGER---MK-S_R0031081"
-        },
-        {
-          "title": "CYS - Proposal Engineer - SEU",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Genova---Fiumara/CYS---Proposal-Engineer---SEU_R0027244-1"
-        },
-        {
-          "title": "CYS - BID MANAGER - CIE",
-          "url": "https://leonardocompany.wd3.myworkdayjobs.com/it-IT/LeonardoCareerSite/job/IT---Roma---Via-Laurentina/CYS---PROPOSAL-EGNINEER---CIE_R0023430"
-        }
-      ]
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 429: Too Many Requests"
     },
     "inpa": {
       "label": "inPA",
       "status": "ok",
       "items": [
         {
-          "title": "profilo professionale addetto alla comunicazione ufficiale e ai rapporti con la stampa",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=d765fc87bf234722a4b3e20a6ff384fa"
-        },
-        {
           "title": "Funzionario settore della comunicazione e dell'informazione",
           "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=e8fdb2e482a1447fa917334ad959cb26"
-        },
-        {
-          "title": "FUNZIONARIO SPECIALISTA DELLA COMUNICAZIONE E DEI RAPPORTI CON I MEDIA",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso/?concorso_id=5c266f284aea410dae9591a3a0a30d69"
         },
         {
           "title": "Addetto all'Ufficio stampa e alla comunicazione",
@@ -134,9 +94,8 @@
     },
     "sace": {
       "label": "SACE",
-      "status": "error",
-      "items": [],
-      "error": "HTTP Error 429: Too Many Requests"
+      "status": "ok",
+      "items": []
     },
     "gse": {
       "label": "GSE",
@@ -166,16 +125,7 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": [
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
-        },
-        {
-          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
-          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
-        }
-      ]
+      "items": []
     },
     "ifel": {
       "label": "IFEL",
@@ -184,9 +134,8 @@
     },
     "sna": {
       "label": "SNA",
-      "status": "error",
-      "items": [],
-      "error": "IncompleteRead(321578 bytes read)"
+      "status": "ok",
+      "items": []
     },
     "tagliacarne": {
       "label": "Centro Studi Tagliacarne",
@@ -264,8 +213,8 @@
       "status": "ok",
       "items": [
         {
-          "title": "0796/2026",
-          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=6f52f1526ddf4c4984c145baba53aaba"
+          "title": "0789/2026",
+          "url": "https://www.inpa.gov.it/bandi-e-avvisi/dettaglio-bando-avviso?concorso_id=9c5e9c8435e7452e95f48feecb95957c"
         },
         {
           "title": "Privacy",
@@ -286,7 +235,12 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
+          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
+        }
+      ]
     },
     "agenas": {
       "label": "AGENAS",
