@@ -1,5 +1,5 @@
 {
-  "last_check": "27/11/2026 02:47",
+  "last_check": "27/11/2026 11:09",
   "sources": {
     "leonardo": {
       "label": "Leonardo",
@@ -94,8 +94,9 @@
     },
     "sace": {
       "label": "SACE",
-      "status": "ok",
-      "items": []
+      "status": "error",
+      "items": [],
+      "error": "HTTP Error 429: Too Many Requests"
     },
     "gse": {
       "label": "GSE",
@@ -125,7 +126,16 @@
     "anci": {
       "label": "ANCI",
       "status": "ok",
-      "items": []
+      "items": [
+        {
+          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI - Progetto POSSO – Potenziamento Servizi Sociali – Nuovi modelli organizzativi e di governance per gli ATS”, finanziato nell’ambito del Programma Nazionale Inclusione e lotta alla povertà 2021-2027 – Priorità 1 “Sostegno all’inclusione sociale e lotta alla povertà” – (FSE+) – CUP B59I25003480006 – (Cod. Prog. 834)",
+          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/251/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti-progetto-posso-potenziamento-servizi-sociali-nuovi-modelli-organizzativi-e-di-governance-per-gli-ats-finanziato-nell-ambito-del-programma-nazionale-inclusione-e-lotta-alla-poverta-2021-2027-priorita-1-sostegno-all-inclusione-sociale-e-lotta-alla-poverta-fse-cup-b59i25003480006-cod-prog-834.html"
+        },
+        {
+          "title": "AVVISO PUBBLICO PER LA COSTITUZIONE DI LONG LIST DI ESPERTI FORMATORI/DOCENTI",
+          "url": "https://anci.portaletrasparenza.net/dettagli/concorsi/223/avviso-pubblico-per-la-costituzione-di-long-list-di-esperti-formatori-docenti.html"
+        }
+      ]
     },
     "ifel": {
       "label": "IFEL",
@@ -159,12 +169,7 @@
     "fondazione_sud": {
       "label": "Fondazione con il Sud",
       "status": "ok",
-      "items": [
-        {
-          "title": "Con i bambini cerca una risorsa per l’ufficio comunicazione",
-          "url": "https://www.fondazioneconilsud.it/2026/07/16/lavora-con-noi-coordinatore-coordinatrice-ufficio-comunicazione"
-        }
-      ]
+      "items": []
     },
     "enav": {
       "label": "ENAV",
@@ -235,12 +240,7 @@
     "unioncamere": {
       "label": "Unioncamere",
       "status": "ok",
-      "items": [
-        {
-          "title": "05/03/2026 (2026) AVVISO DI SELEZIONE PER CONFERIMENTO DI INCARICO DI COLLABORAZIONE PER ATTIVITA’ DI COORDINAMENTO CAMPAGNE INFORMATIVE E SENSIBILIZZAZIONE E MEDIA RELATION NELL’AMBITO DELLA PRASSI UNI SISTEMA DI GESTIONE PER LA CONCILIAZIONE VITA FAMILIARE-LAVORO",
-          "url": "https://www.unioncamere.gov.it/amministrazione-trasparente/bandi-di-concorso/2026-avviso-di-selezione-conferimento-di-incarico-di-collaborazione-attivita-di-coordinamento-campagne-informative-e-sensibilizzazione-e-media-relation-nellambito-della-prassi-uni-sistema-di-gestione-la"
-        }
-      ]
+      "items": []
     },
     "agenas": {
       "label": "AGENAS",
